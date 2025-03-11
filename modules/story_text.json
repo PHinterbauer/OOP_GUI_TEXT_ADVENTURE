@@ -1,0 +1,506 @@
+{
+    "start": {
+        "logo": [
+            "",
+            "          |    |    | ",
+            "         )_)  )_)  )_)",
+            "        )___))___))___\u005C",
+            "        )____)____)_____\u005C\u005C",
+            "     _____|____|____|____\u005C\u005C\u005C__",
+            "     \u005C                   /",
+            "^^^^^ ^^^^^^^^^^^^^^^^^^^^^ ^^^^^^",
+            "   ^^^^      ^^^^     ^^^    ^^",
+            "        ^^^^      ^^^",
+            ""
+        ],
+        "death_screen": [
+            "                            ,--.",
+            "                           {    }",
+            "                           K,   }",
+            "                          /  ~Y`",
+            "                     ,   /   /",
+            "                    {_'-K.__/",
+            "                     `/-.__L._",
+            "                     /  ' /`}",
+            "                    /  ' /",
+            "            ____   /  ' /",
+            "     ,-'~~~~    ~~/  ' /_",
+            "   ,'             ``~~~  ',",
+            "  (                        Y",
+            " {                         I",
+            "{      -                    `",
+            "|       ',                   )",
+            "|        |   ,..__      __. Y",
+            "|    .,_./  Y     ^Y   J   )|",
+            "\u005C           |      |   |   ||",
+            " \u005C          L_     . _ (_,.'(",
+            "  \u005C,   ,      ^^''' / |      )",
+            "    \u005C  \u005C          /,L]     /",
+            "      '-_~-,       ` `   ./`",
+            "         `'{_            )",
+            "             ^^\u005C..___,.--`",
+            "",
+            "=======================================",
+            "               GAME OVER",
+            "=======================================",
+            ""
+        ],
+        "title": [
+            "I---------------------------------I",
+            "I        THE FLYING HUMPTY        I",
+            "I---------------------------------I",
+            ""
+        ],
+        "(c)": [
+            "© Paul Hinterbauer 2024",
+            ""
+        ],
+        "text": [
+            "Anker lichten! Schreist du, der Captain der Flying Humpty, das gefürchteste Schiff auf der See.",
+            "Ihr seid auf der Suche nach dem Rauriff-Amulett, um den Fluch der Geister-Galione aufzuheben",
+            "und den Schatz vom Captain, der Geister-Galione, Predor abzuholen.",
+            ""
+        ],
+        "functions": {
+            "text": {
+
+            }
+            
+        }
+    },
+    "chapter_1": {
+        "text": [
+            "Ihr seid auf dem Weg zum Morrows-Peak Outpost um dort eure Reise zu starten.",
+            "Aus dem Nichts steigen zwei Skelett-Brigantinen aus dem Wasser, sie beginnen zu schießen!",
+            ""
+        ],
+        "functions": {
+            "text": {
+
+            }
+
+        }
+    },
+    "chapter_1_fleeing": {
+        "text": [
+            "Ihr flieht mit den Segeln voll im Wind, jedoch hohlen die Skelett-Brigantinen euch schnell ein!",
+            "Nun müsst ihr wohl oder übel doch kämpfen!",
+            "Ihr seid nicht vorbereitet und verliert den Kampf!",
+            "Stell dich beim nächsten Mal deinen Ängsten!",
+            ""
+        ],
+        "functions": {
+            "text": {
+                "2": "time.sleep(4)",
+                "4": "Story.death()"
+            }
+        }
+    },
+    "chapter_2": {
+        "text": [
+            "Ihr habt tapfer gekämpft und es hat sich ausgezahlt, ihr gewinnt den Kampf und zieht 125 Münzen,",
+            "sowie 3 Holzbretter aus den Rümpfen der Skelett-Brigantinen. Mit eurer Beute macht ihr euch weiter auf",
+            "den Weg zum Morrows-Peak Outpost!",
+            ""
+        ],
+        "functions": {
+            "text": {
+                "3": "Game.main_character.add_inventory_room({'Münzen': 125, 'Holzbretter': 3})"
+            }
+        }
+    },
+    "chapter_3": {
+        "text": [
+            "Ihr seid auf der Insel angekommen! Es stehen drei große Gebäude vor euch.",
+            "1. Eine Taverne vor welcher ein alter Seefahrer steht der zu dir winkt.",
+            "2. Eine Schmiede hinter welcher der Legende zu folge die Karte mit dem",
+            "   einzigen sicheren Weg zu der Insel Shipwreck-Beach liegt.",
+            "3. Ein Hafen von welchen die Reise fortgesetzt werden kann.",
+            "Zu welchem Gebäude willst du zuerst?",
+            ""
+        ],
+        "functions": {
+            "text": {
+
+            }
+        }
+    },
+    "chapter_3_taverne": {
+        "text": [
+            "Du sprichst mit dem alten Seefahrer vor der Taverne. Er spricht von etwas",
+            "gewaltigen das auf euch zukommen wird. Dir wird empfohlen beim Hafen ein paar",
+            "Holzbretter zu kaufen um vorbereitet zu sein.",
+            "Zu welchem Gebäude willst du nun?",
+            ""
+        ],
+        "functions": {
+            "text": {
+
+            }
+        }
+    },
+    "chapter_3_waffenschmied": {
+        "text": [
+            "Du begiebst dich hinter die Schmiede und tatsächlich liegt dort ein eingerolltes",
+            "Stück Papier. Du falltest es auf, eine detailreiche Karte zu Shipwreck-Beach.",
+            "Zu welchem Gebäude willst du als nächstes?",
+            ""
+        ],
+        "functions": {
+            "text": {
+                "0": "Game.main_character.add_inventory_room({'Karte von Shipwreck-Beach': 1})"
+            }
+        }
+    },
+    "chapter_3_hafen": {
+        "text": [
+            "Am Hafen befindet sich ein kleines Geschäft gleich neben der Flying Humpty!",
+            "Was willst du tun?",
+            ""
+        ],
+        "functions": {
+            "text": {
+
+            }
+        }
+    },
+    "chapter_3_hafen_shop": {
+        "text": [
+            "Wenn du alles hast kannst du nun die Geschichte fortsetzen.",
+            ""
+        ],
+        "functions": {
+            "text": {
+                "0": "Shop.shop()"
+            }
+        }
+    },
+    "chapter_4": {
+        "text": [
+            "Mit der Karte macht ihr euch auf den Weg Richtung Shipwreck-Beach. In eurem",
+            "Weg steht eine gigantische Felsformation die einen Bogen über euch formt.",
+            "Wie willst du vorbeifahren?",
+            ""
+        ],
+        "text_not_in_inv": [
+            "Ohne Karte macht die Weiterfahrt keinen Sinn.",
+            "Aber ich werde dich von deiner Reise nicht abhalten!",
+            "Ihr macht euch also auf den Weg zu Shipwreck-Beach.",
+            "Es ist jedoch so nebelig, dass ihr direkt in einen riesigen Felsen vor der Insel fährt!",
+            "Diesen Unfall habt ihr nicht überlebt. Woher kommt wohl der Name 'Shipwreck-Beach'?",
+            ""
+        ],
+        "functions": {
+            "text": {
+                "0": "Entity.in_inventory({'Karte von Shipwreck-Beach': 1})"
+            },
+            "text_not_in_inv": {
+                "2": "time.sleep(4)",
+                "5": "Story.death()"
+            }
+        }
+    },
+    "chapter_4_links": {
+        "text": [
+            "Du leitest eine starke Linksdrehung ein, ihr schafft es vorbei!",
+            "Nur 50 Meter weiter springt plötzlich ein gigantischer Megalodon, mit lila farbener Haut,",
+            "aus dem Wasser und direkt auf euer Schiff.",
+            "Die Flying Humpty sinkt und alle ihre Schätze mit ihr.",
+            ""
+        ],
+        "functions": {
+            "text": {
+                "3": "time.sleep(4)",
+                "4": "Story.death()"
+            }
+        }
+    },
+    "chapter_4_mitte": {
+        "text": [
+            "Du entscheidest dich für den geraden Weg durch die Mitte.",
+            "Riesige Felstürme auf beiden Seiten, ein wunderschöner Ausblick.",
+            "Was ist das!? Ein Wasserstrudel!",
+            "Die Strömung zieht euch hinein und das Meer verschlingt euch.",
+            "3 Tage später:",
+            "Du wachst aus deinem Koma auf und findest dich und deine Crew auf einer verlassenen Insel wieder.",
+            "Deine Crew gibt dir etwas zu trinken und zu essen.",
+            "Du wirst gefragt ob du die Flying Humpty reparieren möchtest.",
+            "Es würde dich 3 Holzbretter kosten.",
+            "Deine Crew hat die Flying Humpty erfolgreich wieder auf Vordermann gebracht.",
+            "Die Reperaturen haben euch 3 Holzbretter gekostet.",
+            ""
+        ],
+        "text_not_repaired": [
+            "Ihr konntet leider keinen anderen Weg finden.",
+            "Nach drei harten Wochen auf der Insel verhungert ihr.",
+            ""
+        ],
+        "functions": {
+            "text": {
+                "2": "time.sleep(4)",
+                "4": "time.sleep(4)",
+                "9": "Story.repair({'Holzbretter': 3})"
+            },
+            "text_not_repaired": {
+                "2": "Story.death()"
+            }
+        }
+    },
+    "chapter_4_rechts": {
+        "text": [
+            "Du drehst das Steuer so stark du nur kannst nach rechts, doch es ist nicht genug!",
+            "Ihr seid mit dem Felsen zusammengestoßen!",
+            "Mitten im Meer:",
+            "Ihr seid irgendwo auf der zerstörten Flying Humpty treibend im Meer.",
+            "Man kann sie jedoch noch reparieren.",
+            "Es würde jedoch 10 Holzbretter kosten.",
+            "Deine Crew hat die Flying Humpty erfolgreich wieder auf Vordermann gebracht.",
+            "Die Reperaturen haben euch 10 Holzbretter gekostet.",
+            ""
+        ],
+        "text_not_repaired": [
+            "Ernsthaft?! Dein Leben ist dir keine 10 Holzbretter wert?",
+            "Na gut, soll so sein.",
+            "Ihr habt keinen anderen Weg gefunden!",
+            ""
+        ],
+        "functions": {
+            "text": {
+                "2": "time.sleep(4)",
+                "6": "Story.repair({'Holzbretter': 10})"
+            },
+            "text_not_repaired": {
+                "2": "time.sleep(4)",
+                "3": "Story.death()"
+            }
+        }
+    },
+    "chapter_5": {
+        "text": [
+            "Endlich! Ihr legt Anker auf dem berüchtigten Shipwreck-Beach.",
+            "Nicht viele Seefahrer schaffen es auf diese Insel und kommen wieder lebendig heraus!",
+            "Nach ein paar Minuten entzifferst du die Karte und findest ein Buch mit nur einer Seite.",
+            "Auf dieser steht: 'Bereite dich auf dein Ende vor!' signiert von dem Skelett-Captain.",
+            "Dein Blick weicht auf die Seite und du findest eine Eisenrüstung und daneben ein Eisenschwert.",
+            "Willst du dem Buch trauen und dich ausrüsten?",
+            ""
+        ],
+        "functions": {
+            "text": {
+                "6": "Game.main_character.add_inventory_room({'altes Buch': 1})"
+            }
+        }
+    },
+    "chapter_5_fight": {
+        "text": [
+            "Du legst die Rüstung an und nimmst das Schwert in die Hand.",
+            "Die Rüstung passt perfekt. Hmm komisch, naja was soll schon pasieren.",
+            "Aus dem Nichts spürst du einen gewaltigen Stoß in den Rücken!",
+            "Der Skelett-Captain fordert dich zu einem Kampf heraus!",
+            "Du hast gewonnen! Der Skelett-Captain ist tot!",
+            "In der Schatztruhe die er beschützt hat findest du 10 verfluchte Kanonenkugeln!",
+            ""
+        ],
+        "functions": {
+            "text": {
+                "2": "Game.main_character.add_inventory_room({'Eisenrüstung': 1, 'Eisenschwert': 1})",
+                "3": "time.sleep(4)",
+                "4": "fight('Skelett-Captain')",
+                "6": "Game.main_character.add_inventory_room({'verfluchte Kanonenkugel': 10})"
+            }
+        }
+    },
+    "chapter_5_sub": {
+        "text": [
+            "Du drehst dich um und möchtest wieder aufs Schiff, als dir plötzlich",
+            "ein gewaltiger Fuß in den Bauch tritt. Signatur vom Skelett-Captain!",
+            "Du schaffst es zu entkommen und flüchtest.",
+            "Während du vor dem Skelett-Captain weggerannt bist, hat er immer wieder die Insel",
+            "Skull-Island erwähnt. Demnach ist dies euer nächstes Ziel!",
+            ""
+        ],
+        "functions": {
+            "text": {
+                "2": "time.sleep(4)"
+            }
+        }
+    },
+    "chapter_6": {
+        "text": [
+            "Du wirfst einen Blick auf das Buch und siehe da, eine 2. Seite ist dazugekommen.",
+            "Auf ihr ist die Karte zu eurem nächsten Ziel.",
+            "Genauso wie es Predor gesagt hat.",
+            "Mit der Karte macht ihr euch auf den Weg zu der gefürchteten Skull-Island.",
+            "Um dort mithilfe der Karte das Amulett zu finden.",
+            "Nach einigen Tagen auf hoher See:",
+            "Du schaust in den Horizont, doch was ist das?!",
+            "Das Meer färbt sich schwarz und es steigen unheimlich große Tentakel aus dem Wasser!",
+            "Es ist ein Riesenkraken, er versperrt euch den Weg.",
+            "Ihr müsst ihn töten!",
+            ""
+        ],
+        "text_not_killed": [
+            "Nach einigen Tagen auf hoher See:",
+            "Du schaust in den Horizont, doch was ist das?!",
+            "Das Meer färbt sich schwarz und es steigen unheimlich große Tentakel aus dem Wasser!",
+            "Es ist ein Riesenkraken, er versperrt euch den Weg.",
+            "Ihr müsst ihn töten!",
+            ""
+        ],
+        "text_enter": [
+            "Ihr schießt zuerst mit normalen Kanonenkugeln auf das Biest, doch das bringt nichts.",
+            "Doch als ihr schon fast keine mehr habt beginnt ein Matrose mit den verfluchten Kanonenkugeln zu schießen!",
+            "Und tatsächlich, nach nur ein paar Schüssen ist das Biest erlegt.",
+            ""
+        ],
+        "text_not_in_inv": [
+            "Ihr schießt und schießt, aber ohne Erfolg das Biest ist zu stark und tötet euch!",
+            ""
+        ],
+        "functions": {
+            "text": {
+                "0": "was_killed('Skelett-Captain')",
+                "5": "time.sleep(4)",
+                "10": "enter()"
+            },
+            "text_not_killed": {
+                "5": "enter()"
+            },
+            "text_enter": {
+                "0": "Entity.in_inventory({'Verfluchte Kanonenkugel': 10})"
+            },
+            "text_not_in_inv": {
+                "1": "Story.death()"
+            }
+        }
+    },
+    "chapter_7": {
+        "text": [
+            "Ihr seid auf Skull-Island angekommen!",
+            "Du schaust dich auf der Insel um. Nach einiger Zeit kommst du ohne Erfolg zum Schiff zurück.",
+            "Als du wieder am Deck stehst schaust du in den Himmel und siehe da, ein Felsvorsprung ganz oben auf dem kleinen Berg.",
+            "Du machst dich sofort auf den Weg und kletterst den Berg hinauf.",
+            "Doch auch von oben siehst du weit und breit keinen Schatz. Aber was ist das?!",
+            "Das Logbuch der Geister-Galione. Es sind drei Zeichen in einer Reihenfolge abgebildet:",
+            "1. Kraken, 2. Megalodon, 3. Totenschädel",
+            "Und darunter steht: Dieser Schlüssel wird dich ans Ziel führen.",
+            ""
+        ],
+        "functions": {
+            "text": {
+                "8": "Game.main_character.add_inventory_room({'Logbuch': 1)}"
+            }
+        }
+    },
+    "chapter_8": {
+        "text": [
+            "Mit dem Logbuch kehrst du zum Schiff zurück.",
+            "Es ist nämlich auch ein Kompass abgebildet, welcher genau auf der Position der Flying Humpty seinen Startpunkt hat.",
+            "Er zeigt 3 Richtungen an 1. Norden, 2. Osten, 3. Westen",
+            "Wohin willst du zuerst?",
+            ""
+        ],
+        "functions": {
+            "text": {
+
+            }
+        }
+    },
+    "chapter_8_norden": {
+        "text": [
+            "Richtung Norden!",
+            "NICHTS, ABSOLUT GAR NICHTS!",
+            "Du gehst wieder zum Schiff zurück.",
+            ""
+        ],
+        "functions": {
+            "text": {
+                "1": "time.sleep(4)"
+            }
+        }
+    },
+    "chapter_8_osten": {
+        "text": [
+            "Richtung Osten!",
+            "Du gehst durch ein dichtes Waldstück bis du auf eine gut beleuchtete Lichtung stößt.",
+            "In der Mitte steht ein einzelner, großer und eindeutig alter Baum mit einem Sack an einem Ast gebunden.",
+            "In dem Sack findest du 3 Münzen.",
+            "Leider gibt es sonst nichts.",
+            "Du gehst wieder zum Schiff zurück.",
+            ""
+        ],
+        "functions": {
+            "text": {
+                "1": "time.sleep(4)",
+                "4": "Game.main_character.add_inventory_room({'Münzen': 3})"
+            }
+        }
+    },
+    "chapter_8_westen": {
+        "text": [
+            "Richtung Westen!",
+            "Was ist das? Sieht aus wie ein alter Schrein!",
+            "Er hat drei Öffnungen und es gibt drei kleine Steine mit Aufschriften.",
+            "Auf dem 1. ist ein Totenschädel auf dem 2. ein Megalodon und auf dem 3. ist ein Kraken zu sehen.",
+            "Welchen Stein willst du in Loch 1 einsetzen?",
+            "Du setzt den letzten Stein ein und eine Wand öffnet sich.",
+            "In dem Raum liegt es, das Rauriff-Amulett!",
+            "Du schnapst es dir und segelst sofort los nach Morrows-Peak Outpost um dort Predor und sein Schiff zu retten!",
+            ""
+        ],
+        "text_not_puzzle": [
+            "Der Stein passt nicht.",
+            "Plötzlich öffnet sich blitzartig eine kleine Luke in der Wand und Pfeile schießen heraus.",
+            ""
+        ],
+        "functions": {
+            "text": {
+                "1": "time.sleep(4)",
+                "2": "time.sleep(4)",
+                "5": "puzzle('chapter_8_westen', {'1': 'Totenschädel', '2': 'Megalodon', '3': Kraken})"
+            },
+            "text_not_puzzle": {
+                "2": "Story.death()"
+            }
+        }
+    },
+    "chapter_9": {
+        "text": [
+            "Endlich wieder zurück!",
+            "Du hältst das Amulett in den Himmel und ein leuchtender Strahl schießt in die Luft!",
+            "Über dem Wasser öffnet sich ein Geistertor und heraus kommt? Predor! Auf seiner fliegenden Geister-Galione!",
+            "Er bedankt sich bei dir und lässt dir als Dankeschön den Schatz des Captains da.",
+            "Du verkaufst ihn!",
+            "Ihr habt es geschafft!",
+            "Die Crew der Flying Humpty ist nun nicht nur die gefürchteste sondern auch die reichste in allen sieben Weltmeeren!",
+            ""
+        ],
+        "functions": {
+            "text": {
+                "1": "time.sleep(4)",
+                "5": "time.sleep(4)"
+            }
+            
+        }
+    },
+    "credits": {
+        "text": [
+            "============================================",
+            "A game made by Paul Hinterbauer from the TGM",
+            "============================================",
+            "",
+            "Thanks for all the help! ♥",
+            "@Bernhard Ratschiner",
+            "@Thomas Schobesberger",
+            "@ZEUS for the ascii art",
+            "",
+            "© Paul Hinterbauer 2023",
+            ""
+        ],
+        "functions": {
+            "text": {
+
+            }
+        }
+    }
+}
