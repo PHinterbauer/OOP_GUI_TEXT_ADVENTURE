@@ -37,6 +37,7 @@ class MainWindow(cTk.CTkToplevel):
 
         self.text_box = cTk.CTkTextbox(self)
         self.text_box.place(relx=0.05, rely=0.07, relwidth=0.9, relheight=0.45)
+        self.text_box.configure(state="disabled")
 
         self.open_inventory_btn = cTk.CTkButton(self, text="Inventory", command=self.open_inventory)
         self.open_inventory_btn.place(relx=1.0, rely=0.0, anchor="ne", x=-10, y=10)
@@ -61,15 +62,21 @@ class MainWindow(cTk.CTkToplevel):
         self.TestingPrintButton.place(relx=0.55, rely=0.7, relwidth=0.4, relheight=0.05)
 
     def add_text_to_textbox(self):
-        text = self.TestingEntry.get() + "\n"
+        text = self.TestingEntry.get()
         if text != "":
-            self.text_box.insert("0.0", text)
+            separator = "\n" + "-" * int((self.text_box.winfo_width() / 4 - 5)) + "\n" # should change with resizing of window
+            self.text_box.configure(state="normal")
+            self.text_box.insert("end", text + separator)
+            self.text_box.configure(state="disabled")
 
     def delete_all_entries(self):
+        self.text_box.configure(state="normal")
         self.text_box.delete("0.0", "end")
+        self.text_box.configure(state="disabled")
 
-    def print_latest_entry_from_textbox(self):
-        text = self.text_box.get("0.0", "lineend") # ERROR get only latest line instead of all text
+    def print_latest_entry_from_textbox(self): # still doesnt work
+        text = self.text_box.get("0.0", "0.0") # ERROR get only latest line instead of all text
+        print(text.strip())
         if text != "":
             print(f"Latest Entry: {text}")
         else:
