@@ -6,7 +6,11 @@ class StartWindow(cTk.CTk):
         Create the start window
         """
         super().__init__()
-        self.player_name = ""
+        
+        if __name__ != "__main__":
+            self.player_name = ""
+        else:
+            self.player_name = "<TESTING ENVIROMENT NOT MAIN.PY>"
 
         self.title("The Flying Humpty - Main Menu - © Paul Hinterbauer 2025 @ TGM Vienna")
         self.geometry("720x320")
@@ -22,7 +26,13 @@ class StartWindow(cTk.CTk):
 
     def confirm_player_name(self,):
         self.player_name = self.player_name_entry.get()
-        # ERROR Handling -> if running as main
+        if __name__ != "__main__":
+            if self.player_name.strip() == "":
+                print("Player name cannot be empty!")
+            else:
+                print(f"Player name confirmed: {self.player_name}")
+        else:
+            self.player_name = "<TESTING ENVIROMENT NOT MAIN.PY>"
 
     def open_main_window(self):
         self.withdraw()
@@ -33,7 +43,7 @@ class MainWindow(cTk.CTkToplevel):
         super().__init__(master)
 
         self.title(f"{master.player_name}'s adventure among the Flying Humpty - © Paul Hinterbauer 2025 @ TGM Vienna")
-        self.geometry("800x600")
+        self.geometry("1280x600")
 
         self.text_box = cTk.CTkTextbox(self)
         self.text_box.place(relx=0.05, rely=0.07, relwidth=0.9, relheight=0.45)
@@ -61,12 +71,11 @@ class MainWindow(cTk.CTkToplevel):
         self.TestingPrintButton = cTk.CTkButton(self, text="Print Latest Entry", command=self.print_latest_entry_from_textbox)
         self.TestingPrintButton.place(relx=0.55, rely=0.7, relwidth=0.4, relheight=0.05)
 
-    def add_text_to_textbox(self):
-        text = self.TestingEntry.get()
+    def add_text_to_textbox(self): # add seperator using autoseperators maybe - dont actually know what that does
+        text = self.TestingEntry.get() + "\n"
         if text != "":
-            separator = "\n" + "-" * int((self.text_box.winfo_width() / 4 - 5)) + "\n" # should change with resizing of window
             self.text_box.configure(state="normal")
-            self.text_box.insert("end", text + separator)
+            self.text_box.insert("0.0", text)
             self.text_box.configure(state="disabled")
 
     def delete_all_entries(self):
@@ -74,9 +83,8 @@ class MainWindow(cTk.CTkToplevel):
         self.text_box.delete("0.0", "end")
         self.text_box.configure(state="disabled")
 
-    def print_latest_entry_from_textbox(self): # still doesnt work
-        text = self.text_box.get("0.0", "0.0") # ERROR get only latest line instead of all text
-        print(text.strip())
+    def print_latest_entry_from_textbox(self):
+        text = self.text_box.get("1.0", "end-1c").split('\n')[0].strip()
         if text != "":
             print(f"Latest Entry: {text}")
         else:
