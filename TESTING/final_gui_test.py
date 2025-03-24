@@ -71,11 +71,13 @@ class MainWindow(cTk.CTkToplevel):
         self.TestingPrintButton = cTk.CTkButton(self, text="Print Latest Entry", command=self.print_latest_entry_from_textbox)
         self.TestingPrintButton.place(relx=0.55, rely=0.7, relwidth=0.4, relheight=0.05)
 
-    def add_text_to_textbox(self): # add seperator using autoseperators maybe - dont actually know what that does
-        text = self.TestingEntry.get() + "\n"
+    def add_text_to_textbox(self): # separator doesnt resize properly
+        text = self.TestingEntry.get()
         if text != "":
             self.text_box.configure(state="normal")
-            self.text_box.insert("0.0", text)
+            self.text_box.insert("1.0", text+"\n")
+            separator = cTk.CTkFrame(self.text_box, width=self.text_box._textbox.winfo_width()-290, height=2, fg_color='gray25')
+            self.text_box._textbox.window_create("1.end", window=separator)
             self.text_box.configure(state="disabled")
 
     def delete_all_entries(self):
