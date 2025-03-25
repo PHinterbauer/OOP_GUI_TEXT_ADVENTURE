@@ -39,6 +39,9 @@ class StartWindow(cTk.CTk):
         MainWindow(self)
 
 class MainWindow(cTk.CTkToplevel):
+    """
+    Create the main window
+    """
     def __init__(self, master):
         super().__init__(master)
 
@@ -46,7 +49,7 @@ class MainWindow(cTk.CTkToplevel):
         self.geometry("1280x600")
 
         self.text_box = cTk.CTkTextbox(self)
-        self.text_box.place(relx=0.05, rely=0.07, relwidth=0.9, relheight=0.45)
+        self.text_box.place(relx=0.05, rely=0.075, relwidth=0.9, relheight=0.45)
         self.text_box.configure(state="disabled")
 
         self.open_inventory_btn = cTk.CTkButton(self, text="Inventory", command=self.open_inventory)
@@ -54,6 +57,8 @@ class MainWindow(cTk.CTkToplevel):
 
         self.open_menu_btn = cTk.CTkButton(self, text="Menu", command=self.open_start_menu)
         self.open_menu_btn.place(relx=0.0, rely=0.0, anchor="nw", x=10, y=10)
+
+        self.bind("<Configure>", self.resize_separators)
 
         # TESTING
         self.TestingFrame = cTk.CTkFrame(self)
@@ -71,14 +76,22 @@ class MainWindow(cTk.CTkToplevel):
         self.TestingPrintButton = cTk.CTkButton(self, text="Print Latest Entry", command=self.print_latest_entry_from_textbox)
         self.TestingPrintButton.place(relx=0.55, rely=0.7, relwidth=0.4, relheight=0.05)
 
-    def add_text_to_textbox(self): # separator doesnt resize properly
+    def add_text_to_textbox(self):
         text = self.TestingEntry.get()
         if text != "":
             self.text_box.configure(state="normal")
             self.text_box.insert("1.0", text+"\n")
-            separator = cTk.CTkFrame(self.text_box, width=self.text_box._textbox.winfo_width()-290, height=2, fg_color='gray25')
+            separator = cTk.CTkFrame(self.text_box, width=self.text_box._textbox.winfo_width()*0.795, height=2, fg_color='gray25')
             self.text_box._textbox.window_create("1.end", window=separator)
             self.text_box.configure(state="disabled")
+
+    def resize_separators(self, event):
+        self.text_box.configure(state="normal")
+        new_width = self.text_box._textbox.winfo_width()*0.795
+        for child in self.text_box.winfo_children():
+            if isinstance(child, cTk.CTkFrame):
+                child.configure(width=new_width)
+        self.text_box.configure(state="disabled")
 
     def delete_all_entries(self):
         self.text_box.configure(state="normal")
