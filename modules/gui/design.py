@@ -1,18 +1,14 @@
+# ====================================
+# © Paul Hinterbauer 2025 @ TGM Vienna
+
+# ./modules/gui/design.py
+# Design for the GUI
+# ====================================
+
 import customtkinter as cTk
-from interactions import (
-    confirm_player_name,
-    open_main_window,
-    add_text_to_textbox,
-    resize_separators,
-    delete_all_entries,
-    print_latest_entry_from_textbox,
-    open_start_menu,
-    open_inventory,
-    close_inventory,
-)
 
 class StartWindow(cTk.CTk):
-    def __init__(self):
+    def __init__(self, open_main_window, confirm_player_name):
         super().__init__()
         self.player_name = ""
         self.title("The Flying Humpty - Main Menu - © Paul Hinterbauer 2025 @ TGM Vienna")
@@ -28,7 +24,7 @@ class StartWindow(cTk.CTk):
         self.open_main_btn.place(relx=0.5, rely=0.7, anchor="center")
 
 class MainWindow(cTk.CTkToplevel):
-    def __init__(self, master):
+    def __init__(self, master, open_inventory, open_start_menu, add_text_to_textbox, resize_separators, delete_all_entries, print_latest_entry_from_textbox):
         super().__init__(master)
         self.title(f"{master.player_name}'s adventure among the Flying Humpty - © Paul Hinterbauer 2025 @ TGM Vienna")
         self.geometry("1280x600")
@@ -63,7 +59,7 @@ class MainWindow(cTk.CTkToplevel):
         self.TestingPrintButton.place(relx=0.55, rely=0.7, relwidth=0.4, relheight=0.05)
 
 class InventoryWindow(cTk.CTkToplevel):
-    def __init__(self, master):
+    def __init__(self, master, close_inventory):
         super().__init__(master)
         self.player_name = master.player_name
         self.title(f"{self.player_name}'s Inventory - © Paul Hinterbauer 2025 @ TGM Vienna")
@@ -73,5 +69,6 @@ class InventoryWindow(cTk.CTkToplevel):
         self.close_inventory_btn.place(relx=1.0, rely=0.0, anchor="ne", x=-10, y=10)
 
 if __name__ == "__main__":
-    root = StartWindow()
+    from interactions import open_main_window, confirm_player_name
+    root = StartWindow(open_main_window, confirm_player_name)
     root.mainloop()

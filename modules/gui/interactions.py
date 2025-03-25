@@ -1,17 +1,27 @@
+# ====================================
+# © Paul Hinterbauer 2025 @ TGM Vienna
+
+# ./modules/gui/interaction.py
+# Interacting with the GUI
+# ====================================
+
 import customtkinter as cTk
 from design import MainWindow, InventoryWindow
+import design
 
 def confirm_player_name(StartWindowInstance):
     StartWindowInstance.player_name = StartWindowInstance.player_name_entry.get()
-    if StartWindowInstance.player_name.strip() == "":
-        print("Player name cannot be empty!")
+    if design.__name__ != "__main__": # fix to check if design.py is main use flag
+        if StartWindowInstance.player_name.strip() == "":
+            print("Player name cannot be empty!")
+        else:
+            print(f"Player name confirmed: {StartWindowInstance.player_name}")
     else:
-        print(f"Player name confirmed: {StartWindowInstance.player_name}")
+        StartWindowInstance.player_name = "<TESTING ENVIROMENT NOT MAIN.PY>"
 
 def open_main_window(StartWindowInstance):
     StartWindowInstance.withdraw()
-    MainWindowInstance = MainWindow(StartWindowInstance)
-    return MainWindowInstance
+    MainWindow(StartWindowInstance, open_inventory, open_start_menu, add_text_to_textbox, resize_separators, delete_all_entries, print_latest_entry_from_textbox)
 
 def add_text_to_textbox(MainWindowInstance):
     text = MainWindowInstance.TestingEntry.get()
@@ -48,8 +58,7 @@ def open_start_menu(MainWindowInstance):
 
 def open_inventory(MainWindowInstance):
     MainWindowInstance.withdraw()
-    InventoryWindowInstance = InventoryWindow(MainWindowInstance)
-    return InventoryWindowInstance
+    InventoryWindow(MainWindowInstance, close_inventory)
 
 def close_inventory(InventoryWindowInstance):
     InventoryWindowInstance.master.deiconify()
