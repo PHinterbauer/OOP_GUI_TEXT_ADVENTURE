@@ -29,8 +29,7 @@ def open_main_window(StartWindowInstance):
     else:
         StartWindowInstance.info_label.configure(text="Player name cannot be empty!")
 
-def add_text_to_textbox(MainWindowInstance):
-    text = MainWindowInstance.TestingEntry.get()
+def add_text_to_textbox(MainWindowInstance, text):
     if text != "":
         MainWindowInstance.text_box.configure(state="normal")
         MainWindowInstance.text_box.insert("1.0", text + "\n")

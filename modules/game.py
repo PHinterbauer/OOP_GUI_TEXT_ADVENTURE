@@ -2,6 +2,8 @@ import time
 import os
 
 from modules.file_handler import Json_Handler
+from modules.gui.interactions import add_text_to_textbox
+from main import GUI_MODE
 
 class Game():
 
@@ -35,16 +37,30 @@ class Game():
             new_line_top (bool): Whether to print a newline above the dict. Defaults to False.
             new_line_bottom (bool): Whether to print a newline below the dict. Defaults to False.
         """
-        if separator_top:
-            Game.separator()
-        if new_line_top:
-            print("")
-        for key, value in in_dict.items():
-            print(f'{key}: {value}')
-        if new_line_bottom:
-            print("")
-        if separator_bottom:
-            Game.separator()
+        if not GUI_MODE:
+            if separator_top:
+                Game.separator()
+            if new_line_top:
+                print("")
+            for key, value in in_dict.items():
+                print(f'{key}: {value}')
+            if new_line_bottom:
+                print("")
+            if separator_bottom:
+                Game.separator()
+        else:
+            if separator_top:
+                Game.separator()
+            if new_line_top:
+                add_text_to_textbox(text="")
+            for key, value in in_dict.items():
+                add_text_to_textbox(text=f'{key}: {value}')
+            if new_line_bottom:
+                add_text_to_textbox(text="")
+            if separator_bottom:
+                Game.separator()
+
+
 
     @staticmethod
     def slow_dict_print(in_dict: dict, separator_top: bool = False, separator_bottom: bool = False, new_line_top = False, new_line_bottom = False):
@@ -58,16 +74,29 @@ class Game():
             new_line_top (bool): Whether to print a newline above the dict. Defaults to False.
             new_line_bottom (bool): Whether to print a newline below the dict. Defaults to False.
         """
-        if separator_top:
-            Game.separator()
-        if new_line_top:
-            print("")
-        for key, value in in_dict.items():
-            Game.slow_print(f'{key}: {value}')
-        if new_line_bottom:
-            print("")
-        if separator_bottom:
-            Game.separator()
+        if not GUI_MODE:
+            if separator_top:
+                Game.separator()
+            if new_line_top:
+                print("")
+            for key, value in in_dict.items():
+                Game.slow_print(f'{key}: {value}')
+            if new_line_bottom:
+                print("")
+            if separator_bottom:
+                Game.separator()
+        else:
+            if separator_top:
+                Game.separator()
+            if new_line_top:
+                add_text_to_textbox(text="")
+            for key, value in in_dict.items():
+                Game.slow_print(f'{key}: {value}')
+            if new_line_bottom:
+                add_text_to_textbox(text="")
+            if separator_bottom:
+                Game.separator()
+        
 
     @staticmethod
     def slow_print(in_str: str, separator_top: bool = False, separator_bottom: bool = False, new_line_top = False, new_line_bottom = False):
@@ -81,17 +110,30 @@ class Game():
             new_line_top (bool): Whether to print a newline above the dict. Defaults to False.
             new_line_bottom (bool): Whether to print a newline below the dict. Defaults to False.
         """
-        if separator_top:
-            Game.separator()
-        if new_line_top:
-            print("")
-        for char in in_str + "\n":
-            print(char, end = "", flush = True)
-            time.sleep(Game.sleep_time)
-        if new_line_bottom:
-            print("")
-        if separator_bottom:
-            Game.separator()
+        if not GUI_MODE:
+            if separator_top:
+                Game.separator()
+            if new_line_top:
+                print("")
+            for char in in_str + "\n":
+                print(char, end = "", flush = True)
+                time.sleep(Game.sleep_time)
+            if new_line_bottom:
+                print("")
+            if separator_bottom:
+                Game.separator()
+        else:
+            if separator_top:
+                Game.separator()
+            if new_line_top:
+                add_text_to_textbox(text="")
+            for char in in_str + "\n":
+                add_text_to_textbox(text=char)
+                time.sleep(Game.sleep_time)
+            if new_line_bottom:
+                add_text_to_textbox(text="")
+            if separator_bottom:
+                Game.separator()
     
     @staticmethod
     def slow_input(in_str: str, separator_top: bool = False, separator_bottom: bool = False, new_line_top = False, new_line_bottom = False):
@@ -150,7 +192,10 @@ class Game():
         separator = ""
         for _ in range(Game.separator_length):
             separator += "━"
-        print(separator)
+        if not GUI_MODE:
+            print(separator)
+        else:
+            add_text_to_textbox(text=separator)
 
     def reset_attribute(self, class_name, attributes: list):
         """## Resets attributes of a class
