@@ -6,22 +6,28 @@
 # ====================================
 
 import customtkinter as cTk
-from design import MainWindow, InventoryWindow
-import design
+try:
+    from design import MainWindow, InventoryWindow
+except ModuleNotFoundError:
+    from modules.gui.design import MainWindow, InventoryWindow
 
-def confirm_player_name(StartWindowInstance):
+def confirm_player_name(StartWindowInstance, RUNNING_AS_MAIN):
     StartWindowInstance.player_name = StartWindowInstance.player_name_entry.get()
-    if design.__name__ != "__main__": # fix to check if design.py is main use flag
+    if not RUNNING_AS_MAIN:
         if StartWindowInstance.player_name.strip() == "":
-            print("Player name cannot be empty!")
+            StartWindowInstance.info_label.configure(text="Player name cannot be empty!")
         else:
-            print(f"Player name confirmed: {StartWindowInstance.player_name}")
+            StartWindowInstance.info_label.configure(text=f"Player name confirmed: {StartWindowInstance.player_name}")
     else:
         StartWindowInstance.player_name = "<TESTING ENVIROMENT NOT MAIN.PY>"
+        StartWindowInstance.info_label.configure(text="<TESTING ENVIROMENT NOT MAIN.PY> you can still start the game in this mode!")
 
 def open_main_window(StartWindowInstance):
-    StartWindowInstance.withdraw()
-    MainWindow(StartWindowInstance, open_inventory, open_start_menu, add_text_to_textbox, resize_separators, delete_all_entries, print_latest_entry_from_textbox)
+    if StartWindowInstance.player_name.strip() != "":
+        StartWindowInstance.withdraw()
+        MainWindow(StartWindowInstance, open_inventory, open_start_menu, add_text_to_textbox, resize_separators, delete_all_entries, print_latest_entry_from_textbox)
+    else:
+        StartWindowInstance.info_label.configure(text="Player name cannot be empty!")
 
 def add_text_to_textbox(MainWindowInstance):
     text = MainWindowInstance.TestingEntry.get()
