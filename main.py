@@ -20,9 +20,9 @@ def configure_game():
     )
 
 def start_gui():
-    from modules.gui.interactions import open_main_window, confirm_player_name
+    from modules.gui.interactions import open_main_window, confirm_player_name, resize_pictures
     from modules.gui.design import StartWindow
-    root = StartWindow(open_main_window, confirm_player_name)
+    root = StartWindow(open_main_window, confirm_player_name, resize_pictures)
     root.mainloop()
 
 if __name__ == "__main__":
@@ -36,9 +36,9 @@ if __name__ == "__main__":
 # Todo:
 # - GUI Inventory
 # - GUI Stats
-# - GUI Enter
+# - GUI Enter - can be used with GUI Input
 # - GUI Input - Even needed?
-# - GUI Pictures - TGM LOGO AND SHIP ON START MENU
+# - GUI Pictures - Resize using precomputed pictures for diffrent sizes of teh Window
 # - GUI Main Story Loop Choice Buttons
 # - Comments
 # - Docstrings

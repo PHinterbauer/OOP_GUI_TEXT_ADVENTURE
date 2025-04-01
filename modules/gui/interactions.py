@@ -6,6 +6,7 @@
 # ====================================
 
 import customtkinter as cTk
+from PIL import Image
 from modules.game import Game
 try:
     from design import MainWindow, InventoryWindow
