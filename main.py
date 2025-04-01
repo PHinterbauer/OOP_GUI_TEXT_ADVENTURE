@@ -42,5 +42,6 @@ if __name__ == "__main__":
 # - GUI Main Story Loop Choice Buttons
 # - Comments
 # - Docstrings
+# - Function return values - func() -> None
 
 # - Maybe Settings Menu - Configure Game

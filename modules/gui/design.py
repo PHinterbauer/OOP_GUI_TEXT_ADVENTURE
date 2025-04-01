@@ -17,6 +17,7 @@ class StartWindow(cTk.CTk):
         self.player_name = ""
         self.title("The Flying Humpty - Main Menu - © Paul Hinterbauer 2025 @ TGM Vienna")
         self.geometry("720x320")
+        self.resizable(False, False)
 
         pirate_ship_path = "./modules/gui/pictures/PIRATE_SHIP_REMOVEDBG.png"
         self.pirate_ship_image = cTk.CTkImage(light_image=Image.open(pirate_ship_path), dark_image=Image.open(pirate_ship_path), size=(200, 200))
@@ -26,7 +27,7 @@ class StartWindow(cTk.CTk):
         hwi_logo_path = "./modules/gui/pictures/HWI_LOGO_REMOVEDBG.png"
         self.hwi_logo_image = cTk.CTkImage(light_image=Image.open(hwi_logo_path), dark_image=Image.open(hwi_logo_path), size=(200, 200))
         self.hwi_logo_label = cTk.CTkLabel(self, text="", image=self.hwi_logo_image)
-        self.hwi_logo_label.place(relx=0.1, rely=0.5, anchor="center")
+        self.hwi_logo_label.place(relx=0.2, rely=0.5, anchor="center")
 
         self.player_name_entry = cTk.CTkEntry(self, placeholder_text="Enter your name")
         self.player_name_entry.place(relx=0.5, rely=0.5, anchor="center")
@@ -47,6 +48,7 @@ class MainWindow(cTk.CTkToplevel):
         self.player_name = master.player_name
         self.title(f"{self.player_name}'s adventure among the Flying Humpty - © Paul Hinterbauer 2025 @ TGM Vienna")
         self.geometry("1280x600")
+        self.minsize(800, 500)
 
         self.text_box = cTk.CTkTextbox(self)
         self.text_box.place(relx=0.05, rely=0.075, relwidth=0.9, relheight=0.45)
@@ -60,8 +62,28 @@ class MainWindow(cTk.CTkToplevel):
 
         self.choice_frame = cTk.CTkFrame(self)
         self.choice_frame.place(relx=0.05, rely=0.55, relwidth=0.45, relheight=0.25)
+   
+        # new testing
+        self.user_entry = cTk.CTkEntry(self, placeholder_text="Enter text here")
+        self.user_entry.bind("<Return>", self._handle_entry_input)
+
+        self.entry_callback = None  # To store the callback function
+
 
         self.bind("<Configure>", lambda event: resize_separators(self, event))
+
+    # new testing
+    def show_entry_field(self, callback):
+        self.entry_callback = callback
+        self.user_entry.place(relx=0.5, rely=0.8, anchor="center")
+        self.user_entry.focus()
+
+    def _handle_entry_input(self, event):
+        input_text = self.user_entry.get()
+        self.user_entry.delete(0, "end")
+        self.user_entry.place_forget()
+        if self.entry_callback:
+            self.entry_callback(input_text)
 
 class InventoryWindow(cTk.CTkToplevel):
     def __init__(self, master, close_inventory):

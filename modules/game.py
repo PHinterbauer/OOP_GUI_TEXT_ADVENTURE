@@ -60,8 +60,6 @@ class Game():
             if separator_bottom:
                 Game.separator()
 
-
-
     @staticmethod
     def slow_dict_print(in_dict: dict, separator_top: bool = False, separator_bottom: bool = False, new_line_top = False, new_line_bottom = False):
         """## Prints a dictionary using the slow print method
@@ -96,7 +94,6 @@ class Game():
             if separator_bottom:
                 Game.separator()
         
-
     @staticmethod
     def slow_print(in_str: str, separator_top: bool = False, separator_bottom: bool = False, new_line_top = False, new_line_bottom = False):
         """## Prints a string slowly
