@@ -8,3 +8,5 @@ Das Text-Adventure ist daher nicht vollstädig fertig und leider auch anfällig 
 Ich habe trotzdem in den letzten 11 Stunden und 34 Minuten (das ist leider kein Witz) versucht so viele Methoden wie möglich wieder zum laufen zu bringen.
 
 - Paul Hinterbauer :(
+
+THIS IS OLD
