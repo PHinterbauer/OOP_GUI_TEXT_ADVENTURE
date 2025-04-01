@@ -5,8 +5,6 @@
 # Main file to start the game
 # ====================================
 
-from modules.gui.design import StartWindow
-
 # Basic settings
 GUI_MODE = True
 
@@ -23,6 +21,7 @@ def configure_game():
 
 def start_gui():
     from modules.gui.interactions import open_main_window, confirm_player_name
+    from modules.gui.design import StartWindow
     root = StartWindow(open_main_window, confirm_player_name)
     root.mainloop()
 
