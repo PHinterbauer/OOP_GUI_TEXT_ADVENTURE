@@ -2,7 +2,7 @@ import time
 import os
 
 from modules.file_handler import Json_Handler
-from modules.gui.interactions import add_text_to_textbox
+from modules.gui.game_helpers import add_text_to_textbox, add_choice_button, read_choice_buttons, add_text_to_textbox_slow, add_dict_to_textbox, add_dict_to_textbox_slow
 from main import GUI_MODE
 
 class Game():
@@ -11,6 +11,7 @@ class Game():
     sleep_time = 0.05
     main_character = ""
     separator_length = 120
+    MainWindowInstance = None
 
     def __init__(self) -> None:
         pass
@@ -53,8 +54,7 @@ class Game():
                 Game.separator()
             if new_line_top:
                 add_text_to_textbox(text="")
-            for key, value in in_dict.items():
-                add_text_to_textbox(text=f'{key}: {value}')
+            add_dict_to_textbox(Game.MainWindowInstance, in_dict)
             if new_line_bottom:
                 add_text_to_textbox(text="")
             if separator_bottom:
@@ -90,8 +90,7 @@ class Game():
                 Game.separator()
             if new_line_top:
                 add_text_to_textbox(text="")
-            for key, value in in_dict.items():
-                Game.slow_print(f'{key}: {value}')
+            add_dict_to_textbox_slow(Game.MainWindowInstance, in_dict, delay=Game.sleep_time)
             if new_line_bottom:
                 add_text_to_textbox(text="")
             if separator_bottom:
@@ -127,9 +126,7 @@ class Game():
                 Game.separator()
             if new_line_top:
                 add_text_to_textbox(text="")
-            for char in in_str + "\n":
-                add_text_to_textbox(text=char)
-                time.sleep(Game.sleep_time)
+            add_text_to_textbox_slow(Game.MainWindowInstance, in_str, delay=Game.sleep_time)
             if new_line_bottom:
                 add_text_to_textbox(text="")
             if separator_bottom:

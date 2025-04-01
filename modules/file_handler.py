@@ -34,3 +34,4 @@ class Json_Handler():
         except FileNotFoundError:
             print(f'Datei {self.json_file_path} konnte nicht gefunden werden!')
         return output
+    
