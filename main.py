@@ -45,3 +45,5 @@ if __name__ == "__main__":
 # - Function return values - func() -> None
 
 # - Maybe Settings Menu - Configure Game
+
+# - look at save copilot chat for notes (Implementing GUI features and enhancments)
