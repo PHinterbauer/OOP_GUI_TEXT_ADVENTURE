@@ -34,12 +34,14 @@ if __name__ == "__main__":
     else:
         start_gui()
 
-# TODO:
+# Todo:
 # - GUI Inventory
 # - GUI Stats
 # - GUI Enter
 # - GUI Input - Even needed?
-# - GUI Pictures
+# - GUI Pictures - TGM LOGO AND SHIP ON START MENU
 # - GUI Main Story Loop Choice Buttons
 # - Comments
 # - Docstrings
+
+# - Maybe Settings Menu - Configure Game

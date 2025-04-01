@@ -6,6 +6,11 @@
 # ====================================
 
 import customtkinter as cTk
+try:
+    from modules.gui.interactions import open_main_window, confirm_player_name
+except ModuleNotFoundError:
+    from interactions import open_main_window, confirm_player_name
+from PIL import Image
 
 RUNNING_AS_MAIN = False
 
@@ -16,6 +21,16 @@ class StartWindow(cTk.CTk):
         self.player_name = ""
         self.title("The Flying Humpty - Main Menu - © Paul Hinterbauer 2025 @ TGM Vienna")
         self.geometry("720x320")
+
+        pirate_ship_path = "./modules/gui/pictures/PIRATE_SHIP_REMOVEDBG.png"
+        self.pirate_ship_image = cTk.CTkImage(light_image=Image.open(pirate_ship_path), dark_image=Image.open(pirate_ship_path), size=(200, 200))
+        self.pirate_ship_label = cTk.CTkLabel(self, text="", image=self.pirate_ship_image)
+        self.pirate_ship_label.place(relx=0.1, rely=0.5, anchor="center")
+
+        hwi_logo_path = "./modules/gui/pictures/HWI_LOGO_REMOVEDBG.png"
+        self.hwi_logo_image = cTk.CTkImage(light_image=Image.open(hwi_logo_path), dark_image=Image.open(hwi_logo_path), size=(200, 200))
+        self.hwi_logo_label = cTk.CTkLabel(self, text="", image=self.hwi_logo_image)
+        self.hwi_logo_label.place(relx=0.8, rely=0.5, anchor="center")
 
         self.player_name_entry = cTk.CTkEntry(self, placeholder_text="Enter your name")
         self.player_name_entry.place(relx=0.5, rely=0.5, anchor="center")
@@ -64,8 +79,12 @@ class InventoryWindow(cTk.CTkToplevel):
         self.close_inventory_btn.place(relx=1.0, rely=0.0, anchor="ne", x=-10, y=10)
 
 if __name__ == "__main__":
+    # import sys
+    # import os
+    # project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.."))
+    # print(f"Project root: {project_root}")
+    # sys.path.append(project_root)
     RUNNING_AS_MAIN = True
-    from interactions import open_main_window, confirm_player_name
     root = StartWindow(open_main_window, confirm_player_name)
     root.player_name = "<TESTING ENVIROMENT NOT MAIN.PY>"
     root.mainloop()
