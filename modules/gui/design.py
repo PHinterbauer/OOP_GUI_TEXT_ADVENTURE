@@ -11,7 +11,7 @@ from PIL import Image
 RUNNING_AS_MAIN = False
 
 class StartWindow(cTk.CTk):
-    def __init__(self, open_main_window, confirm_player_name):
+    def __init__(self, open_main_window, confirm_player_name, open_settings):
         super().__init__()
 
         self.player_name = ""
@@ -39,6 +39,9 @@ class StartWindow(cTk.CTk):
 
         self.open_main_btn = cTk.CTkButton(self, text="Start", command=lambda: open_main_window(self))
         self.open_main_btn.place(relx=0.5, rely=0.7, anchor="center")
+
+        self.open_settings_btn = cTk.CTkButton(self, text="Settings", command=lambda: open_settings(self))
+        self.open_settings_btn.place(relx=0.5, rely=0.8, anchor="center")
 
 class MainWindow(cTk.CTkToplevel):
     def __init__(self, master, open_inventory, open_start_menu, resize_separators):
@@ -75,36 +78,42 @@ class InventoryWindow(cTk.CTkToplevel):
         self.close_inventory_btn = cTk.CTkButton(self, text="Close", command=lambda: close_inventory(self))
         self.close_inventory_btn.place(relx=1.0, rely=0.0, anchor="ne", x=-10, y=10)
 
-class SettingsMenu(cTk.CTkToplevel):
-    """Settings Menu for configuring game options."""
-    def __init__(self, master):
+class SettingsWindow(cTk.CTkToplevel):
+    def __init__(self, master, save_settings, close_settings):
         super().__init__(master)
 
-        self.title("Settings Menu")
-        self.geometry("400x400")
-        self.transient(master)
-        self.grab_set()
+        self.player_name = master.player_name
+        self.title(f"{self.player_name}'s Settings Menu - © Paul Hinterbauer 2025 @ TGM Vienna")
+        self.geometry("700x400")
 
         self.gui_mode_label = cTk.CTkLabel(self, text="Enable GUI Mode:")
-        self.gui_mode_label.pack(pady=10)
+        self.gui_mode_label.place(relx=0.5, rely=0.1, anchor="center")
 
         self.gui_mode_switch = cTk.CTkSwitch(self, text="GUI Mode")
-        self.gui_mode_switch.pack(pady=10)
+        self.gui_mode_switch.place(relx=0.5, rely=0.17, anchor="center")
+        self.gui_mode_switch.toggle()
 
-        self.sleep_time_label = cTk.CTkLabel(self, text="Game Sleep Time (float):")
-        self.sleep_time_label.pack(pady=10)
+        self.sleep_time_label = cTk.CTkLabel(self, text="Game Sleep Time (float, default=0.04):")
+        self.sleep_time_label.place(relx=0.5, rely=0.3, anchor="center")
 
         self.sleep_time_entry = cTk.CTkEntry(self)
-        self.sleep_time_entry.pack(pady=5)
+        self.sleep_time_entry.place(relx=0.5, rely=0.37, anchor="center")
+        self.sleep_time_entry.insert(0, "0.04")
 
-        self.separator_length_label = cTk.CTkLabel(self, text="Separator Length (int):")
-        self.separator_length_label.pack(pady=10)
+        self.separator_length_label = cTk.CTkLabel(self, text="Separator Length (int, default=120):")
+        self.separator_length_label.place(relx=0.5, rely=0.5, anchor="center")
 
         self.separator_length_entry = cTk.CTkEntry(self)
-        self.separator_length_entry.pack(pady=5)
+        self.separator_length_entry.place(relx=0.5, rely=0.57, anchor="center")
+        self.separator_length_entry.insert(0, "120")
 
-        self.save_button = cTk.CTkButton(self, text="Save Settings", command=self.save_and_close)
-        self.save_button.pack(pady=20)
+        self.save_button = cTk.CTkButton(self, text="Save Settings", command=lambda: self.save_and_close(save_settings=save_settings, close_settings=close_settings))
+        self.save_button.place(relx=0.5, rely=0.7, anchor="center")
+
+    def save_and_close(self, save_settings, close_settings):
+        save_settings(self.gui_mode_switch, self.sleep_time_entry, self.separator_length_entry)
+        close_settings()
+        print("HALLO WELT!")
 
 if __name__ == "__main__":
     from modules.gui.design_interactions import open_main_window, confirm_player_name

@@ -3,7 +3,6 @@ import os
 
 from modules.file_handler import Json_Handler
 from modules.gui.game_interactions import add_text_to_textbox, add_choice_button, read_choice_buttons, add_text_to_textbox_slow, add_dict_to_textbox, add_dict_to_textbox_slow
-from main import GUI_MODE
 
 class Game():
 
@@ -12,6 +11,7 @@ class Game():
     main_character = ""
     separator_length = 120
     MainWindowInstance = None
+    gui_mode = False
 
     def __init__(self) -> None:
         pass
@@ -38,7 +38,7 @@ class Game():
             new_line_top (bool): Whether to print a newline above the dict. Defaults to False.
             new_line_bottom (bool): Whether to print a newline below the dict. Defaults to False.
         """
-        if not GUI_MODE:
+        if not Game.gui_mode:
             if separator_top:
                 Game.separator()
             if new_line_top:
@@ -72,7 +72,7 @@ class Game():
             new_line_top (bool): Whether to print a newline above the dict. Defaults to False.
             new_line_bottom (bool): Whether to print a newline below the dict. Defaults to False.
         """
-        if not GUI_MODE:
+        if not Game.gui_mode:
             if separator_top:
                 Game.separator()
             if new_line_top:
@@ -106,7 +106,7 @@ class Game():
             new_line_top (bool): Whether to print a newline above the dict. Defaults to False.
             new_line_bottom (bool): Whether to print a newline below the dict. Defaults to False.
         """
-        if not GUI_MODE:
+        if not Game.gui_mode:
             if separator_top:
                 Game.separator()
             if new_line_top:
@@ -186,7 +186,7 @@ class Game():
         separator = ""
         for _ in range(Game.separator_length):
             separator += "━"
-        if not GUI_MODE:
+        if not Game.gui_mode:
             print(separator)
         else:
             add_text_to_textbox(text=separator)

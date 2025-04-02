@@ -6,8 +6,11 @@
 # ====================================
 
 import customtkinter as cTk
-from PIL import Image
 from modules.game import Game
+try:
+    from game_interactions import save_settings
+except ModuleNotFoundError:
+    from modules.gui.game_interactions import save_settings
 try:
     from design import MainWindow, InventoryWindow
 except ModuleNotFoundError:
@@ -18,8 +21,8 @@ SettingsWindowInstance = None
 def open_settings(parent):
     global SettingsWindowInstance
     if SettingsWindowInstance is None or not SettingsWindowInstance.winfo_exists():
-        from modules.gui.design import SettingsMenu
-        SettingsWindowInstance = SettingsMenu(parent)
+        from modules.gui.design import SettingsWindow
+        SettingsWindowInstance = SettingsWindow(parent, save_settings, close_settings)
         SettingsWindowInstance.grab_set()
     else:
         SettingsWindowInstance.focus()

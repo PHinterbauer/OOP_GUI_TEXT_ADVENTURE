@@ -78,19 +78,21 @@ def gui_input(MainWindowInstance, gui_input_callback, label_text, y_position):
 
 def load_settings():
     from modules.game import Game
-    global GUI_MODE
     try:
         with open("settings.txt", "r") as settings_file:
             settings_data = json.load(settings_file)
-            GUI_MODE = settings_data.get("GUI_MODE", True)
+            Game.gui_mode = settings_data.get("GUI_MODE", True)
             Game.sleep_time = settings_data.get("Game.sleep_time", 0.04)
             Game.separator_length = settings_data.get("Game.separator_length", 120)
     except FileNotFoundError:
-        GUI_MODE = True
+        Game.gui_mode = True
         Game.sleep_time = 0.04
         Game.separator_length = 120
 
-def save_settings(gui_mode, sleep_time, separator_length):
+def save_settings(gui_mode_switch, sleep_time_entry, separator_length_entry):
+    gui_mode = gui_mode_switch.get()
+    sleep_time = float(sleep_time_entry.get()) if sleep_time_entry.get() else 0.04
+    separator_length = int(separator_length_entry.get()) if separator_length_entry.get() else 120
     settings_data = {
         "GUI_MODE": gui_mode,
         "Game.sleep_time": sleep_time,
@@ -98,5 +100,3 @@ def save_settings(gui_mode, sleep_time, separator_length):
     }
     with open("settings.txt", "w") as settings_file:
         json.dump(settings_data, settings_file)
-    print("Settings saved!")
-    close_settings_window()

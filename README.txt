@@ -10,3 +10,10 @@ Ich habe trotzdem in den letzten 11 Stunden und 34 Minuten (das ist leider kein 
 - Paul Hinterbauer :(
 
 THIS IS OLD
+
+# THIS IS NEW
+
+Beim jeglicher Einstellung über das Settings Menü muss nach dem Speichern das Spiel neu gestartet werden!
+Bei deaktivierung der GUI muss diese über die settings.txt Datei wieder auf 1 gesetzt werden um die GUI zu reaktivieren!
+
+- Immernoch Paul Hinterabuer :)
