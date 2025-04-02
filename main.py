@@ -20,7 +20,7 @@ def configure_game():
     )
 
 def start_gui():
-    from modules.gui.interactions import open_main_window, confirm_player_name, resize_pictures
+    from modules.gui.design_interactions import open_main_window, confirm_player_name, resize_pictures
     from modules.gui.design import StartWindow
     root = StartWindow(open_main_window, confirm_player_name, resize_pictures)
     root.mainloop()
@@ -34,6 +34,7 @@ if __name__ == "__main__":
         start_gui()
 
 # Todo:
+# - GUI Main Story Loop - Main Window
 # - GUI Inventory
 # - GUI Stats
 # - GUI Enter - can be used with GUI Input
@@ -44,6 +45,6 @@ if __name__ == "__main__":
 # - Docstrings
 # - Function return values - func() -> None
 
-# - Maybe Settings Menu - Configure Game
+# - Maybe Settings Menu - everything in Configure Game function
 
 # - look at save copilot chat for notes (Implementing GUI features and enhancments)

@@ -62,37 +62,6 @@ class MainWindow(cTk.CTkToplevel):
         self.choice_frame = cTk.CTkFrame(self)
         self.choice_frame.place(relx=0.05, rely=0.55, relwidth=0.45, relheight=0.25)
    
-    #     # new testing
-    #     self.user_entry = cTk.CTkEntry(self, placeholder_text="Enter text here")
-    #     self.user_entry.bind("<Return>", self._handle_entry_input)
-
-    #     self.entry_callback = None  # To store the callback function
-
-    # # new testing
-    # def show_entry_field(self, callback):
-    #     self.entry_callback = callback
-    #     self.user_entry.place(relx=0.5, rely=0.8, anchor="center")
-    #     self.user_entry.focus()
-
-    # def _handle_entry_input(self, event):
-    #     input_text = self.user_entry.get()
-    #     self.user_entry.delete(0, "end")
-    #     self.user_entry.place_forget()
-    #     if self.entry_callback:
-    #         self.entry_callback(input_text)
-
-    # def gui_user_input(self):
-    #     self.show_entry_field(self._handle_entry_input)
-    #     self._handle_entry_input()
-    #     print()
-
-    # new testing code
-    #     self.user_entry = cTk.CTkEntry(self)
-    #     self.user_entry.place(relx=0.5, rely=0.8, anchor="center")
-    #     self.user_entry.bind("<Return>", self.handle_user_entry)
-
-    # def handle_user_entry(self, event):
-    #     input_text = self.user_entry.get()
         self.bind("<Configure>", lambda event: resize_separators(self, event))
 
 class InventoryWindow(cTk.CTkToplevel):
@@ -106,8 +75,29 @@ class InventoryWindow(cTk.CTkToplevel):
         self.close_inventory_btn = cTk.CTkButton(self, text="Close", command=lambda: close_inventory(self))
         self.close_inventory_btn.place(relx=1.0, rely=0.0, anchor="ne", x=-10, y=10)
 
+class SettingsMenu(cTk.CTkToplevel):
+    def __init__(self, master):
+        super().__init__(master)
+
+        self.player_name = master.player_name
+        self.title(f"{self.player_name}'s Settings Menu - © Paul Hinterbauer 2025 @ TGM Vienna")
+        self.geometry("400x300")
+
+        self.gui_mode_label = cTk.CTkLabel(self, text="Enable GUI Mode:")
+        self.gui_mode_label.pack(pady=10)
+
+        self.gui_mode_switch = cTk.CTkSwitch(self, text="GUI Mode", command=toggle_gui_mode)
+        self.gui_mode_switch.pack(pady=10)
+        self.gui_mode_switch.select() if toggle_gui_mode("get") else self.gui_mode_switch.deselect()
+
+        self.save_button = cTk.CTkButton(self, text="Save Settings", command=save_settings)
+        self.save_button.pack(pady=20)
+
+        self.close_button = cTk.CTkButton(self, text="Close", command=self.destroy)
+        self.close_button.pack(pady=10)
+
 if __name__ == "__main__":
-    from modules.gui.interactions import open_main_window, confirm_player_name
+    from modules.gui.design_interactions import open_main_window, confirm_player_name
     RUNNING_AS_MAIN = True
     root = StartWindow(open_main_window, confirm_player_name)
     root.player_name = "<TESTING ENVIROMENT NOT MAIN.PY>"

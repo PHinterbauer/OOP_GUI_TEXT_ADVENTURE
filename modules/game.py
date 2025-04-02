@@ -2,7 +2,7 @@ import time
 import os
 
 from modules.file_handler import Json_Handler
-from modules.gui.game_helpers import add_text_to_textbox, add_choice_button, read_choice_buttons, add_text_to_textbox_slow, add_dict_to_textbox, add_dict_to_textbox_slow
+from modules.gui.game_interactions import add_text_to_textbox, add_choice_button, read_choice_buttons, add_text_to_textbox_slow, add_dict_to_textbox, add_dict_to_textbox_slow
 from main import GUI_MODE
 
 class Game():

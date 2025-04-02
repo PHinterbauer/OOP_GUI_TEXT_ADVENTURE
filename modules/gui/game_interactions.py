@@ -61,3 +61,17 @@ def delete_choice_buttons(MainWindowInstance):
 def read_choice_buttons(MainWindowInstance, choice):
     MainWindowInstance.delete_choice_buttons()
     return choice
+
+def gui_input(MainWindowInstance, gui_input_callback, label_text, y_position):
+    input_label = cTk.CTkLabel(MainWindowInstance, text=label_text)
+    input_label.place(relx=0.5, rely=y_position - 0.05, anchor="center")
+    input_entry = cTk.CTkEntry(MainWindowInstance)
+    input_entry.place(relx=0.5, rely=y_position, anchor="center")
+    def handle_input(event):
+        input_value = input_entry.get()
+        input_entry.delete(0, "end")
+        input_entry.destroy()
+        input_label.destroy()
+        gui_input_callback(MainWindowInstance, input_value)
+    input_entry.bind("<Return>", handle_input)
+    
