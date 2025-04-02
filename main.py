@@ -6,9 +6,12 @@
 # ====================================
 
 # Basic settings
+from modules.game.game_interactions import load_settings
+
 GUI_MODE = True
 
 def configure_game():
+    """Configures the game with initial settings."""
     from modules.game import Game, Player
     Game.json_file_path = "./modules/story_text.json"
     Game.sleep_time = 0.04  # does not affect story-related sleep times
@@ -20,13 +23,19 @@ def configure_game():
     )
 
 def start_gui():
-    from modules.gui.design_interactions import open_main_window, confirm_player_name, resize_pictures
+    from modules.gui.design_interactions import open_main_window, confirm_player_name, resize_pictures, open_settings_window
     from modules.gui.design import StartWindow
     root = StartWindow(open_main_window, confirm_player_name, resize_pictures)
+
+    # Add a button to open the settings menu
+    settings_button = cTk.CTkButton(root, text="Settings", command=lambda: open_settings_window(root))
+    settings_button.pack(pady=10)
+
     root.mainloop()
 
 if __name__ == "__main__":
-    configure_game()  # Configure the game before starting
+    load_settings()  # Load settings before starting the game
+    configure_game()  # Configure the game with initial settings
     if not GUI_MODE:
         from modules.game import Game
         Game.start()

@@ -7,6 +7,7 @@
 
 import customtkinter as cTk
 import time
+import json
 
 def add_text_to_textbox(MainWindowInstance, text: str):
     if text != "":
@@ -74,4 +75,28 @@ def gui_input(MainWindowInstance, gui_input_callback, label_text, y_position):
         input_label.destroy()
         gui_input_callback(MainWindowInstance, input_value)
     input_entry.bind("<Return>", handle_input)
-    
+
+def load_settings():
+    from modules.game import Game
+    global GUI_MODE
+    try:
+        with open("settings.txt", "r") as settings_file:
+            settings_data = json.load(settings_file)
+            GUI_MODE = settings_data.get("GUI_MODE", True)
+            Game.sleep_time = settings_data.get("Game.sleep_time", 0.04)
+            Game.separator_length = settings_data.get("Game.separator_length", 120)
+    except FileNotFoundError:
+        GUI_MODE = True
+        Game.sleep_time = 0.04
+        Game.separator_length = 120
+
+def save_settings(gui_mode, sleep_time, separator_length):
+    settings_data = {
+        "GUI_MODE": gui_mode,
+        "Game.sleep_time": sleep_time,
+        "Game.separator_length": separator_length
+    }
+    with open("settings.txt", "w") as settings_file:
+        json.dump(settings_data, settings_file)
+    print("Settings saved!")
+    close_settings_window()

@@ -13,6 +13,23 @@ try:
 except ModuleNotFoundError:
     from modules.gui.design import MainWindow, InventoryWindow
 
+SettingsWindowInstance = None
+
+def open_settings(parent):
+    global SettingsWindowInstance
+    if SettingsWindowInstance is None or not SettingsWindowInstance.winfo_exists():
+        from modules.gui.design import SettingsMenu
+        SettingsWindowInstance = SettingsMenu(parent)
+        SettingsWindowInstance.grab_set()
+    else:
+        SettingsWindowInstance.focus()
+
+def close_settings():
+    global SettingsWindowInstance
+    if SettingsWindowInstance is not None and SettingsWindowInstance.winfo_exists():
+        SettingsWindowInstance.destroy()
+        SettingsWindowInstance = None
+
 def confirm_player_name(StartWindowInstance, RUNNING_AS_MAIN):
     StartWindowInstance.player_name = StartWindowInstance.player_name_entry.get()
     if not RUNNING_AS_MAIN:
