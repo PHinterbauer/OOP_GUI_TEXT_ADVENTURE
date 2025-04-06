@@ -2,7 +2,7 @@ import time
 import os
 
 from utilities.file_handler import Json_Handler
-from gui.interactions import add_list_to_textbox, gui_initialize, gui_input, gui_save_input_value, add_text_to_textbox, add_text_to_textbox_slow, add_dict_to_textbox, add_dict_to_textbox_slow
+from gui.interactions import delete_all_entries, add_list_to_textbox, gui_initialize, gui_input, gui_save_input_value, add_text_to_textbox, add_text_to_textbox_slow, add_dict_to_textbox, add_dict_to_textbox_slow
 
 class Game():
 
@@ -44,7 +44,7 @@ class Game():
         if not Game.gui_mode:
             os.system("cls")
         else:
-            pass
+            delete_all_entries(Game.MainWindowInstance)
 
     @staticmethod
     def dict_print(in_dict: dict, separator_top: bool = False, separator_bottom: bool = False, new_line_top = False, new_line_bottom = False):
@@ -151,15 +151,12 @@ class Game():
     
     @staticmethod
     def slow_input(prompt: str, separator_top: bool = False, new_line_top: bool = False, callback=None):
-        """Displays a prompt and waits for user input, then executes a callback if provided."""
         if not Game.gui_mode:
             if separator_top:
                 Game.separator()
             if new_line_top:
                 print("")
             user_input = input(prompt)
-            if callback:
-                callback(user_input)
             return user_input
         else:
             if separator_top:
@@ -177,8 +174,6 @@ class Game():
             if new_line_top:
                 print("")
             input("Drücke die Eingabe-Taste>\n")
-            if callback:
-                callback()
         else:
             if separator_top:
                 Game.separator()
