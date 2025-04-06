@@ -47,3 +47,5 @@ if __name__ == "__main__":
 
 # - look at save copilot chat for notes (Implementing GUI features and enhancments)
 # - let copilot check code for errors and improvements - git graph button
+
+# fix file location -> see notes
