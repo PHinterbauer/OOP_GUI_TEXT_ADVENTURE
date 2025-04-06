@@ -33,4 +33,4 @@ if __name__ == "__main__":
 
 # fix file location -> see notes
 
-# FIX SAVE AND CLOSE DESING.PY
+# FIX SYINCING
