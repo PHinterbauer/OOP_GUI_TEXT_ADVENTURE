@@ -2,7 +2,7 @@ import time
 import os
 
 from utilities.file_handler import Json_Handler
-from gui.interactions import delete_all_entries, add_list_to_textbox, gui_initialize, gui_input, gui_save_input_value, add_text_to_textbox, add_text_to_textbox_slow, add_dict_to_textbox, add_dict_to_textbox_slow
+from gui.interactions import delete_all_entries, add_list_to_textbox, gui_initialize, gui_input, add_list_to_textbox_slow, add_text_to_textbox, add_text_to_textbox_slow, add_dict_to_textbox, add_dict_to_textbox_slow, add_choice_button, delete_choice_buttons
 
 class Game():
 
@@ -150,36 +150,77 @@ class Game():
                 Game.separator()
     
     @staticmethod
-    def slow_input(prompt: str, separator_top: bool = False, new_line_top: bool = False, callback=None):
+    def slow_input(in_str: str, separator_top: bool = False, separator_bottom: bool = False, new_line_top = False, new_line_bottom = False, callback=None):
+        """## Input with slow print prompt
+        Calls the input method with the slow print as the prompt
+
+        Args:
+            in_str (str): The string to print in the input
+            separator_top (bool): Whether to print a separator line above the dict. Defaults to False.
+            separator_bottom (bool): Whether to print a separator line below the dict. Defaults to False.
+            new_line_top (bool): Whether to print a newline above the dict. Defaults to False.
+            new_line_bottom (bool): Whether to print a newline below the dict. Defaults to False.
+
+        Returns:
+            value (str): User input
+        """
         if not Game.gui_mode:
             if separator_top:
                 Game.separator()
             if new_line_top:
+                print("")      
+            for char in in_str:
+                print(char, end = "", flush = True)
+                time.sleep(Game.sleep_time)
+            value = input()
+            if new_line_bottom:
                 print("")
-            user_input = input(prompt)
-            return user_input
+            if separator_bottom:
+                Game.separator()
+            return value
         else:
             if separator_top:
                 Game.separator()
             if new_line_top:
                 add_text_to_textbox(Game.MainWindowInstance, "")
-            gui_input(Game.MainWindowInstance, lambda _, value: callback(value) if callback else None, prompt)
+            gui_input(Game.MainWindowInstance, lambda _, value: callback(value) if callback else None, in_str)
+            if Game.MainWindowInstance.input_callback_value is not None:
+                Game.MainWindowInstance.input_callback_val = None
+            if new_line_bottom:
+                add_text_to_textbox(Game.MainWindowInstance, "")
+            if separator_bottom:
+                Game.separator()
+            return Game.MainWindowInstance.input_callback_value
 
     @staticmethod
     def enter(separator_top: bool = False, new_line_top=False, callback=None):
-        """Waits for the user to press Enter and executes a callback."""
+        """## Checks if enter is pressed
+        Returns true if the user presses enter
+        
+        Args:
+            separator_top (bool): Whether to print a separator line above the dict. Defaults to False.
+            new_line_top (bool): Whether to print a newline above the dict. Defaults to False.
+
+        Returns:
+            True (bool): when pressed 
+        """
         if not Game.gui_mode:
             if separator_top:
                 Game.separator()
             if new_line_top:
                 print("")
-            input("Drücke die Eingabe-Taste>\n")
+            pressed = input("Drücke die Eingabe-Taste>\n")
+            if pressed:
+                return True
         else:
             if separator_top:
                 Game.separator()
             if new_line_top:
                 add_text_to_textbox(Game.MainWindowInstance, "")
             gui_input(Game.MainWindowInstance, lambda _, __: callback() if callback else None, "V Drücke die Eingabe-Taste V")
+            if Game.MainWindowInstance.input_callback_value is not None:
+                Game.MainWindowInstance.input_callback_val = None
+                return True
 
     @staticmethod
     def separator():
@@ -432,57 +473,81 @@ class Player(Entity):
         else:
             self.name = Game.MainWindowInstance.player_name
 
-    def set_points(self):
-        """Lets the player assign XP points to each attribute."""
-        Game.clear_terminal()
-        self.reset_attribute(Game.main_character, ["xp_points"])
-        attribute_str = ", ".join(list(self.attributes.keys())[:-1]) + " oder " + list(self.attributes.keys())[-1]
-        Game.slow_print(
-            f'Du hast {self.xp_points} Punkte zur Verfügung.\nDu kannst sie auf {attribute_str} verteilen!',
-            separator_top=True, separator_bottom=True, new_line_top=True, new_line_bottom=True
-        )
-
-        attributes = list(self.attributes.keys())
-        index = 0
-
-        def assign_points():
-            nonlocal index
-            if index < len(attributes):
-                key = attributes[index]
-                Game.slow_input(
-                    f'{key}> ',
-                    callback=lambda value: process_input(key, value)
-                )
-            else:
-                Game.clear_terminal()
-                Game.slow_print(
-                    f'Deine Verteilung sieht wie folgt aus:',
-                    separator_top=True, new_line_top=True
-                )
-                Game.slow_dict_print(self.attributes, separator_bottom=True, new_line_bottom=True)
-                self.satisfied("set_points")
-
-        def process_input(key, value):
-            try:
-                value = int(value.strip())
-                if value < 0:
+    def set_points(self, callback=None):
+        """## Lets the player set their xp points
+        Lets the player assign xp points to each attribute
+        """
+        if not Game.gui_mode:
+            Game.clear_terminal()
+            self.reset_attribute(Game.main_character, ["xp_points"])
+            attribute_str = ""
+            for key in self.attributes:
+                attribute_str += key
+                if key == list(self.attributes)[-2]:
+                    attribute_str += " oder "
+                elif key != list(self.attributes)[-1]:
+                    attribute_str += ", "
+            Game.slow_print(f'Du hast {self.xp_points} Punkte zur Verfügung.\nDu kannst sie auf {attribute_str} verteilen!', separator_top = True, separator_bottom = True, new_line_top = True, new_line_bottom = True)
+            for key in self.attributes:
+                flag = True
+                while flag:
+                    try:
+                        value = int(Game.slow_input(f'{key}> ').lstrip().strip())
+                        if value < 0:
+                            Game.slow_print("Bitte gib eine positive ganze Zahl ein!")
+                        elif value > self.xp_points:
+                            Game.slow_print("Du hast nicht genug Punkte!")
+                        else:
+                            self.attributes[key] = value
+                            self.xp_points -= value
+                            if key != list(self.attributes)[-1]:
+                                Game.slow_print(f'Verfügbare Punkte: {self.xp_points}')
+                            flag = False
+                    except ValueError:
+                        Game.slow_print("Bitte gib eine positive ganze Zahl ein!")
+            Game.clear_terminal()
+            self.slow_print(f'Deine Verteilung sieht wie folgt aus:', separator_top = True, new_line_top = True)
+            self.slow_dict_print(self.attributes, separator_bottom = True, new_line_bottom = True)
+            self.satisfied("set_points")
+        else:
+            Game.clear_terminal()
+            self.reset_attribute(Game.main_character, ["xp_points"])
+            attribute_str = ", ".join(list(self.attributes.keys())[:-1]) + " oder " + list(self.attributes.keys())[-1]
+            Game.slow_print(f'Du hast {self.xp_points} Punkte zur Verfügung.\nDu kannst sie auf {attribute_str} verteilen!', separator_top=True, separator_bottom=True, new_line_top=True, new_line_bottom=True)
+            attributes = list(self.attributes.keys())
+            index = 0
+            def assign_points():
+                nonlocal index
+                if index < len(attributes):
+                    key = attributes[index]
+                    Game.slow_input(f'{key}> ', callback=lambda value: process_input(key, value))
+                else:
+                    Game.slow_print(f'Deine Verteilung sieht wie folgt aus:', separator_top=True, new_line_top=True)
+                    Game.slow_dict_print(self.attributes, separator_bottom=True, new_line_bottom=True)
+                    self.satisfied("set_points")
+                if callback:
+                    callback()
+            def process_input(key, value):
+                try:
+                    value = int(value.strip())
+                    if value < 0:
+                        Game.slow_print("Bitte gib eine positive ganze Zahl ein!")
+                        assign_points()
+                    elif value > self.xp_points:
+                        Game.slow_print("Du hast nicht genug Punkte!")
+                        assign_points()
+                    else:
+                        self.attributes[key] = value
+                        self.xp_points -= value
+                        if key != attributes[-1]:
+                            Game.slow_print(f'Verfügbare Punkte: {self.xp_points}')
+                        index += 1
+                        assign_points()
+                except ValueError:
                     Game.slow_print("Bitte gib eine positive ganze Zahl ein!")
                     assign_points()
-                elif value > self.xp_points:
-                    Game.slow_print("Du hast nicht genug Punkte!")
-                    assign_points()
-                else:
-                    self.attributes[key] = value
-                    self.xp_points -= value
-                    if key != attributes[-1]:
-                        Game.slow_print(f'Verfügbare Punkte: {self.xp_points}')
-                    index += 1
-                    assign_points()
-            except ValueError:
-                Game.slow_print("Bitte gib eine positive ganze Zahl ein!")
-                assign_points()
-
-        assign_points()
+            assign_points()
+            Game.started = True
 
 class Enemy(Entity):
     """## Represents an enemy in the game
@@ -551,7 +616,7 @@ class Story(Game):
         pass
 
     @staticmethod
-    def story_print(list_to_print: list, chapter_functions: dict, sub_chapter_index: int = 0, separator_top: bool = False, separator_bottom: bool = False, new_line_top = False, new_line_bottom = False):
+    def story_print(list_to_print: list, chapter_functions: dict, sub_chapter_index: int = 0, separator_top: bool = False, separator_bottom: bool = False, new_line_top = False, new_line_bottom = False, callback=None):
         """## Prints the story
         Prints the text for each element in list and evals any functions in chapter_functions
 
@@ -585,7 +650,7 @@ class Story(Game):
             for index, element in enumerate(list_to_print):
                 if str(index + sub_chapter_index) in chapter_functions:
                     eval(chapter_functions[str(index)])
-            add_list_to_textbox(Game.MainWindowInstance, list_to_print)
+            add_list_to_textbox(Game.MainWindowInstance, list_to_print, callback=callback)
             if new_line_bottom:
                 add_text_to_textbox(Game.MainWindowInstance, "")
             if separator_bottom:
@@ -605,22 +670,38 @@ class Story(Game):
             new_line_top (bool): Whether to print a newline above the dict. Defaults to False.
             new_line_bottom (bool): Whether to print a newline below the dict. Defaults to False.
         """
-        if separator_top:
-            Game.separator()
-        if new_line_top:
-            print("")  
-        for index, element in enumerate(list_to_print):
-            if str(index + sub_chapter_index) in chapter_functions:
-                eval(chapter_functions[str(index)])
-        add_list_to_textbox(Game.MainWindowInstance, list_to_print, callback=lambda: Game.MainWindowInstance.after(1000, lambda: None))
-        if new_line_bottom:
-            print("")
-        if separator_bottom:
-            Game.separator() 
+        if not Game.gui_mode:
+            if separator_top:
+                Game.separator()
+            if new_line_top:
+                print("")  
+            for index, element in enumerate(list_to_print):
+                if str(index + sub_chapter_index) in chapter_functions:
+                    eval(chapter_functions[str(index)])
+                Game.slow_print(element)
+            if new_line_bottom:
+                print("")
+            if separator_bottom:
+                Game.separator()
+        else:
+            if separator_top:
+                Game.separator()
+            if new_line_top:
+                print("")  
+            for index, element in enumerate(list_to_print):
+                if str(index + sub_chapter_index) in chapter_functions:
+                    eval(chapter_functions[str(index)])
+            add_list_to_textbox_slow(Game.MainWindowInstance, list_to_print)
+            if new_line_bottom:
+                print("")
+            if separator_bottom:
+                Game.separator()
         
     @staticmethod
     def death():
-        """Prints the death message and exits the game."""
+        """## Prints the death message
+        Prints the death message to the console
+        """
         json_handler = Json_Handler(Game.json_file_path)
         if not Game.gui_mode:
             Game.enter(new_line_top=True)
@@ -628,93 +709,112 @@ class Story(Game):
             Story.story_print(json_handler.load_json_chapter_text("start", "death_screen"), "")
             quit()
         else:
-            # GUI Mode: Display the death screen in the textbox
             Game.clear_terminal()
-            death_screen_text = "\n".join(json_handler.load_json_chapter_text("start", "death_screen"))
-            add_text_to_textbox_slow(
-                Game.MainWindowInstance,
-                death_screen_text,
-                delay=Game.sleep_time,
-                callback=lambda: Game.MainWindowInstance.after(2000, quit)  # Exit after 2 seconds
-            )
+            Story.story_print(json_handler.load_json_chapter_text("start", "death_screen"), "", callback=lambda: Game.MainWindowInstance.after(5000, quit))
 
     @staticmethod
     def start_game():
-        """Prints the start message and initializes the game."""
-        json_handler = Json_Handler(Game.json_file_path)
-        Game.clear_terminal()
-        Game.separator()
-
-        def show_logo():
-            Story.story_print(json_handler.load_json_chapter_text("start", "logo"), "", callback=show_title)
-
-        def show_title():
-            Story.story_print(json_handler.load_json_chapter_text("start", "title"), "", callback=show_copyright)
-
-        def show_copyright():
-            Story.story_print(json_handler.load_json_chapter_text("start", "(c)"), "", callback=wait_for_enter)
-
-        def wait_for_enter():
-            Game.enter(new_line_top=True, callback=proceed_to_name)
-
-        def proceed_to_name():
-            Game.main_character.set_name()
-            Game.main_character.set_points()
-
-        show_logo()
+        """## Prints the start message
+        Prints the start message to the console/GUI
+        """
+        if not Game.gui_mode:
+            json_handler = Json_Handler(Game.json_file_path)
+            Game.clear_terminal()
+            Game.separator()
+            for element in ["logo", "title", "(c)"]:
+                Story.story_print(json_handler.load_json_chapter_text("start", element), "")
+            Game.enter()
+        else:
+            json_handler = Json_Handler(Game.json_file_path)
+            Game.clear_terminal()
+            Game.separator()
+            def show_logo():
+                Story.story_print(json_handler.load_json_chapter_text("start", "logo"), "", callback=show_title)
+            def show_title():
+                Story.story_print(json_handler.load_json_chapter_text("start", "title"), "", callback=show_copyright)
+            def show_copyright():
+                Story.story_print(json_handler.load_json_chapter_text("start", "(c)"), "", callback=wait_for_enter)
+            def wait_for_enter():
+                Game.enter(new_line_top=True, callback=proceed_to_name)
+            def proceed_to_name():
+                Game.main_character.set_name()
+                Game.main_character.set_points(callback=Story.story_loop(Game.main_character))
+            show_logo()
 
     @staticmethod
     def story_loop(player: Player, sub_chapter_name: str = "text", sub_chapter_index: int = 0):
-        """Main story loop."""
-        from gui.interactions import add_choice_button, delete_choice_buttons
-        json_handler = Json_Handler(Game.json_file_path)
-        current_room = player.current_location
+        """## Main story loop
+        Prints the text for each chapter and progresses to the next after getting user input
 
-        def process_choice(choice):
-            """Processes the player's choice."""
-            if choice.lower().strip() in ["i", "inventory"]:
-                player.display_inventory()
-            elif choice.lower().strip() in ["s", "status"]:
-                player.display_status()
-            else:
-                try:
-                    choice_index = int(choice) - 1
-                    if 0 <= choice_index < len(eval(f'{current_room}.choices')):
-                        # Update the player's location
-                        player.current_location = eval(f'{current_room}.next_rooms[{choice_index}]')
-                        # Restart the story loop for the new room
-                        Story.story_loop(player)
-                    else:
-                        Game.slow_print("Bitte gib eine gültige Option ein!")
-                        display_choices()
-                except ValueError:
-                    Game.slow_print("Bitte gib eine gültige Option ein!")
+        Args:
+            player (Player): Instanc of Player class as main character
+            sub_chapter_name (str, optional): The name of the sub-chapter. Defaults to "text".
+            sub_chapter_index (int, optional): The index of the chapter_functions. Defaults to 0
+        """
+        if not Game.gui_mode:
+            json_handler = Json_Handler(Game.json_file_path)
+            checked_sub_chapter_index = False
+            current_room = player.current_location # starting location
+            if current_room == "start" and not Story.started:
+                Story.started = True
+                Story.start_game()
+                player.set_name()
+                player.set_points()
+            while current_room:
+                if not checked_sub_chapter_index:
+                    checked_sub_chapter_index = True
+                else:
+                    sub_chapter_index = 0
+                current_room = player.current_location # update location
+                chapter_text = json_handler.load_json_chapter_text(current_room, sub_chapter_name)
+                chapter_functions = json_handler.load_json_chapter_functions(current_room, sub_chapter_name)
+                Game.clear_terminal()
+                Story.story_slow_print(chapter_text, chapter_functions, sub_chapter_index, separator_top = True, separator_bottom = True, new_line_top = True)
+                Game.slow_print("Wähle eine Option> ")
+                for index, choice in enumerate(eval(f'{current_room}.choices')):
+                    Game.slow_print(f'[{index + 1}]: {choice}')
+                Game.slow_print("[i]: Inventory")
+                Game.slow_print("[s]: Status")
+                flag = True
+                while flag:
+                    choice = Game.slow_input("", separator_bottom = True)
+                    if choice.lower().strip() in ["i", "s", "status", "inventory"]:
+                        if choice.lower().strip() in ["i", "inventory"]:
+                            player.display_inventory()
+                        else:
+                            player.display_status()
+                    else: 
+                        try:
+                            choice_index = int(choice) - 1
+                            if 0 <= choice_index < len(eval(f'{current_room}.choices')):
+                                player.current_location = eval(f'{current_room}.next_rooms[{choice_index}]') # set new location
+                                flag = False
+                            else:
+                                Game.slow_print("Bitte gib eine ganze Zahl, i oder s ein!")
+                        except ValueError:
+                            Game.slow_print("Bitte gib eine ganze Zahl, i oder s ein!")
+        else:
+            json_handler = Json_Handler(Game.json_file_path)
+            current_room = player.current_location
+            def process_choice(choice):
+                choice_index = int(choice) - 1
+                if 0 <= choice_index < len(eval(f'{current_room}.choices')):
+                    player.current_location = eval(f'{current_room}.next_rooms[{choice_index}]')
+                    Story.story_loop(player)
+            def display_choices():
+                delete_choice_buttons(Game.MainWindowInstance)
+                room_choices = eval(f'{current_room}.choices')
+                for index, choice_text in enumerate(room_choices, start=1):
+                    add_choice_button(Game.MainWindowInstance, text=f"{index}: {choice_text}", callback=lambda choice=index: process_choice(str(choice)))
+            def start_story():
+                if current_room == "start" and not Story.started:
+                    Story.start_game()
+                if Story.started:
+                    chapter_text = json_handler.load_json_chapter_text(current_room, sub_chapter_name)
+                    chapter_functions = json_handler.load_json_chapter_functions(current_room, sub_chapter_name)
+                    Story.story_slow_print(chapter_text, chapter_functions, sub_chapter_index, separator_top=True, separator_bottom=True, new_line_top=True)
                     display_choices()
-
-        def display_choices():
-            """Displays the choices as buttons in the GUI."""
-            delete_choice_buttons(Game.MainWindowInstance)  # Clear any existing buttons
-            room_choices = eval(f'{current_room}.choices')
-            for index, choice_text in enumerate(room_choices, start=1):
-                # Use a default argument in the lambda to capture the current value of `index`
-                add_choice_button(
-                    Game.MainWindowInstance,
-                    text=f"{index}: {choice_text}",
-                    callback=lambda choice=index: process_choice(str(choice))
-                )
-
-        def start_story():
-            """Starts the story for the current room."""
-            chapter_text = json_handler.load_json_chapter_text(current_room, sub_chapter_name)
-            chapter_functions = json_handler.load_json_chapter_functions(current_room, sub_chapter_name)
-            Game.clear_terminal()
-            Story.story_slow_print(
-                chapter_text, chapter_functions, sub_chapter_index,
-                separator_top=True, separator_bottom=True, new_line_top=True
-            )
-            display_choices()
-
-        start_story()
+            start_story()
 
     @staticmethod
     def repair(cost: dict):
