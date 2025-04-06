@@ -5,31 +5,14 @@
 # Main file to start the game
 # ====================================
 
-# Basic settings
-from modules.gui.game_interactions import load_settings
-import customtkinter as cTk
-
-def configure_game():
-    from modules.game import Game, Player
-    Game.gui_mode = True
-    Game.json_file_path = "./modules/story_text.json"
-    Game.sleep_time = 0.04  # does not affect story-related sleep times
-    Game.separator_length = 120
-    Game.main_character = Player(current_location="start", attributes={"Stärke": 0, "Leben": 0, "Münzen": 0}, inventory={})
-
-def start_gui():
-    from modules.gui.design_interactions import open_main_window, confirm_player_name, open_settings
-    from modules.gui.design import StartWindow
-    root = StartWindow(open_main_window, confirm_player_name, open_settings)
-    root.mainloop()
+from utilities.game import Game, Player
+from gui.interactions import load_settings
 
 if __name__ == "__main__":
-    from modules.game import Game
-    load_settings()  # Load settings before starting the game
-    if not Game.gui_mode:
-        Game.start()
-    else:
-        start_gui()
+    load_settings()
+    Game.main_character = Player(current_location="start", attributes={"Stärke": 0, "Leben": 0, "Münzen": 0}, inventory={})
+    Game.json_file_path = "./resources/json/story_text.json"
+    Game.start()
 
 # Todo:
 # - GUI Main Story Loop - Main Window
@@ -49,3 +32,5 @@ if __name__ == "__main__":
 # - let copilot check code for errors and improvements - git graph button
 
 # fix file location -> see notes
+
+# FIX SAVE AND CLOSE DESING.PY

@@ -8,8 +8,6 @@
 import customtkinter as cTk
 from PIL import Image
 
-RUNNING_AS_MAIN = False
-
 class StartWindow(cTk.CTk):
     def __init__(self, open_main_window, confirm_player_name, open_settings):
         super().__init__()
@@ -18,12 +16,12 @@ class StartWindow(cTk.CTk):
         self.title("The Flying Humpty - Main Menu - © Paul Hinterbauer 2025 @ TGM Vienna")
         self.geometry("720x320")
 
-        pirate_ship_path = "./modules/gui/pictures/PIRATE_SHIP_REMOVEDBG.png"
+        pirate_ship_path = "./resources/images/PIRATE_SHIP_REMOVEDBG.png"
         self.pirate_ship_image = cTk.CTkImage(light_image=Image.open(pirate_ship_path), dark_image=Image.open(pirate_ship_path), size=(200, 200))
         self.pirate_ship_label = cTk.CTkLabel(self, text="", image=self.pirate_ship_image)
         self.pirate_ship_label.place(relx=0.8, rely=0.5, anchor="center")
 
-        hwi_logo_path = "./modules/gui/pictures/HWI_LOGO_REMOVEDBG.png"
+        hwi_logo_path = "./resources/images/HWI_LOGO_REMOVEDBG.png"
         self.hwi_logo_image = cTk.CTkImage(light_image=Image.open(hwi_logo_path), dark_image=Image.open(hwi_logo_path), size=(200, 200))
         self.hwi_logo_label = cTk.CTkLabel(self, text="", image=self.hwi_logo_image)
         self.hwi_logo_label.place(relx=0.2, rely=0.5, anchor="center")
@@ -34,7 +32,7 @@ class StartWindow(cTk.CTk):
         self.info_label = cTk.CTkLabel(self, text="")
         self.info_label.place(relx=0.5, rely=0.4, anchor="center")
 
-        self.confirm_player_name_btn = cTk.CTkButton(self, text="Confirm Name", command=lambda: confirm_player_name(self, RUNNING_AS_MAIN))
+        self.confirm_player_name_btn = cTk.CTkButton(self, text="Confirm Name", command=lambda: confirm_player_name(self))
         self.confirm_player_name_btn.place(relx=0.5, rely=0.6, anchor="center")
 
         self.open_main_btn = cTk.CTkButton(self, text="Start", command=lambda: open_main_window(self))
@@ -44,16 +42,17 @@ class StartWindow(cTk.CTk):
         self.open_settings_btn.place(relx=0.5, rely=0.8, anchor="center")
 
 class MainWindow(cTk.CTkToplevel):
-    def __init__(self, master, open_inventory, open_start_menu, resize_separators):
+    def __init__(self, master, open_inventory, open_start_menu):
         super().__init__(master)
 
         self.player_name = master.player_name
         self.title(f"{self.player_name}'s adventure among the Flying Humpty - © Paul Hinterbauer 2025 @ TGM Vienna")
         self.geometry("1280x600")
         self.minsize(800, 500)
+        self.input_callback_value = None
 
         self.text_box = cTk.CTkTextbox(self)
-        self.text_box.place(relx=0.05, rely=0.075, relwidth=0.9, relheight=0.45)
+        self.text_box.place(relx=0.05, rely=0.1, relwidth=0.85, relheight=0.45)
         self.text_box.configure(state="disabled")
 
         self.open_inventory_btn = cTk.CTkButton(self, text="Inventory", command=lambda: open_inventory(self))
@@ -63,9 +62,7 @@ class MainWindow(cTk.CTkToplevel):
         self.open_menu_btn.place(relx=0.0, rely=0.0, anchor="nw", x=10, y=10)
 
         self.choice_frame = cTk.CTkFrame(self)
-        self.choice_frame.place(relx=0.05, rely=0.55, relwidth=0.45, relheight=0.25)
-   
-        self.bind("<Configure>", lambda event: resize_separators(self, event))
+        self.choice_frame.place(relx=0.05, rely=0.68, relwidth=0.45, relheight=0.3)
 
 class InventoryWindow(cTk.CTkToplevel):
     def __init__(self, master, close_inventory):
@@ -79,7 +76,7 @@ class InventoryWindow(cTk.CTkToplevel):
         self.close_inventory_btn.place(relx=1.0, rely=0.0, anchor="ne", x=-10, y=10)
 
 class SettingsWindow(cTk.CTkToplevel):
-    def __init__(self, master, save_settings, close_settings):
+    def __init__(self, master, save_and_close):
         super().__init__(master)
 
         self.player_name = master.player_name
@@ -107,17 +104,5 @@ class SettingsWindow(cTk.CTkToplevel):
         self.separator_length_entry.place(relx=0.5, rely=0.57, anchor="center")
         self.separator_length_entry.insert(0, "120")
 
-        self.save_button = cTk.CTkButton(self, text="Save Settings", command=lambda: self.save_and_close(save_settings=save_settings, close_settings=close_settings))
+        self.save_button = cTk.CTkButton(self, text="Save Settings", command=lambda: save_and_close(self))
         self.save_button.place(relx=0.5, rely=0.7, anchor="center")
-
-    def save_and_close(self, save_settings, close_settings):
-        save_settings(self.gui_mode_switch, self.sleep_time_entry, self.separator_length_entry)
-        close_settings()
-        print("HALLO WELT!")
-
-if __name__ == "__main__":
-    from modules.gui.design_interactions import open_main_window, confirm_player_name
-    RUNNING_AS_MAIN = True
-    root = StartWindow(open_main_window, confirm_player_name)
-    root.player_name = "<TESTING ENVIROMENT NOT MAIN.PY>"
-    root.mainloop()

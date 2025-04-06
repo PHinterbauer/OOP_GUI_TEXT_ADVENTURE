@@ -1,8 +1,8 @@
 import time
 import os
 
-from modules.file_handler import Json_Handler
-from modules.gui.game_interactions import add_text_to_textbox, add_choice_button, read_choice_buttons, add_text_to_textbox_slow, add_dict_to_textbox, add_dict_to_textbox_slow
+from utilities.file_handler import Json_Handler
+from gui.interactions import add_list_to_textbox, gui_initialize, gui_input, gui_save_input_value, add_text_to_textbox, add_text_to_textbox_slow, add_dict_to_textbox, add_dict_to_textbox_slow
 
 class Game():
 
@@ -11,7 +11,7 @@ class Game():
     main_character = ""
     separator_length = 120
     MainWindowInstance = None
-    gui_mode = False
+    gui_mode = True
 
     def __init__(self) -> None:
         pass
@@ -19,12 +19,32 @@ class Game():
     @staticmethod
     def start():
         """## Starts the game loop"""
-        Story.story_loop(Game.main_character)
+        if not Game.gui_mode:
+            Story.story_loop(Game.main_character)
+        else:
+            gui_initialize()
+            Game.wait_for_main_window()
+
+    @staticmethod
+    def wait_for_main_window():
+        """## Waits for the main window to be open"""
+        from gui.interactions import root
+        if Game.MainWindowInstance:
+            Story.story_loop(Game.main_character)
+        else:
+            if hasattr(Game.MainWindowInstance, "after"):
+                Game.MainWindowInstance.after(100, Game.wait_for_main_window)
+            else:
+                if root:
+                    root.after(100, Game.wait_for_main_window)
 
     @staticmethod
     def clear_terminal():
         """## Clears the terminal"""
-        os.system("cls")
+        if not Game.gui_mode:
+            os.system("cls")
+        else:
+            pass
 
     @staticmethod
     def dict_print(in_dict: dict, separator_top: bool = False, separator_bottom: bool = False, new_line_top = False, new_line_bottom = False):
@@ -53,10 +73,10 @@ class Game():
             if separator_top:
                 Game.separator()
             if new_line_top:
-                add_text_to_textbox(text="")
+                add_text_to_textbox(Game.MainWindowInstance, "")
             add_dict_to_textbox(Game.MainWindowInstance, in_dict)
             if new_line_bottom:
-                add_text_to_textbox(text="")
+                add_text_to_textbox(Game.MainWindowInstance,"")
             if separator_bottom:
                 Game.separator()
 
@@ -87,10 +107,10 @@ class Game():
             if separator_top:
                 Game.separator()
             if new_line_top:
-                add_text_to_textbox(text="")
+                add_text_to_textbox(Game.MainWindowInstance, "")
             add_dict_to_textbox_slow(Game.MainWindowInstance, in_dict, delay=Game.sleep_time)
             if new_line_bottom:
-                add_text_to_textbox(text="")
+                add_text_to_textbox(Game.MainWindowInstance, "")
             if separator_bottom:
                 Game.separator()
         
@@ -122,10 +142,10 @@ class Game():
             if separator_top:
                 Game.separator()
             if new_line_top:
-                add_text_to_textbox(text="")
+                add_text_to_textbox(Game.MainWindowInstance, "")
             add_text_to_textbox_slow(Game.MainWindowInstance, in_str, delay=Game.sleep_time)
             if new_line_bottom:
-                add_text_to_textbox(text="")
+                add_text_to_textbox(Game.MainWindowInstance, "")
             if separator_bottom:
                 Game.separator()
     
@@ -144,19 +164,35 @@ class Game():
         Returns:
             value (str): User input
         """
-        if separator_top:
-            Game.separator()
-        if new_line_top:
-            print("")      
-        for char in in_str:
-            print(char, end = "", flush = True)
-            time.sleep(Game.sleep_time)
-        value = input()
-        if new_line_bottom:
-            print("")
-        if separator_bottom:
-            Game.separator()
-        return value
+        if not Game.gui_mode:
+            if separator_top:
+                Game.separator()
+            if new_line_top:
+                print("")      
+            for char in in_str:
+                print(char, end = "", flush = True)
+                time.sleep(Game.sleep_time)
+            value = input()
+            if new_line_bottom:
+                print("")
+            if separator_bottom:
+                Game.separator()
+            return value
+        else:
+            if separator_top:
+                Game.separator()
+            if new_line_top:
+                add_text_to_textbox(Game.MainWindowInstance, "")
+            in_str = in_str.replace(">", " V")
+            in_str = "V " + in_str
+            gui_input(Game.MainWindowInstance, gui_save_input_value, in_str)
+            value = Game.MainWindowInstance.input_callback_value
+            Game.MainWindowInstance.input_callback_value = None
+            if new_line_bottom:
+                add_text_to_textbox(Game.MainWindowInstance, "")
+            if separator_bottom:
+                Game.separator()
+            return value
 
     @staticmethod
     def enter(separator_top: bool = False, new_line_top = False):
@@ -170,14 +206,24 @@ class Game():
         Returns:
             True (bool): when pressed 
         """
-        if separator_top:
-            Game.separator()
-        if new_line_top:
-            print("")
-        pressed = input("Drücke die Eingabe-Taste>\n")
-        if pressed:
-            return True
-        
+        if not Game.gui_mode:
+            if separator_top:
+                Game.separator()
+            if new_line_top:
+                print("")
+            pressed = input("Drücke die Eingabe-Taste>\n")
+            if pressed:
+                return True
+        else:
+            if separator_top:
+                Game.separator()
+            if new_line_top:
+                add_text_to_textbox(Game.MainWindowInstance, "")
+            gui_input(Game.MainWindowInstance, gui_save_input_value, "V Drücke die Eingabe-Taste V")
+            if Game.MainWindowInstance.input_callback_value:
+                Game.MainWindowInstance.input_callback_value = None
+                return True
+            
     @staticmethod
     def separator():
         """## Prints a separator line
@@ -185,11 +231,11 @@ class Game():
         """
         separator = ""
         for _ in range(Game.separator_length):
-            separator += "━"
+            separator += "-"
         if not Game.gui_mode:
             print(separator)
         else:
-            add_text_to_textbox(text=separator)
+            add_text_to_textbox(Game.MainWindowInstance, separator)
 
     def reset_attribute(self, class_name, attributes: list):
         """## Resets attributes of a class
@@ -414,17 +460,20 @@ class Player(Entity):
         """## Sets the player's name
         Sets the player's name and makes sure it cant be longer than 15 characters or empty
         """
-        Game.clear_terminal()
-        flag = True
-        while flag:
-            value = str(Game.slow_input("Wie soll dein Charakter heißen?>\n", separator_top = True, new_line_top = True, new_line_bottom = True).lstrip().strip())
-            if len(value) <= 15 and len(value)> 0:
-                self.name = value
-                Game.slow_print(f'Der Name deines Charakters lautet {self.name}!', separator_top = True, separator_bottom = True, new_line_top = True, new_line_bottom = True)
-                self.satisfied("set_name")
-                flag = False
-            else:
-                Game.slow_print("Der Name darf nicht 0 Zeichen oder länger als 15 Zeichen sein!")
+        if not Game.gui_mode:
+            Game.clear_terminal()
+            flag = True
+            while flag:
+                value = str(Game.slow_input("Wie soll dein Charakter heißen?>\n", separator_top = True, new_line_top = True, new_line_bottom = True).lstrip().strip())
+                if len(value) <= 15 and len(value)> 0:
+                    self.name = value
+                    Game.slow_print(f'Der Name deines Charakters lautet {self.name}!', separator_top = True, separator_bottom = True, new_line_top = True, new_line_bottom = True)
+                    self.satisfied("set_name")
+                    flag = False
+                else:
+                    Game.slow_print("Der Name darf nicht 0 Zeichen oder länger als 15 Zeichen sein!")
+        else:
+            self.name = Game.MainWindowInstance.player_name
 
     def set_points(self):
         """## Lets the player set their xp points
@@ -542,18 +591,32 @@ class Story(Game):
             new_line_top (bool): Whether to print a newline above the dict. Defaults to False.
             new_line_bottom (bool): Whether to print a newline below the dict. Defaults to False.
         """
-        if separator_top:
-            Game.separator()
-        if new_line_top:
-            print("")
-        for index, element in enumerate(list_to_print):
-            if str(index + sub_chapter_index) in chapter_functions:
-                eval(chapter_functions[str(index)])
-            print(element)
-        if new_line_bottom:
-            print("")
-        if separator_bottom:
-            Game.separator() 
+        if not Game.gui_mode:
+            if separator_top:
+                Game.separator()
+            if new_line_top:
+                print("")
+            for index, element in enumerate(list_to_print):
+                if str(index + sub_chapter_index) in chapter_functions:
+                    eval(chapter_functions[str(index)])
+                print(element)
+            if new_line_bottom:
+                print("")
+            if separator_bottom:
+                Game.separator() 
+        else:
+            if separator_top:
+                Game.separator()
+            if new_line_top:
+                add_text_to_textbox(Game.MainWindowInstance, "")
+            for index, element in enumerate(list_to_print):
+                if str(index + sub_chapter_index) in chapter_functions:
+                    eval(chapter_functions[str(index)])
+            add_list_to_textbox(Game.MainWindowInstance, list_to_print)
+            if new_line_bottom:
+                add_text_to_textbox(Game.MainWindowInstance, "")
+            if separator_bottom:
+                Game.separator()
 
     @staticmethod
     def story_slow_print(list_to_print: list, chapter_functions: dict, sub_chapter_index: int = 0, separator_top: bool = False, separator_bottom: bool = False, new_line_top = False, new_line_bottom = False):
@@ -581,7 +644,7 @@ class Story(Game):
             print("")
         if separator_bottom:
             Game.separator() 
-
+        
     @staticmethod
     def death():
         """## Prints the death message
