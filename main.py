@@ -32,5 +32,3 @@ if __name__ == "__main__":
 # - let copilot check code for errors and improvements - git graph button
 
 # fix file location -> see notes
-
-# FIX SYINCING
