@@ -1,5 +1,5 @@
 {
     "Game.gui_mode": 1,
-    "Game.sleep_time": 0.001,
+    "Game.sleep_time": 0.04,
     "Game.separator_length": 120
 }

@@ -43,4 +43,4 @@ if __name__ == "__main__":
 
 # add dropdown menu in settings window to chose between multiple color schemes for that add function that overrides the colorschemes (global vars) in design.py with values from colorschemes.json stored in resources/json also make sure to add necessary things to load and save settings
 
-check newest history of copilot for notes on two above points
+# check newest history of copilot for notes on two above points
