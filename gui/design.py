@@ -96,7 +96,7 @@ class InventoryWindow(cTk.CTkToplevel):
         self.player_name = master.player_name
         self.title(f"{self.player_name}'s Inventory - © Paul Hinterbauer 2025 @ TGM Vienna")
         self.geometry("800x600")
-        self.configure(bg=COLOR_BACKGROUND)
+        self.configure(fg_color=COLOR_BACKGROUND)
 
         self.close_inventory_btn = cTk.CTkButton(self, text="Close", command=lambda: close_inventory(self), fg_color=COLOR_BUTTON, hover_color=COLOR_BUTTON_HOVER, text_color=COLOR_TEXT)
         self.close_inventory_btn.place(relx=1.0, rely=0.0, anchor="ne", x=-10, y=10)

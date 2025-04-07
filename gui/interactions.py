@@ -205,7 +205,7 @@ def update_inventory_table(InventoryWindowInstance, inventory: dict):
         widget.destroy()
     header_key = cTk.CTkLabel(InventoryWindowInstance.inventory_table_frame, text="Gegenstand", fg_color=COLOR_BUTTON, text_color=COLOR_TEXT, anchor="center", padx=5, pady=5, height=30)
     header_key.grid(row=0, column=0, sticky="nsew", padx=2, pady=2)
-    header_value = cTk.CTkLabel(InventoryWindowInstance.inventory_table_frame, text="Anzahl", fg_color=COLOR_BUTTON, text_color=COLOR_TEXT, anchor="center", padx=5, pady=5, heigth=30)
+    header_value = cTk.CTkLabel(InventoryWindowInstance.inventory_table_frame, text="Anzahl", fg_color=COLOR_BUTTON, text_color=COLOR_TEXT, anchor="center", padx=5, pady=5, height=30)
     header_value.grid(row=0, column=1, sticky="nsew", padx=2, pady=2)
     if inventory:
         for row, (key, value) in enumerate(inventory.items(), start=1):

@@ -585,39 +585,77 @@ class Shop(Entity):
         """## Opens the shop menu
         Lets the user purchase items from the shops inventory
         """
-        shop_name = Game.main_character.current_location.split("_")[2] + "_" + Game.main_character.current_location.split("_")[3]
-        shop = eval(shop_name)
-        while True:
-            Game.clear_terminal()
-            Game.slow_print("Willkommen im Shop!\nHier sind die verfügbaren Items:\n", separator_top=True, new_line_top=True)
-            for index, (item, quantity) in enumerate(shop.inventory.items(), start = 1):
-                price = shop.prices[item]
-                Game.slow_print(f"[{index}]: {item} (Preis: {price} Münzen) - Verfügbar: {quantity}")
-            Game.slow_print("[e]: Exit", new_line_bottom = True)
-            choice = Game.slow_input("Wähle ein Item oder 'e' zum Verlassen>\n", separator_bottom=True).strip()
-            if choice.lower() in ["e", "exit"]:
-                break
-            try:
-                choice_index = int(choice) - 1
-                if 0 <= choice_index < len(shop.inventory):
-                    item = list(shop.inventory.keys())[choice_index]
+        if not Game.gui_mode:
+            shop_name = Game.main_character.current_location.split("_")[2] + "_" + Game.main_character.current_location.split("_")[3]
+            shop = eval(shop_name)
+            while True:
+                Game.clear_terminal()
+                Game.slow_print("Willkommen im Shop!\nHier sind die verfügbaren Items:\n", separator_top=True, new_line_top=True)
+                for index, (item, quantity) in enumerate(shop.inventory.items(), start = 1):
                     price = shop.prices[item]
-                    quantity_choice = int(Game.slow_input(f"Wie viele {item} möchtest du kaufen? (Verfügbar: {shop.inventory[item]})> "))
-                    if quantity_choice <= 0:
-                        Game.slow_print("Bitte gib eine positive Zahl ein!")
-                        continue
-                    if quantity_choice <= shop.inventory[item] and Game.main_character.attributes["Münzen"] >= price * quantity_choice:
-                        Game.main_character.add_inventory({item: quantity_choice})
-                        Game.main_character.sub_inventory({'Münzen': price * quantity_choice})
-                        shop.inventory[item] -= quantity_choice
-                        Game.slow_print(f"Du hast {quantity_choice} {item} für {price * quantity_choice} Münzen gekauft!")
+                    Game.slow_print(f"[{index}]: {item} (Preis: {price} Münzen) - Verfügbar: {quantity}")
+                Game.slow_print("[e]: Exit", new_line_bottom = True)
+                choice = Game.slow_input("Wähle ein Item oder 'e' zum Verlassen>\n", separator_bottom=True).strip()
+                if choice.lower() in ["e", "exit"]:
+                    break
+                try:
+                    choice_index = int(choice) - 1
+                    if 0 <= choice_index < len(shop.inventory):
+                        item = list(shop.inventory.keys())[choice_index]
+                        price = shop.prices[item]
+                        quantity_choice = int(Game.slow_input(f"Wie viele {item} möchtest du kaufen? (Verfügbar: {shop.inventory[item]})> "))
+                        if quantity_choice <= 0:
+                            Game.slow_print("Bitte gib eine positive Zahl ein!")
+                            continue
+                        if quantity_choice <= shop.inventory[item] and Game.main_character.attributes["Münzen"] >= price * quantity_choice:
+                            Game.main_character.add_inventory({item: quantity_choice})
+                            Game.main_character.sub_inventory({'Münzen': price * quantity_choice})
+                            shop.inventory[item] -= quantity_choice
+                            Game.slow_print(f"Du hast {quantity_choice} {item} für {price * quantity_choice} Münzen gekauft!")
+                        else:
+                            Game.slow_print("Nicht genug Münzen oder nicht genügend Artikel verfügbar!")
                     else:
-                        Game.slow_print("Nicht genug Münzen oder nicht genügend Artikel verfügbar!")
-                else:
-                    Game.slow_print("Ungültige Auswahl!")
-            except ValueError:
-                Game.slow_print("Bitte gib eine ganze Zahl ein!")
-        Story.story_loop(Game.main_character, sub_chapter_index = 1)
+                        Game.slow_print("Ungültige Auswahl!")
+                except ValueError:
+                    Game.slow_print("Bitte gib eine ganze Zahl ein!")
+            Story.story_loop(Game.main_character, sub_chapter_index = 1)
+        else:
+            def display_shop():
+                Game.clear_terminal()
+                Game.slow_print("Willkommen im Shop!\nHier sind die verfügbaren Items:\n", separator_top=True, new_line_top=True)
+                for index, (item, quantity) in enumerate(shop.inventory.items(), start=1):
+                    price = shop.prices[item]
+                    Game.slow_print(f"[{index}]: {item} (Preis: {price} Münzen) - Verfügbar: {quantity}")
+                Game.slow_print("[e]: Exit", new_line_bottom=True)
+                Game.slow_input("Wähle ein Item oder 'e' zum Verlassen>\n", separator_bottom=True, callback=process_choice)
+            def process_choice(choice):
+                choice = choice.strip()
+                if choice.lower() in ["e", "exit"]:
+                    Story.story_loop(Game.main_character, sub_chapter_index=1)
+                    return
+                try:
+                    choice_index = int(choice) - 1
+                    if 0 <= choice_index < len(shop.inventory):
+                        item = list(shop.inventory.keys())[choice_index]
+                        price = shop.prices[item]
+                        if Game.main_character.attributes["Münzen"] >= price:
+                            Game.main_character.sub_inventory({"Münzen": price})
+                            Game.main_character.add_inventory({item: 1})
+                            shop.inventory[item] -= 1
+                            Game.slow_print(f"Du hast {item} gekauft!", separator_bottom=True, new_line_bottom=True)
+                            if shop.inventory[item] == 0:
+                                del shop.inventory[item]
+                            display_shop()
+                        else:
+                            Game.slow_print("Du hast nicht genug Münzen!", separator_bottom=True, new_line_bottom=True)
+                            display_shop()
+                    else:
+                        Game.slow_print("Ungültige Auswahl!", separator_bottom=True, new_line_bottom=True)
+                        display_shop()
+                except ValueError:
+                    Game.slow_print("Bitte gib eine ganze Zahl ein!", separator_bottom=True, new_line_bottom=True)
+                    display_shop()
+            display_shop()
 
 class Story(Game):
     """## Story class

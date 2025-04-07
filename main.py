@@ -38,3 +38,9 @@ if __name__ == "__main__":
 
 # when going back to the main window from the start menu the text box and everything else should not be cleared meaning that the satart game function only gets called on the first press of the start button any press after that should result in simply showing the main widnow again and not calling any other function just like
 # choice buttons still dont get deleted when pressing any of them 
+
+# coins get multiplied by 2 when adding to attributes or when displaying in stats table
+
+# add dropdown menu in settings window to chose between multiple color schemes for that add function that overrides the colorschemes (global vars) in design.py with values from colorschemes.json stored in resources/json also make sure to add necessary things to load and save settings
+
+check newest history of copilot for notes on two above points
