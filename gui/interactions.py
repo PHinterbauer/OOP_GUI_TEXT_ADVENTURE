@@ -13,6 +13,7 @@ from gui.design import SettingsWindow, MainWindow, InventoryWindow, StartWindow,
 
 SettingsWindowInstance = None
 root = None
+InventoryWindowInstance = None 
 
 def open_start_menu(MainWindowInstance):
     MainWindowInstance.master.deiconify()
@@ -30,8 +31,14 @@ def open_main_window(StartWindowInstance):
         StartWindowInstance.info_label.configure(text="Bitte gib einen Namen ein!")
 
 def open_inventory(MainWindowInstance):
-    MainWindowInstance.withdraw()
-    InventoryWindow(MainWindowInstance, close_inventory)
+    global InventoryWindowInstance
+    from utilities.game import Game
+    if InventoryWindowInstance is None or not InventoryWindowInstance.winfo_exists():
+        MainWindowInstance.withdraw()
+        InventoryWindowInstance = InventoryWindow(MainWindowInstance, close_inventory)
+        update_inventory_table(InventoryWindowInstance, Game.main_character.inventory)
+    else:
+        InventoryWindowInstance.focus()
 
 def open_settings(parent):
     global SettingsWindowInstance
@@ -179,9 +186,9 @@ def gui_save_input_value(MainWindowInstance, input_value, callback=None):
 def update_stats_table(MainWindowInstance, attributes: dict):
     for widget in MainWindowInstance.stats_table_frame.winfo_children():
         widget.destroy()
-    header_key = cTk.CTkLabel(MainWindowInstance.stats_table_frame, text="Attribute", fg_color=COLOR_BUTTON, text_color=COLOR_TEXT, anchor="center", padx=5, pady=5)
+    header_key = cTk.CTkLabel(MainWindowInstance.stats_table_frame, text="Attribut", fg_color=COLOR_BUTTON, text_color=COLOR_TEXT, anchor="center", padx=5, pady=5)
     header_key.grid(row=0, column=0, sticky="nsew", padx=2, pady=2)
-    header_value = cTk.CTkLabel(MainWindowInstance.stats_table_frame, text="Value", fg_color=COLOR_BUTTON, text_color=COLOR_TEXT, anchor="center", padx=5, pady=5)
+    header_value = cTk.CTkLabel(MainWindowInstance.stats_table_frame, text="Wert", fg_color=COLOR_BUTTON, text_color=COLOR_TEXT, anchor="center", padx=5, pady=5)
     header_value.grid(row=0, column=1, sticky="nsew", padx=2, pady=2)
     for row, (key, value) in enumerate(attributes.items(), start=1):
         key_label = cTk.CTkLabel(MainWindowInstance.stats_table_frame, text=key, fg_color=COLOR_FRAME, text_color=COLOR_TEXT, anchor="center", padx=5, pady=5)
@@ -192,6 +199,27 @@ def update_stats_table(MainWindowInstance, attributes: dict):
         MainWindowInstance.stats_table_frame.grid_rowconfigure(i, weight=1)
     MainWindowInstance.stats_table_frame.grid_columnconfigure(0, weight=1)
     MainWindowInstance.stats_table_frame.grid_columnconfigure(1, weight=1)
+
+def update_inventory_table(InventoryWindowInstance, inventory: dict):
+    for widget in InventoryWindowInstance.inventory_table_frame.winfo_children():
+        widget.destroy()
+    header_key = cTk.CTkLabel(InventoryWindowInstance.inventory_table_frame, text="Gegenstand", fg_color=COLOR_BUTTON, text_color=COLOR_TEXT, anchor="center", padx=5, pady=5, height=30)
+    header_key.grid(row=0, column=0, sticky="nsew", padx=2, pady=2)
+    header_value = cTk.CTkLabel(InventoryWindowInstance.inventory_table_frame, text="Anzahl", fg_color=COLOR_BUTTON, text_color=COLOR_TEXT, anchor="center", padx=5, pady=5, heigth=30)
+    header_value.grid(row=0, column=1, sticky="nsew", padx=2, pady=2)
+    if inventory:
+        for row, (key, value) in enumerate(inventory.items(), start=1):
+            key_label = cTk.CTkLabel(InventoryWindowInstance.inventory_table_frame, text=key, fg_color=COLOR_FRAME, text_color=COLOR_TEXT, anchor="center", padx=5, pady=5)
+            key_label.grid(row=row, column=0, sticky="nsew", padx=2, pady=2)
+            value_label = cTk.CTkLabel(InventoryWindowInstance.inventory_table_frame, text=str(value), fg_color=COLOR_FRAME, text_color=COLOR_TEXT, anchor="center", padx=5, pady=5)
+            value_label.grid(row=row, column=1, sticky="nsew", padx=2, pady=2)
+        for i in range(len(inventory) + 1):
+            InventoryWindowInstance.inventory_table_frame.grid_rowconfigure(i, weight=1)
+        InventoryWindowInstance.inventory_table_frame.grid_columnconfigure(0, weight=1)
+        InventoryWindowInstance.inventory_table_frame.grid_columnconfigure(1, weight=1)
+    else:
+        label_if_empty = cTk.CTkLabel(InventoryWindowInstance, text="Dein Inventar ist leer!", fg_color=COLOR_FRAME, text_color=COLOR_TEXT, anchor="center", padx=5, pady=5)
+        label_if_empty.place(relx=0.5, rely=0.5, relwidth=0.9, relheight=0.1, anchor="center")
 
 def load_settings():
     from utilities.game import Game

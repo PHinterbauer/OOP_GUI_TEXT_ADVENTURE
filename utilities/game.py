@@ -108,7 +108,7 @@ class Game():
                 Game.separator()
             if new_line_top:
                 add_text_to_textbox(Game.MainWindowInstance, "")
-            add_dict_to_textbox_slow(Game.MainWindowInstance, in_dict, delay=Game.sleep_time)
+            add_dict_to_textbox_slow(Game.MainWindowInstance, in_dict, Game.sleep_time)
             if new_line_bottom:
                 add_text_to_textbox(Game.MainWindowInstance, "")
             if separator_bottom:
@@ -143,7 +143,7 @@ class Game():
                 Game.separator()
             if new_line_top:
                 add_text_to_textbox(Game.MainWindowInstance, "")
-            add_text_to_textbox_slow(Game.MainWindowInstance, in_str, delay=Game.sleep_time)
+            add_text_to_textbox_slow(Game.MainWindowInstance, in_str, Game.sleep_time)
             if new_line_bottom:
                 add_text_to_textbox(Game.MainWindowInstance, "")
             if separator_bottom:
@@ -705,7 +705,7 @@ class Story(Game):
             for index, element in enumerate(list_to_print):
                 if str(index + sub_chapter_index) in chapter_functions:
                     eval(chapter_functions[str(index)])
-            add_list_to_textbox_slow(Game.MainWindowInstance, list_to_print)
+            add_list_to_textbox_slow(Game.MainWindowInstance, list_to_print, Game.sleep_time)
             if new_line_bottom:
                 add_text_to_textbox(Game.MainWindowInstance, "")
             if separator_bottom:

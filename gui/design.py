@@ -82,7 +82,7 @@ class MainWindow(cTk.CTkToplevel):
         self.choice_frame.place(relx=0.05, rely=0.68, relwidth=0.45, relheight=0.3)
 
         self.stats_frame = cTk.CTkFrame(self, fg_color=COLOR_FRAME)
-        self.stats_frame.place(relx=0.55, rely=0.68, relwidth=0.4, relheight=0.3)
+        self.stats_frame.place(relx=0.51, rely=0.68, relwidth=0.39, relheight=0.3)
         self.stats_frame.grid_rowconfigure(0, weight=1)
         self.stats_frame.grid_columnconfigure(0, weight=1)
 
@@ -100,6 +100,9 @@ class InventoryWindow(cTk.CTkToplevel):
 
         self.close_inventory_btn = cTk.CTkButton(self, text="Close", command=lambda: close_inventory(self), fg_color=COLOR_BUTTON, hover_color=COLOR_BUTTON_HOVER, text_color=COLOR_TEXT)
         self.close_inventory_btn.place(relx=1.0, rely=0.0, anchor="ne", x=-10, y=10)
+
+        self.inventory_table_frame = cTk.CTkFrame(self, fg_color=COLOR_FRAME)
+        self.inventory_table_frame.place(relx=0.5, rely=0.5, relwidth=0.9, relheight=0.8, anchor="center")
 
 class SettingsWindow(cTk.CTkToplevel):
     def __init__(self, master, save_and_close):
