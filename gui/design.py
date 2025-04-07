@@ -6,7 +6,7 @@
 # ====================================
 
 import customtkinter as cTk
-from PIL import Image
+from PIL import Image, ImageSequence
 
 class StartWindow(cTk.CTk):
     def __init__(self, open_main_window, confirm_player_name, open_settings):
@@ -16,10 +16,13 @@ class StartWindow(cTk.CTk):
         self.title("The Flying Humpty - Main Menu - © Paul Hinterbauer 2025 @ TGM Vienna")
         self.geometry("720x320")
 
-        pirate_ship_path = "./resources/images/PIRATE_SHIP_REMOVEDBG.png"
-        self.pirate_ship_image = cTk.CTkImage(light_image=Image.open(pirate_ship_path), dark_image=Image.open(pirate_ship_path), size=(200, 200))
-        self.pirate_ship_label = cTk.CTkLabel(self, text="", image=self.pirate_ship_image)
+        pirate_ship_path = "./resources/gifs/PIRATE_SHIP_GIF.gif"
+        self.pirate_ship_frames = [cTk.CTkImage(light_image=frame.copy(), dark_image=frame.copy(), size=(200, 200)) for frame in ImageSequence.Iterator(Image.open(pirate_ship_path))]
+        self.current_frame = 0
+        self.pirate_ship_label = cTk.CTkLabel(self, text="", image=self.pirate_ship_frames[self.current_frame])
         self.pirate_ship_label.place(relx=0.8, rely=0.5, anchor="center")
+
+        self.update_gif()
 
         hwi_logo_path = "./resources/images/HWI_LOGO_REMOVEDBG.png"
         self.hwi_logo_image = cTk.CTkImage(light_image=Image.open(hwi_logo_path), dark_image=Image.open(hwi_logo_path), size=(200, 200))
@@ -40,6 +43,11 @@ class StartWindow(cTk.CTk):
 
         self.open_settings_btn = cTk.CTkButton(self, text="Settings", command=lambda: open_settings(self))
         self.open_settings_btn.place(relx=0.5, rely=0.8, anchor="center")
+
+    def update_gif(self):
+        self.current_frame = (self.current_frame + 1) % len(self.pirate_ship_frames)
+        self.pirate_ship_label.configure(image=self.pirate_ship_frames[self.current_frame])
+        self.after(100, self.update_gif)
 
 class MainWindow(cTk.CTkToplevel):
     def __init__(self, master, open_inventory, open_start_menu):

@@ -32,3 +32,9 @@ if __name__ == "__main__":
 # - let copilot check code for errors and improvements - git graph button
 
 # fix file location -> see notes
+
+# choice buttons should be deletet as soon as one of them is clicked aka process choice is called
+# when going into start menu through button in the main window it main window should not be destroyed but simply hidden so contents of text box dont get deleted in the middle of the game
+
+# when going back to the main window from the start menu the text box and everything else should not be cleared meaning that the satart game function only gets called on the first press of the start button any press after that should result in simply showing the main widnow again and not calling any other function just like
+# choice buttons still dont get deleted when pressing any of them 

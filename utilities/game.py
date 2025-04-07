@@ -185,7 +185,7 @@ class Game():
                 add_text_to_textbox(Game.MainWindowInstance, "")
             gui_input(Game.MainWindowInstance, lambda _, value: callback(value) if callback else None, in_str)
             if Game.MainWindowInstance.input_callback_value is not None:
-                Game.MainWindowInstance.input_callback_val = None
+                Game.MainWindowInstance.input_callback_value = None
             if new_line_bottom:
                 add_text_to_textbox(Game.MainWindowInstance, "")
             if separator_bottom:
@@ -219,7 +219,7 @@ class Game():
                 add_text_to_textbox(Game.MainWindowInstance, "")
             gui_input(Game.MainWindowInstance, lambda _, __: callback() if callback else None, "V Drücke die Eingabe-Taste V")
             if Game.MainWindowInstance.input_callback_value is not None:
-                Game.MainWindowInstance.input_callback_val = None
+                Game.MainWindowInstance.input_callback_value = None
                 return True
 
     @staticmethod
@@ -436,23 +436,38 @@ class Player(Entity):
         else:
             raise TypeError("Attributes must be a dictionary")
 
-    def satisfied(self, func_name: str):
+    def satisfied(self, func_name: str, callback=None):
         """## Checks if the player is satisfied
         Checks if the player is satisfied with their input
 
         Args:
             func_name (str): function to be evaled if player is not satisfied
         """
-        flag = True 
-        while flag: 
-            value = str(Game.slow_input("Zufrieden? (y/n)>\n", separator_bottom = True, new_line_top = True))
-            if value.lstrip().strip().lower() in ["yes", "y", "ja"]:
-                flag = False
-            if value.lstrip().strip().lower() in ["no", "n", "nein"]:
-                eval(f'self.{func_name}()')
-                flag = False
-            else:
-                Game.slow_print("Bitte gib y oder n ein!")
+        if not Game.gui_mode:
+            flag = True 
+            while flag: 
+                value = str(Game.slow_input("Zufrieden? (y/n)>\n", separator_bottom = True, new_line_top = True))
+                if value.lstrip().strip().lower() in ["yes", "y", "ja"]:
+                    flag = False
+                if value.lstrip().strip().lower() in ["no", "n", "nein"]:
+                    eval(f'self.{func_name}()')
+                    flag = False
+                else:
+                    Game.slow_print("Bitte gib y oder n ein!")
+        else:
+            def ask_satisfaction():
+                Game.slow_input("Zufrieden? (y/n)>", separator_bottom=True, new_line_top=True, callback=process_response)
+            def process_response(value):
+                value = value.strip().lower()
+                if value in ["yes", "y", "ja"]:
+                    if callback:
+                        callback()
+                elif value in ["no", "n", "nein"]:
+                    eval(f'self.{func_name}(callback=ask_satisfaction)')
+                else:
+                    Game.slow_print("Bitte gib y oder n ein!")
+                    ask_satisfaction()
+            ask_satisfaction()
 
     def set_name(self):
         """## Sets the player's name
@@ -520,14 +535,16 @@ class Player(Entity):
                 nonlocal index
                 if index < len(attributes):
                     key = attributes[index]
-                    Game.slow_input(f'{key}> ', callback=lambda value: process_input(key, value))
+                    Game.slow_print(f'Verbleibende Punkte: {self.xp_points}', separator_top=True, new_line_top=True)
+                    Game.slow_print(f'Bitte gib Punkte für {key} ein:', new_line_top=True)
+                    gui_input(Game.MainWindowInstance, gui_input_callback=lambda _, value: process_input(key, value), label_text=f"{key} V")
                 else:
+                    Game.clear_terminal()
                     Game.slow_print(f'Deine Verteilung sieht wie folgt aus:', separator_top=True, new_line_top=True)
                     Game.slow_dict_print(self.attributes, separator_bottom=True, new_line_bottom=True)
-                    self.satisfied("set_points")
-                if callback:
-                    callback()
+                    self.satisfied("set_points", callback=callback)
             def process_input(key, value):
+                nonlocal index
                 try:
                     value = int(value.strip())
                     if value < 0:
@@ -539,15 +556,12 @@ class Player(Entity):
                     else:
                         self.attributes[key] = value
                         self.xp_points -= value
-                        if key != attributes[-1]:
-                            Game.slow_print(f'Verfügbare Punkte: {self.xp_points}')
                         index += 1
                         assign_points()
                 except ValueError:
                     Game.slow_print("Bitte gib eine positive ganze Zahl ein!")
                     assign_points()
             assign_points()
-            Game.started = True
 
 class Enemy(Entity):
     """## Represents an enemy in the game
@@ -710,7 +724,9 @@ class Story(Game):
             quit()
         else:
             Game.clear_terminal()
-            Story.story_print(json_handler.load_json_chapter_text("start", "death_screen"), "", callback=lambda: Game.MainWindowInstance.after(5000, quit))
+            def show_death_message():
+                Story.story_print(json_handler.load_json_chapter_text("start", "death_screen"), "", callback=lambda: Game.MainWindowInstance.after(5000, quit))
+            Game.MainWindowInstance.after(100, show_death_message)
 
     @staticmethod
     def start_game():
@@ -737,8 +753,9 @@ class Story(Game):
             def wait_for_enter():
                 Game.enter(new_line_top=True, callback=proceed_to_name)
             def proceed_to_name():
+                Game.clear_terminal()
                 Game.main_character.set_name()
-                Game.main_character.set_points(callback=Story.story_loop(Game.main_character))
+                Game.main_character.set_points(callback=lambda: Story.story_loop(Game.main_character))
             show_logo()
 
     @staticmethod
@@ -751,10 +768,10 @@ class Story(Game):
             sub_chapter_name (str, optional): The name of the sub-chapter. Defaults to "text".
             sub_chapter_index (int, optional): The index of the chapter_functions. Defaults to 0
         """
+        json_handler = Json_Handler(Game.json_file_path)
+        current_room = player.current_location # starting location
         if not Game.gui_mode:
-            json_handler = Json_Handler(Game.json_file_path)
             checked_sub_chapter_index = False
-            current_room = player.current_location # starting location
             if current_room == "start" and not Story.started:
                 Story.started = True
                 Story.start_game()
@@ -794,11 +811,14 @@ class Story(Game):
                         except ValueError:
                             Game.slow_print("Bitte gib eine ganze Zahl, i oder s ein!")
         else:
-            json_handler = Json_Handler(Game.json_file_path)
-            current_room = player.current_location
+            if current_room == "start" and not Story.started:
+                Story.started = True
+                Story.start_game()
+                return
             def process_choice(choice):
                 choice_index = int(choice) - 1
                 if 0 <= choice_index < len(eval(f'{current_room}.choices')):
+                    delete_choice_buttons(Game.MainWindowInstance)
                     player.current_location = eval(f'{current_room}.next_rooms[{choice_index}]')
                     Story.story_loop(player)
             def display_choices():
@@ -806,15 +826,10 @@ class Story(Game):
                 room_choices = eval(f'{current_room}.choices')
                 for index, choice_text in enumerate(room_choices, start=1):
                     add_choice_button(Game.MainWindowInstance, text=f"{index}: {choice_text}", callback=lambda choice=index: process_choice(str(choice)))
-            def start_story():
-                if current_room == "start" and not Story.started:
-                    Story.start_game()
-                if Story.started:
-                    chapter_text = json_handler.load_json_chapter_text(current_room, sub_chapter_name)
-                    chapter_functions = json_handler.load_json_chapter_functions(current_room, sub_chapter_name)
-                    Story.story_slow_print(chapter_text, chapter_functions, sub_chapter_index, separator_top=True, separator_bottom=True, new_line_top=True)
-                    display_choices()
-            start_story()
+            chapter_text = json_handler.load_json_chapter_text(current_room, sub_chapter_name)
+            chapter_functions = json_handler.load_json_chapter_functions(current_room, sub_chapter_name)
+            Story.story_slow_print(chapter_text, chapter_functions, sub_chapter_index, separator_top=True, separator_bottom=True, new_line_top=True)
+            display_choices()
 
     @staticmethod
     def repair(cost: dict):

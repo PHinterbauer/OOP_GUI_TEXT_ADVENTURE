@@ -16,13 +16,16 @@ root = None
 
 def open_start_menu(MainWindowInstance):
     MainWindowInstance.master.deiconify()
-    MainWindowInstance.destroy()
+    MainWindowInstance.withdraw()
 
 def open_main_window(StartWindowInstance):
     from utilities.game import Game
     if StartWindowInstance.player_name.strip() != "":
-        StartWindowInstance.withdraw()
-        Game.MainWindowInstance = MainWindow(StartWindowInstance, open_inventory, open_start_menu)
+        if not Game.MainWindowInstance:
+            StartWindowInstance.withdraw()
+            Game.MainWindowInstance = MainWindow(StartWindowInstance, open_inventory, open_start_menu)
+        else:
+            Game.MainWindowInstance.deiconify()
     else:
         StartWindowInstance.info_label.configure(text="Bitte gib einen Namen ein!")
 
