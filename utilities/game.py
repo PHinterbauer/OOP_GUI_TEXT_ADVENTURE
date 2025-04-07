@@ -2,7 +2,7 @@ import time
 import os
 
 from utilities.file_handler import Json_Handler
-from gui.interactions import delete_all_entries, add_list_to_textbox, gui_initialize, gui_input, add_list_to_textbox_slow, add_text_to_textbox, add_text_to_textbox_slow, add_dict_to_textbox, add_dict_to_textbox_slow, add_choice_button, delete_choice_buttons
+from gui.interactions import update_stats_table, delete_all_entries, add_list_to_textbox, gui_initialize, gui_input, add_list_to_textbox_slow, add_text_to_textbox, add_text_to_textbox_slow, add_dict_to_textbox, add_dict_to_textbox_slow, add_choice_button, delete_choice_buttons
 
 class Game():
 
@@ -826,6 +826,7 @@ class Story(Game):
                 room_choices = eval(f'{current_room}.choices')
                 for index, choice_text in enumerate(room_choices, start=1):
                     add_choice_button(Game.MainWindowInstance, text=f"{index}: {choice_text}", callback=lambda choice=index: process_choice(str(choice)))
+            update_stats_table(Game.MainWindowInstance, Game.main_character.attributes)
             chapter_text = json_handler.load_json_chapter_text(current_room, sub_chapter_name)
             chapter_functions = json_handler.load_json_chapter_functions(current_room, sub_chapter_name)
             Story.story_slow_print(chapter_text, chapter_functions, sub_chapter_index, separator_top=True, separator_bottom=True, new_line_top=True)

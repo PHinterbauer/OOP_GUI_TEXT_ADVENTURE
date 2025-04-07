@@ -21,11 +21,11 @@ def open_start_menu(MainWindowInstance):
 def open_main_window(StartWindowInstance):
     from utilities.game import Game
     if StartWindowInstance.player_name.strip() != "":
-        if not Game.MainWindowInstance:
-            StartWindowInstance.withdraw()
+        StartWindowInstance.withdraw() 
+        if not Game.MainWindowInstance:  
             Game.MainWindowInstance = MainWindow(StartWindowInstance, open_inventory, open_start_menu)
         else:
-            Game.MainWindowInstance.deiconify()
+            Game.MainWindowInstance.deiconify() 
     else:
         StartWindowInstance.info_label.configure(text="Bitte gib einen Namen ein!")
 
@@ -175,6 +175,14 @@ def gui_save_input_value(MainWindowInstance, input_value, callback=None):
     if callback:
         MainWindowInstance.after(100, lambda: callback(input_value))
     return input_value
+
+def update_stats_table(MainWindowInstance, attributes: dict):
+    if attributes:
+        MainWindowInstance.stats_table.configure(state="normal")
+        MainWindowInstance.stats_table.delete("0.0", "end")
+        for key, value in attributes.items():
+            MainWindowInstance.stats_table.insert("end", f"{key} | {value}\n")
+        MainWindowInstance.stats_table.configure(state="disabled")
 
 def load_settings():
     from utilities.game import Game
