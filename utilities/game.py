@@ -456,7 +456,7 @@ class Player(Entity):
                     Game.slow_print("Bitte gib y oder n ein!")
         else:
             def ask_satisfaction():
-                Game.slow_input("Zufrieden? (y/n)>", separator_bottom=True, new_line_top=True, callback=process_response)
+                Game.slow_input("Zufrieden? (y/n)>", new_line_top=True, callback=process_response)
             def process_response(value):
                 value = value.strip().lower()
                 if value in ["yes", "y", "ja"]:
@@ -528,20 +528,20 @@ class Player(Entity):
             Game.clear_terminal()
             self.reset_attribute(Game.main_character, ["xp_points"])
             attribute_str = ", ".join(list(self.attributes.keys())[:-1]) + " oder " + list(self.attributes.keys())[-1]
-            Game.slow_print(f'Du hast {self.xp_points} Punkte zur Verfügung.\nDu kannst sie auf {attribute_str} verteilen!', separator_top=True, separator_bottom=True, new_line_top=True, new_line_bottom=True)
+            Game.slow_print(f'Du hast {self.xp_points} Punkte zur Verfügung.\nDu kannst sie auf {attribute_str} verteilen!', separator_top=True, new_line_top=True, new_line_bottom=True)
             attributes = list(self.attributes.keys())
             index = 0
             def assign_points():
                 nonlocal index
                 if index < len(attributes):
                     key = attributes[index]
-                    Game.slow_print(f'Verbleibende Punkte: {self.xp_points}', separator_top=True, new_line_top=True)
+                    Game.slow_print(f'Verfügbare Punkte: {self.xp_points}', separator_top=True, new_line_top=True)
                     Game.slow_print(f'Bitte gib Punkte für {key} ein:', new_line_top=True)
                     gui_input(Game.MainWindowInstance, gui_input_callback=lambda _, value: process_input(key, value), label_text=f"{key} V")
                 else:
                     Game.clear_terminal()
                     Game.slow_print(f'Deine Verteilung sieht wie folgt aus:', separator_top=True, new_line_top=True)
-                    Game.slow_dict_print(self.attributes, separator_bottom=True, new_line_bottom=True)
+                    Game.slow_dict_print(self.attributes, new_line_bottom=True)
                     self.satisfied("set_points", callback=callback)
             def process_input(key, value):
                 nonlocal index
@@ -701,13 +701,13 @@ class Story(Game):
             if separator_top:
                 Game.separator()
             if new_line_top:
-                print("")  
+                add_text_to_textbox(Game.MainWindowInstance, "")
             for index, element in enumerate(list_to_print):
                 if str(index + sub_chapter_index) in chapter_functions:
                     eval(chapter_functions[str(index)])
             add_list_to_textbox_slow(Game.MainWindowInstance, list_to_print)
             if new_line_bottom:
-                print("")
+                add_text_to_textbox(Game.MainWindowInstance, "")
             if separator_bottom:
                 Game.separator()
         
@@ -829,7 +829,7 @@ class Story(Game):
             update_stats_table(Game.MainWindowInstance, Game.main_character.attributes)
             chapter_text = json_handler.load_json_chapter_text(current_room, sub_chapter_name)
             chapter_functions = json_handler.load_json_chapter_functions(current_room, sub_chapter_name)
-            Story.story_slow_print(chapter_text, chapter_functions, sub_chapter_index, separator_top=True, separator_bottom=True, new_line_top=True)
+            Story.story_slow_print(chapter_text, chapter_functions, sub_chapter_index, separator_top=True, new_line_top=True)
             display_choices()
 
     @staticmethod

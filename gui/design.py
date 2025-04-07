@@ -83,11 +83,12 @@ class MainWindow(cTk.CTkToplevel):
 
         self.stats_frame = cTk.CTkFrame(self, fg_color=COLOR_FRAME)
         self.stats_frame.place(relx=0.55, rely=0.68, relwidth=0.4, relheight=0.3)
+        self.stats_frame.grid_rowconfigure(0, weight=1)
+        self.stats_frame.grid_columnconfigure(0, weight=1)
 
-        self.stats_table = cTk.CTkTextbox(self.stats_frame, fg_color=COLOR_FRAME, text_color=COLOR_TEXT)
-        self.stats_table.place(relx=0.05, rely=0.05, relwidth=0.9, relheight=0.9)
-        self.stats_table.configure(state="disabled")
-
+        self.stats_table_frame = cTk.CTkFrame(self.stats_frame, fg_color=COLOR_BACKGROUND)
+        self.stats_table_frame.pack(fill="both", expand=True, padx=10, pady=10)
+        
 class InventoryWindow(cTk.CTkToplevel):
     def __init__(self, master, close_inventory):
         super().__init__(master)
@@ -107,23 +108,23 @@ class SettingsWindow(cTk.CTkToplevel):
         self.player_name = master.player_name
         self.title(f"{self.player_name}'s Settings Menu - © Paul Hinterbauer 2025 @ TGM Vienna")
         self.geometry("700x400")
-        self.configure(bg=COLOR_BACKGROUND)
+        self.configure(fg_color=COLOR_BACKGROUND)
 
-        self.gui_mode_label = cTk.CTkLabel(self, text="Enable GUI Mode:", bg=COLOR_BACKGROUND, fg=COLOR_TEXT)
+        self.gui_mode_label = cTk.CTkLabel(self, text="Enable GUI Mode:", fg_color=COLOR_BACKGROUND, text_color=COLOR_TEXT)
         self.gui_mode_label.place(relx=0.5, rely=0.1, anchor="center")
 
         self.gui_mode_switch = cTk.CTkSwitch(self, text="GUI Mode", fg_color=COLOR_BUTTON, progress_color=COLOR_BUTTON_HOVER)
         self.gui_mode_switch.place(relx=0.5, rely=0.17, anchor="center")
         self.gui_mode_switch.toggle()
 
-        self.sleep_time_label = cTk.CTkLabel(self, text="Game Sleep Time (float, default=0.04):", bg=COLOR_BACKGROUND, fg=COLOR_TEXT)
+        self.sleep_time_label = cTk.CTkLabel(self, text="Game Sleep Time (float, default=0.04):", fg_color=COLOR_BACKGROUND, text_color=COLOR_TEXT)
         self.sleep_time_label.place(relx=0.5, rely=0.3, anchor="center")
 
         self.sleep_time_entry = cTk.CTkEntry(self, fg_color=COLOR_FRAME, text_color=COLOR_TEXT)
         self.sleep_time_entry.place(relx=0.5, rely=0.37, anchor="center")
         self.sleep_time_entry.insert(0, "0.04")
 
-        self.separator_length_label = cTk.CTkLabel(self, text="Separator Length (int, default=120):", bg=COLOR_BACKGROUND, fg=COLOR_TEXT)
+        self.separator_length_label = cTk.CTkLabel(self, text="Separator Length (int, default=120):", fg_color=COLOR_BACKGROUND, text_color=COLOR_TEXT)
         self.separator_length_label.place(relx=0.5, rely=0.5, anchor="center")
 
         self.separator_length_entry = cTk.CTkEntry(self, fg_color=COLOR_FRAME, text_color=COLOR_TEXT)

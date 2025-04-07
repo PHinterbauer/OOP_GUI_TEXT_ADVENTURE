@@ -9,7 +9,7 @@ import customtkinter as cTk
 import time
 import json
 
-from gui.design import SettingsWindow, MainWindow, InventoryWindow, StartWindow
+from gui.design import SettingsWindow, MainWindow, InventoryWindow, StartWindow, COLOR_BUTTON, COLOR_FRAME, COLOR_TEXT
 
 SettingsWindowInstance = None
 root = None
@@ -177,12 +177,21 @@ def gui_save_input_value(MainWindowInstance, input_value, callback=None):
     return input_value
 
 def update_stats_table(MainWindowInstance, attributes: dict):
-    if attributes:
-        MainWindowInstance.stats_table.configure(state="normal")
-        MainWindowInstance.stats_table.delete("0.0", "end")
-        for key, value in attributes.items():
-            MainWindowInstance.stats_table.insert("end", f"{key} | {value}\n")
-        MainWindowInstance.stats_table.configure(state="disabled")
+    for widget in MainWindowInstance.stats_table_frame.winfo_children():
+        widget.destroy()
+    header_key = cTk.CTkLabel(MainWindowInstance.stats_table_frame, text="Attribute", fg_color=COLOR_BUTTON, text_color=COLOR_TEXT, anchor="center", padx=5, pady=5)
+    header_key.grid(row=0, column=0, sticky="nsew", padx=2, pady=2)
+    header_value = cTk.CTkLabel(MainWindowInstance.stats_table_frame, text="Value", fg_color=COLOR_BUTTON, text_color=COLOR_TEXT, anchor="center", padx=5, pady=5)
+    header_value.grid(row=0, column=1, sticky="nsew", padx=2, pady=2)
+    for row, (key, value) in enumerate(attributes.items(), start=1):
+        key_label = cTk.CTkLabel(MainWindowInstance.stats_table_frame, text=key, fg_color=COLOR_FRAME, text_color=COLOR_TEXT, anchor="center", padx=5, pady=5)
+        key_label.grid(row=row, column=0, sticky="nsew", padx=2, pady=2)
+        value_label = cTk.CTkLabel(MainWindowInstance.stats_table_frame, text=str(value), fg_color=COLOR_FRAME, text_color=COLOR_TEXT, anchor="center", padx=5, pady=5)
+        value_label.grid(row=row, column=1, sticky="nsew", padx=2, pady=2)
+    for i in range(len(attributes) + 1):
+        MainWindowInstance.stats_table_frame.grid_rowconfigure(i, weight=1)
+    MainWindowInstance.stats_table_frame.grid_columnconfigure(0, weight=1)
+    MainWindowInstance.stats_table_frame.grid_columnconfigure(1, weight=1)
 
 def load_settings():
     from utilities.game import Game
