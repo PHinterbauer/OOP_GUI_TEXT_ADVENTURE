@@ -1,3 +1,5 @@
+# THIS IS OLD
+
 Die Tasten inputs von den best möglichen Entscheidungen. Zumindestens soweit das Text-Adventure funktioniert :(
 
 1, 2, 1, 2, 2, 2, 1, 10, e, 1, 1, 2, 1, 1, 1, 1, 3,
