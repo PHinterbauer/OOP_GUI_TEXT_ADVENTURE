@@ -16,4 +16,10 @@ Ich habe trotzdem in den letzten 11 Stunden und 34 Minuten (das ist leider kein 
 Beim jeglicher Einstellung über das Settings Menü muss nach dem Speichern das Spiel neu gestartet werden - Außer bei den Themes!
 Bei deaktivierung der GUI muss diese über die settings.json Datei wieder auf 1 gesetzt werden um die GUI zu reaktivieren!
 
+Known-Issues
+
+Shop kann nicht ausgekauft werden
+Seperatoren können nicht resized werden - slow print nutzt gesamten main thread und lässt somit die gleichzeitige änderung der seps nicht zu
+repair Funktion funktioniert nicht zu 100% und kann zu crashes führen
+
 - Immernoch Paul Hinterabuer :)

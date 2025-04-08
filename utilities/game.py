@@ -9,7 +9,7 @@ class Game():
     json_file_path = "./modules/story_text.json"
     sleep_time = 0.05
     main_character = ""
-    separator_length = 120
+    separator_length = 320
     MainWindowInstance = None
     gui_mode = True
     color_scheme = "Default"
@@ -455,7 +455,7 @@ class Player(Entity):
                     Game.slow_print("Bitte gib y oder n ein!")
         else:
             def ask_satisfaction():
-                Game.slow_input("Zufrieden? (y/n)>", new_line_top=True, callback=process_response)
+                Game.slow_input("V Zufrieden? (y/n) V", new_line_top=True, callback=process_response)
             def process_response(value):
                 value = value.strip().lower()
                 if value in ["yes", "y", "ja"]:
@@ -536,7 +536,7 @@ class Player(Entity):
                     key = attributes[index]
                     Game.slow_print(f'Verfügbare Punkte: {self.xp_points}', separator_top=True, new_line_top=True)
                     Game.slow_print(f'Bitte gib Punkte für {key} ein:', new_line_top=True)
-                    gui_input(Game.MainWindowInstance, gui_input_callback=lambda _, value: process_input(key, value), label_text=f"{key} V")
+                    gui_input(Game.MainWindowInstance, gui_input_callback=lambda _, value: process_input(key, value), label_text=f"V {key} V")
                 else:
                     Game.clear_terminal()
                     Game.slow_print(f'Deine Verteilung sieht wie folgt aus:', separator_top=True, new_line_top=True)
@@ -619,19 +619,17 @@ class Shop(Entity):
                     Game.slow_print("Bitte gib eine ganze Zahl ein!")
             Story.story_loop(Game.main_character, sub_chapter_index = 1)
         else:
+            shop_name = Game.main_character.current_location.split("_")[2] + "_" + Game.main_character.current_location.split("_")[3]
+            shop = eval(shop_name)
             def display_shop():
                 Game.clear_terminal()
                 Game.slow_print("Willkommen im Shop!\nHier sind die verfügbaren Items:\n", separator_top=True, new_line_top=True)
                 for index, (item, quantity) in enumerate(shop.inventory.items(), start=1):
                     price = shop.prices[item]
                     Game.slow_print(f"[{index}]: {item} (Preis: {price} Münzen) - Verfügbar: {quantity}")
-                Game.slow_print("[e]: Exit", new_line_bottom=True)
-                Game.slow_input("Wähle ein Item oder 'e' zum Verlassen>\n", separator_bottom=True, callback=process_choice)
+                Game.slow_input("V Wähle ein Item und drücke die Enter-Taste um es zu kaufen! V\n", separator_bottom=True, callback=process_choice)
             def process_choice(choice):
                 choice = choice.strip()
-                if choice.lower() in ["e", "exit"]:
-                    Story.story_loop(Game.main_character, sub_chapter_index=1)
-                    return
                 try:
                     choice_index = int(choice) - 1
                     if 0 <= choice_index < len(shop.inventory):
@@ -762,7 +760,7 @@ class Story(Game):
         else:
             Game.clear_terminal()
             def show_death_message():
-                Story.story_print(json_handler.load_json_chapter_text("start", "death_screen"), "", callback=lambda: Game.MainWindowInstance.after(5000, quit))
+                Story.story_print(json_handler.load_json_chapter_text("start", "death_screen"), "")
             Game.MainWindowInstance.after(100, show_death_message)
 
     @staticmethod
@@ -876,18 +874,41 @@ class Story(Game):
         Args:
             cost (dict): The cost of the repair.
         """
-        choice = Game.slow_input("Willst du dein Schiff reparieren?\n[j]: Ja\n[n]: Nein\n")
-        if choice.lower().strip() in ["ja", "j"]:
-            for key, value in cost.items():
-                if cost[key] in Game.main_character.inventory:
-                    if Game.main_character.inventory[key] >= cost[key]:
-                        Game.main_character.inventory[key] -= value
+        if not Game.gui_mode:
+            choice = Game.slow_input("Willst du dein Schiff reparieren?\n[j]: Ja\n[n]: Nein\n")
+            if choice.lower().strip() in ["ja", "j"]:
+                for key, value in cost.items():
+                    if cost[key] in Game.main_character.inventory:
+                        if Game.main_character.inventory[key] >= cost[key]:
+                            Game.main_character.inventory[key] -= value
+                        else:
+                            Game.slow_print(f'Du hast nicht genügend {cost}!')
+                            Story.story_loop(Game.main_character, Game.main_character.current_location, "text_not_repaired")
                     else:
                         Game.slow_print(f'Du hast nicht genügend {cost}!')
                         Story.story_loop(Game.main_character, Game.main_character.current_location, "text_not_repaired")
+            else:
+                Game.slow_print("Du hast dich entschieden, dein Schiff nicht zu reparieren.")
+                Story.story_loop(Game.main_character, Game.main_character.current_location, "text_not_repaired")
+        else:
+            def process_input(value):
+                if value and value.lower().strip() in ["ja", "j"]:
+                    for key, value in cost.items():
+                        if key in Game.main_character.inventory:
+                            if Game.main_character.inventory[key] >= value:
+                                Game.main_character.inventory[key] -= value
+                            else:
+                                Game.slow_print(f'Du hast nicht genügend {key}!')
+                                Story.story_loop(Game.main_character, Game.main_character.current_location, "text_not_repaired")
+                                return
+                        else:
+                            Game.slow_print(f'Du hast nicht genügend {key}!')
+                            Story.story_loop(Game.main_character, Game.main_character.current_location, "text_not_repaired")
+                            return
                 else:
-                    Game.slow_print(f'Du hast nicht genügend {cost}!')
-                    Story.story_loop(Game.main_character, Game.main_character.current_location, "text_not_repaired")
+                    Game.slow_print("Du hast dich entschieden, dein Schiff nicht zu reparieren.")
+                Story.story_loop(Game.main_character, Game.main_character.current_location, "text_not_repaired")
+            Game.slow_input("V Willst du dein Schiff reparieren? [j/n] V", callback=process_input)
 
 # initialize rooms
 start = Room("start", ["Abenteuer starten!"], ["chapter_1"], inventory = {})

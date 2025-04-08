@@ -2,7 +2,7 @@
     "Default": {
         "COLOR_BACKGROUND": "#2B2B2B",
         "COLOR_TEXT": "#FFFFFF",
-        "COLOR_BUTTON": "#3C3F41",
+        "COLOR_BUTTON": "#1F6AA5",
         "COLOR_BUTTON_HOVER": "#4E5254",
         "COLOR_FRAME": "#3C3F41"
     },

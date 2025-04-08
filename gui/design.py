@@ -90,7 +90,7 @@ class MainWindow(cTk.CTkToplevel):
 
         self.stats_table_frame = cTk.CTkFrame(self.stats_frame, fg_color=StartWindow.COLOR_BACKGROUND)
         self.stats_table_frame.pack(fill="both", expand=True, padx=10, pady=10)
-        
+
 class InventoryWindow(cTk.CTkToplevel):
     def __init__(self, master, close_inventory):
         super().__init__(master)
@@ -129,12 +129,12 @@ class SettingsWindow(cTk.CTkToplevel):
         self.sleep_time_entry.place(relx=0.5, rely=0.37, anchor="center")
         self.sleep_time_entry.insert(0, "0.04")
 
-        self.separator_length_label = cTk.CTkLabel(self, text="Separator Length (int, default=120):", fg_color=StartWindow.COLOR_BACKGROUND, text_color=StartWindow.COLOR_TEXT)
+        self.separator_length_label = cTk.CTkLabel(self, text="Separator Length (int, default=320):", fg_color=StartWindow.COLOR_BACKGROUND, text_color=StartWindow.COLOR_TEXT)
         self.separator_length_label.place(relx=0.5, rely=0.5, anchor="center")
 
         self.separator_length_entry = cTk.CTkEntry(self, fg_color=StartWindow.COLOR_FRAME, text_color=StartWindow.COLOR_TEXT)
         self.separator_length_entry.place(relx=0.5, rely=0.57, anchor="center")
-        self.separator_length_entry.insert(0, "120")
+        self.separator_length_entry.insert(0, "320")
 
         self.color_scheme_label = cTk.CTkLabel(self, text="Color Scheme:", fg_color=StartWindow.COLOR_BACKGROUND, text_color=StartWindow.COLOR_TEXT)
         self.color_scheme_label.place(relx=0.5, rely=0.65, anchor="center")

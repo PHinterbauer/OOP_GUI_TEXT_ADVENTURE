@@ -13,7 +13,7 @@ if __name__ == "__main__":
     Game.main_character = Player(current_location="start", attributes={"Stärke": 0, "Leben": 0, "Münzen": 0}, inventory={})
     Game.json_file_path = "./resources/json/story_text.json"
     Game.start()
-    
+
 # - Comments
 # - Docstrings
 # - Function return values - func() -> None

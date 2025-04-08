@@ -279,13 +279,13 @@ def load_settings():
             settings_data = json.load(settings_file)
             Game.gui_mode = settings_data.get("Game.gui_mode", True)
             Game.sleep_time = settings_data.get("Game.sleep_time", 0.04)
-            Game.separator_length = settings_data.get("Game.separator_length", 120)
+            Game.separator_length = settings_data.get("Game.separator_length", 30)
             Game.color_scheme = settings_data.get("Game.color_scheme", "Default")
             load_color_scheme(Game.color_scheme)
     except FileNotFoundError:
         Game.gui_mode = True
         Game.sleep_time = 0.04
-        Game.separator_length = 120
+        Game.separator_length = 320
         Game.color_scheme = "Default"
         settings_data = {
             "Game.gui_mode": Game.gui_mode,
