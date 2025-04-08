@@ -1,6 +1,6 @@
 {
     "Game.gui_mode": 1,
-    "Game.sleep_time": 0.0001,
+    "Game.sleep_time": 0.04,
     "Game.separator_length": 320,
     "Game.color_scheme": "Default"
 }
