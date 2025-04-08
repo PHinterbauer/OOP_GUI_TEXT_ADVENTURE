@@ -2,11 +2,11 @@ import time
 import os
 
 from utilities.file_handler import Json_Handler
-from gui.interactions import update_stats_table, delete_all_entries, add_list_to_textbox, gui_initialize, gui_input, add_list_to_textbox_slow, add_text_to_textbox, add_text_to_textbox_slow, add_dict_to_textbox, add_dict_to_textbox_slow, add_choice_button, delete_choice_buttons
+from gui.interactions import resource_path, update_stats_table, delete_all_entries, add_list_to_textbox, gui_initialize, gui_input, add_list_to_textbox_slow, add_text_to_textbox, add_text_to_textbox_slow, add_dict_to_textbox, add_dict_to_textbox_slow, add_choice_button, delete_choice_buttons
 
 class Game():
 
-    json_file_path = "./modules/story_text.json"
+    json_file_path = resource_path("modules/story_text.json")
     sleep_time = 0.05
     main_character = ""
     separator_length = 320

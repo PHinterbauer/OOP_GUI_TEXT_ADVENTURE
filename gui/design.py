@@ -212,8 +212,9 @@ class SettingsWindow(cTk.CTkToplevel):
     def get_color_schemes(self):
         """## Loads available color schemes from a JSON file."""
         from utilities.game import Game
+        from interactions import resource_path
         global COLOR_SCHEMES
-        with open("./resources/json/color_schemes.json", "r") as color_scheme_file:
+        with open(resource_path("resources/json/color_schemes.json"), "r") as color_scheme_file:
             schemes = json.load(color_scheme_file)
             COLOR_SCHEMES = list(schemes.keys())
         self.color_scheme_button.configure(text=Game.color_scheme)

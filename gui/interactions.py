@@ -8,6 +8,8 @@
 import customtkinter as cTk
 import time
 import json
+import sys
+import os
 
 from gui.design import SettingsWindow, MainWindow, InventoryWindow, StartWindow
 
@@ -397,7 +399,7 @@ def load_color_scheme(color_scheme_name):
     Args:
         color_scheme_name (str): The name of the color scheme to load.
     """
-    with open("./resources/json/color_schemes.json", "r") as color_scheme_file:
+    with open(resource_path("resources/json/color_schemes.json"), "r") as color_scheme_file:
         schemes = json.load(color_scheme_file)
         if color_scheme_name in schemes:
             # Apply color scheme to global variables
@@ -464,7 +466,7 @@ def load_settings():
     """
     from utilities.game import Game
     try:
-        with open("./resources/json/settings.json", "r") as settings_file:
+        with open(resource_path("resources/json/settings.json"), "r") as settings_file:
             settings_data = json.load(settings_file)
             # Apply settings to global variables
             Game.gui_mode = settings_data.get("Game.gui_mode", True)
@@ -484,7 +486,7 @@ def load_settings():
             "Game.separator_length": Game.separator_length,
             "Game.color_scheme": Game.color_scheme,
         }
-        with open("./resources/json/settings.json", "w") as settings_file:
+        with open(resource_path("resources/json/settings.json"), "w") as settings_file:
             json.dump(settings_data, settings_file, indent=4)
         load_color_scheme(Game.color_scheme)
 
@@ -507,7 +509,7 @@ def save_settings(gui_mode_switch, sleep_time_entry, separator_length_entry, sel
         "Game.separator_length": separator_length,
         "Game.color_scheme": selected_color_scheme,
     }
-    with open("./resources/json/settings.json", "w") as settings_file:
+    with open(resource_path("resources/json/settings.json"), "w") as settings_file:
         json.dump(settings_data, settings_file, indent=4)
 
 def save_and_close(SettingsWindowInstance):
@@ -533,3 +535,21 @@ def gui_initialize():
     root = StartWindow(open_main_window, confirm_player_name, open_settings)
     root.after(100, Game.wait_for_main_window)  # Callback to wait for the main window
     root.mainloop()
+
+def resource_path(relative_path):
+    """## Resolves the resource path
+    Returns the absolute path to the resource, whether the application is running
+    as a standalone executable (PyInstaller) or as a script.
+
+    Args:
+        relative_path (str): The relative path to the resource.
+
+    Returns:
+        str: The absolute path to the resource.
+    """
+    # Check if the application is running as a PyInstaller bundle
+    if hasattr(sys, '_MEIPASS'):
+        # Use the temporary folder created by PyInstaller
+        return os.path.join(sys._MEIPASS, relative_path)
+    # Use the current working directory for a normal script
+    return os.path.join(os.path.abspath("."), relative_path)
