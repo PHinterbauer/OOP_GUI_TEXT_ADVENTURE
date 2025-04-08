@@ -12,6 +12,7 @@ class Game():
     separator_length = 120
     MainWindowInstance = None
     gui_mode = True
+    color_scheme = "Default"
 
     def __init__(self) -> None:
         pass

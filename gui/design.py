@@ -7,12 +7,15 @@
 
 import customtkinter as cTk
 from PIL import Image, ImageSequence
+import json
 
-COLOR_BACKGROUND = "#0D1B2A"
+COLOR_BACKGROUND = "#2B2B2B"
 COLOR_TEXT = "#FFFFFF"
-COLOR_BUTTON = "#1B263B"
-COLOR_BUTTON_HOVER = "#112B3C"
-COLOR_FRAME = "#2A4D69"
+COLOR_BUTTON = "#3C3F41"
+COLOR_BUTTON_HOVER = "#4E5254"
+COLOR_FRAME = "#3C3F41"
+
+COLOR_SCHEMES = []
 
 class StartWindow(cTk.CTk):
     def __init__(self, open_main_window, confirm_player_name, open_settings):
@@ -104,7 +107,7 @@ class InventoryWindow(cTk.CTkToplevel):
         self.inventory_table_frame.place(relx=0.5, rely=0.5, relwidth=0.9, relheight=0.8, anchor="center")
 
 class SettingsWindow(cTk.CTkToplevel):
-    def __init__(self, master, save_and_close):
+    def __init__(self, master, save_and_close, set_color_scheme):
         super().__init__(master)
 
         self.player_name = master.player_name
@@ -133,5 +136,20 @@ class SettingsWindow(cTk.CTkToplevel):
         self.separator_length_entry.place(relx=0.5, rely=0.57, anchor="center")
         self.separator_length_entry.insert(0, "120")
 
+        self.get_color_schemes()
+
+        self.color_scheme_label = cTk.CTkLabel(self, text="Color Scheme:", fg_color=COLOR_BACKGROUND, text_color=COLOR_TEXT)
+        self.color_scheme_label.place(relx=0.5, rely=0.65, anchor="center")
+
+        self.color_scheme_default_var = cTk.StringVar(value="Default")
+        self.color_scheme_default = cTk.CTkOptionMenu(self, variable=self.color_scheme_default_var, values=COLOR_SCHEMES, command=lambda color_scheme: set_color_scheme(color_scheme))
+        self.color_scheme_default.place(relx=0.5, rely=0.72, anchor="center")
+
         self.save_button = cTk.CTkButton(self, text="Save Settings", command=lambda: save_and_close(self), fg_color=COLOR_BUTTON, hover_color=COLOR_BUTTON_HOVER, text_color=COLOR_TEXT)
-        self.save_button.place(relx=0.5, rely=0.7, anchor="center")
+        self.save_button.place(relx=0.5, rely=0.8, anchor="center")
+    
+    def get_color_schemes(self):
+        global COLOR_SCHEMES
+        with open("./resources/json/color_schemes.json", "r") as color_scheme_file:
+            schemes = json.load(color_scheme_file)
+            COLOR_SCHEMES = list(schemes.keys())

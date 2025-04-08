@@ -9,7 +9,7 @@ import customtkinter as cTk
 import time
 import json
 
-from gui.design import SettingsWindow, MainWindow, InventoryWindow, StartWindow, COLOR_BUTTON, COLOR_FRAME, COLOR_TEXT
+from gui.design import SettingsWindow, MainWindow, InventoryWindow, StartWindow, COLOR_BUTTON, COLOR_FRAME, COLOR_TEXT, COLOR_BACKGROUND, COLOR_BUTTON_HOVER, COLOR_SCHEMES
 
 SettingsWindowInstance = None
 root = None
@@ -43,7 +43,7 @@ def open_inventory(MainWindowInstance):
 def open_settings(parent):
     global SettingsWindowInstance
     if SettingsWindowInstance is None or not SettingsWindowInstance.winfo_exists():
-        SettingsWindowInstance = SettingsWindow(parent, save_and_close)
+        SettingsWindowInstance = SettingsWindow(parent, save_and_close, set_color_scheme)
         SettingsWindowInstance.grab_set()
     else:
         SettingsWindowInstance.focus()
@@ -221,6 +221,21 @@ def update_inventory_table(InventoryWindowInstance, inventory: dict):
         label_if_empty = cTk.CTkLabel(InventoryWindowInstance, text="Dein Inventar ist leer!", fg_color=COLOR_FRAME, text_color=COLOR_TEXT, anchor="center", padx=5, pady=5)
         label_if_empty.place(relx=0.5, rely=0.5, relwidth=0.9, relheight=0.1, anchor="center")
 
+def load_color_scheme(color_scheme_name):
+    global COLOR_BUTTON, COLOR_BACKGROUND, COLOR_TEXT, COLOR_BUTTON_HOVER, COLOR_FRAME
+    with open("./resources/json/color_schemes.json", "r") as color_scheme_file:
+        schemes = json.load(color_scheme_file)
+        if color_scheme_name in schemes:
+            COLOR_BUTTON = schemes[color_scheme_name]["COLOR_BUTTON"]
+            COLOR_BACKGROUND = schemes[color_scheme_name]["COLOR_BACKGROUND"]
+            COLOR_TEXT = schemes[color_scheme_name]["COLOR_TEXT"]
+            COLOR_BUTTON_HOVER = schemes[color_scheme_name]["COLOR_BUTTON_HOVER"]
+            COLOR_FRAME = schemes[color_scheme_name]["COLOR_FRAME"]
+
+def set_color_scheme(color_scheme):
+    from utilities.game import Game
+    Game.color_scheme = color_scheme
+
 def load_settings():
     from utilities.game import Game
     try:
@@ -229,19 +244,24 @@ def load_settings():
             Game.gui_mode = settings_data.get("Game.gui_mode", True)
             Game.sleep_time = settings_data.get("Game.sleep_time", 0.04)
             Game.separator_length = settings_data.get("Game.separator_length", 120)
+            Game.color_scheme = settings_data.get("Game.color_scheme", "Default")
+            load_color_scheme(Game.color_scheme)
     except FileNotFoundError:
         Game.gui_mode = True
         Game.sleep_time = 0.04
         Game.separator_length = 120
+        Game.color_scheme = "Default"
         settings_data = {
-        "Game.gui_mode": Game.gui_mode,
-        "Game.sleep_time": Game.sleep_time,
-        "Game.separator_length": Game.separator_length,
+            "Game.gui_mode": Game.gui_mode,
+            "Game.sleep_time": Game.sleep_time,
+            "Game.separator_length": Game.separator_length,
+            "Game.color_scheme": Game.color_scheme,
         }
         with open("./resources/json/settings.json", "w") as settings_file:
             json.dump(settings_data, settings_file, indent=4)
+        load_color_scheme(Game.color_scheme)
 
-def save_settings(gui_mode_switch, sleep_time_entry, separator_length_entry):
+def save_settings(gui_mode_switch, sleep_time_entry, separator_length_entry, selected_color_scheme):
     gui_mode = gui_mode_switch.get()
     sleep_time = float(sleep_time_entry.get()) if sleep_time_entry.get() else 0.04
     separator_length = int(separator_length_entry.get()) if separator_length_entry.get() else 120
@@ -249,12 +269,15 @@ def save_settings(gui_mode_switch, sleep_time_entry, separator_length_entry):
         "Game.gui_mode": gui_mode,
         "Game.sleep_time": sleep_time,
         "Game.separator_length": separator_length,
+        "Game.color_scheme": selected_color_scheme,
     }
     with open("./resources/json/settings.json", "w") as settings_file:
         json.dump(settings_data, settings_file, indent=4)
 
 def save_and_close(SettingsWindowInstance):
-    save_settings(SettingsWindowInstance.gui_mode_switch, SettingsWindowInstance.sleep_time_entry, SettingsWindowInstance.separator_length_entry)
+    selected_color_scheme = SettingsWindowInstance.color_scheme_default_var.get()
+    save_settings(SettingsWindowInstance.gui_mode_switch, SettingsWindowInstance.sleep_time_entry, SettingsWindowInstance.separator_length_entry, selected_color_scheme)
+    load_color_scheme(selected_color_scheme)
     close_settings()
 
 def gui_initialize():

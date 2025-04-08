@@ -1,0 +1,177 @@
+{
+    "Default": {
+        "COLOR_BACKGROUND": "#2B2B2B",
+        "COLOR_TEXT": "#FFFFFF",
+        "COLOR_BUTTON": "#3C3F41",
+        "COLOR_BUTTON_HOVER": "#4E5254",
+        "COLOR_FRAME": "#3C3F41"
+    },
+    "Pink": {
+        "COLOR_BACKGROUND": "#FFC0CB",
+        "COLOR_TEXT": "#5A5A5A",
+        "COLOR_BUTTON": "#FF69B4",
+        "COLOR_BUTTON_HOVER": "#FF1493",
+        "COLOR_FRAME": "#FFB6C1"
+    },
+    "Blue": {
+        "COLOR_BACKGROUND": "#1E90FF",
+        "COLOR_TEXT": "#FFFFFF",
+        "COLOR_BUTTON": "#4682B4",
+        "COLOR_BUTTON_HOVER": "#5F9EA0",
+        "COLOR_FRAME": "#87CEEB"
+    },
+    "Forest": {
+        "COLOR_BACKGROUND": "#2E8B57",
+        "COLOR_TEXT": "#FFFFFF",
+        "COLOR_BUTTON": "#3CB371",
+        "COLOR_BUTTON_HOVER": "#66CDAA",
+        "COLOR_FRAME": "#228B22"
+    },
+    "Sunset": {
+        "COLOR_BACKGROUND": "#FF4500",
+        "COLOR_TEXT": "#FFFFFF",
+        "COLOR_BUTTON": "#FF6347",
+        "COLOR_BUTTON_HOVER": "#FF7F50",
+        "COLOR_FRAME": "#FF8C00"
+    },
+    "Ocean": {
+        "COLOR_BACKGROUND": "#4682B4",
+        "COLOR_TEXT": "#FFFFFF",
+        "COLOR_BUTTON": "#5F9EA0",
+        "COLOR_BUTTON_HOVER": "#87CEEB",
+        "COLOR_FRAME": "#B0E0E6"
+    },
+    "Lavender": {
+        "COLOR_BACKGROUND": "#E6E6FA",
+        "COLOR_TEXT": "#4B0082",
+        "COLOR_BUTTON": "#9370DB",
+        "COLOR_BUTTON_HOVER": "#BA55D3",
+        "COLOR_FRAME": "#D8BFD8"
+    },
+    "Mint": {
+        "COLOR_BACKGROUND": "#98FF98",
+        "COLOR_TEXT": "#2E8B57",
+        "COLOR_BUTTON": "#3CB371",
+        "COLOR_BUTTON_HOVER": "#66CDAA",
+        "COLOR_FRAME": "#8FBC8F"
+    },
+    "Chocolate": {
+        "COLOR_BACKGROUND": "#D2691E",
+        "COLOR_TEXT": "#FFFFFF",
+        "COLOR_BUTTON": "#8B4513",
+        "COLOR_BUTTON_HOVER": "#A0522D",
+        "COLOR_FRAME": "#CD853F"
+    },
+    "Sky": {
+        "COLOR_BACKGROUND": "#87CEEB",
+        "COLOR_TEXT": "#000000",
+        "COLOR_BUTTON": "#4682B4",
+        "COLOR_BUTTON_HOVER": "#5F9EA0",
+        "COLOR_FRAME": "#B0E0E6"
+    },
+    "Lemon": {
+        "COLOR_BACKGROUND": "#FFFACD",
+        "COLOR_TEXT": "#808000",
+        "COLOR_BUTTON": "#FFD700",
+        "COLOR_BUTTON_HOVER": "#FFA500",
+        "COLOR_FRAME": "#F0E68C"
+    },
+    "Grape": {
+        "COLOR_BACKGROUND": "#6A5ACD",
+        "COLOR_TEXT": "#FFFFFF",
+        "COLOR_BUTTON": "#7B68EE",
+        "COLOR_BUTTON_HOVER": "#9370DB",
+        "COLOR_FRAME": "#8A2BE2"
+    },
+    "Peach": {
+        "COLOR_BACKGROUND": "#FFDAB9",
+        "COLOR_TEXT": "#8B4513",
+        "COLOR_BUTTON": "#FFA07A",
+        "COLOR_BUTTON_HOVER": "#FF7F50",
+        "COLOR_FRAME": "#FFE4B5"
+    },
+    "Emerald": {
+        "COLOR_BACKGROUND": "#50C878",
+        "COLOR_TEXT": "#FFFFFF",
+        "COLOR_BUTTON": "#3CB371",
+        "COLOR_BUTTON_HOVER": "#66CDAA",
+        "COLOR_FRAME": "#2E8B57"
+    },
+    "Ruby": {
+        "COLOR_BACKGROUND": "#9B111E",
+        "COLOR_TEXT": "#FFFFFF",
+        "COLOR_BUTTON": "#B22222",
+        "COLOR_BUTTON_HOVER": "#DC143C",
+        "COLOR_FRAME": "#FF6347"
+    },
+    "Gold": {
+        "COLOR_BACKGROUND": "#FFD700",
+        "COLOR_TEXT": "#000000",
+        "COLOR_BUTTON": "#FFA500",
+        "COLOR_BUTTON_HOVER": "#FF8C00",
+        "COLOR_FRAME": "#F0E68C"
+    },
+    "Silver": {
+        "COLOR_BACKGROUND": "#C0C0C0",
+        "COLOR_TEXT": "#000000",
+        "COLOR_BUTTON": "#A9A9A9",
+        "COLOR_BUTTON_HOVER": "#808080",
+        "COLOR_FRAME": "#D3D3D3"
+    },
+    "Bronze": {
+        "COLOR_BACKGROUND": "#CD7F32",
+        "COLOR_TEXT": "#FFFFFF",
+        "COLOR_BUTTON": "#8B4513",
+        "COLOR_BUTTON_HOVER": "#A0522D",
+        "COLOR_FRAME": "#D2691E"
+    },
+    "Rose": {
+        "COLOR_BACKGROUND": "#FF007F",
+        "COLOR_TEXT": "#FFFFFF",
+        "COLOR_BUTTON": "#FF1493",
+        "COLOR_BUTTON_HOVER": "#FF69B4",
+        "COLOR_FRAME": "#FFC0CB"
+    },
+    "Teal": {
+        "COLOR_BACKGROUND": "#008080",
+        "COLOR_TEXT": "#FFFFFF",
+        "COLOR_BUTTON": "#20B2AA",
+        "COLOR_BUTTON_HOVER": "#40E0D0",
+        "COLOR_FRAME": "#5F9EA0"
+    },
+    "Cyan": {
+        "COLOR_BACKGROUND": "#00FFFF",
+        "COLOR_TEXT": "#000000",
+        "COLOR_BUTTON": "#40E0D0",
+        "COLOR_BUTTON_HOVER": "#48D1CC",
+        "COLOR_FRAME": "#AFEEEE"
+    },
+    "Amber": {
+        "COLOR_BACKGROUND": "#FFBF00",
+        "COLOR_TEXT": "#000000",
+        "COLOR_BUTTON": "#FF8C00",
+        "COLOR_BUTTON_HOVER": "#FFA500",
+        "COLOR_FRAME": "#FFD700"
+    },
+    "Plum": {
+        "COLOR_BACKGROUND": "#DDA0DD",
+        "COLOR_TEXT": "#4B0082",
+        "COLOR_BUTTON": "#BA55D3",
+        "COLOR_BUTTON_HOVER": "#9370DB",
+        "COLOR_FRAME": "#E6E6FA"
+    },
+    "Ivory": {
+        "COLOR_BACKGROUND": "#FFFFF0",
+        "COLOR_TEXT": "#000000",
+        "COLOR_BUTTON": "#F5DEB3",
+        "COLOR_BUTTON_HOVER": "#FFE4C4",
+        "COLOR_FRAME": "#FAF0E6"
+    },
+    "Charcoal": {
+        "COLOR_BACKGROUND": "#36454F",
+        "COLOR_TEXT": "#FFFFFF",
+        "COLOR_BUTTON": "#2F4F4F",
+        "COLOR_BUTTON_HOVER": "#556B2F",
+        "COLOR_FRAME": "#708090"
+    }
+}
