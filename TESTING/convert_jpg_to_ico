@@ -1,0 +1,4 @@
+from PIL import Image
+
+img = Image.open("resources/images/ICON_SHIP.jpg")
+img.save("resources/images/ICON_SHIP.ico", format='ICO')
