@@ -306,16 +306,14 @@ class Entity(Game):
         current_room = eval(current_room_name)
         for item, quantity in items.items():
             if item in current_room.inventory and current_room.inventory[item] >= quantity:
-                for key, value in items.items():
-                    if key == "Münzen":
-                        self.attributes["Münzen"] += value
+                if item == "Münzen":
+                    self.attributes["Münzen"] += quantity
+                else:
+                    if item in self.inventory:
+                        self.inventory[item] += quantity
                     else:
-                        if key in self.inventory:
-                            self.inventory[key] += value
-                            current_room.inventory[item] -= quantity
-                        else:
-                            self.inventory[key] = value
-                            current_room.inventory[item] -= quantity
+                        self.inventory[item] = quantity
+                    current_room.inventory[item] -= quantity
 
     def sub_inventory(self, subtract: dict): 
         """## Subtracts items from inventory
@@ -743,6 +741,7 @@ class Story(Game):
                 add_text_to_textbox(Game.MainWindowInstance, "")
             for index, element in enumerate(list_to_print):
                 if str(index + sub_chapter_index) in chapter_functions:
+                    print(f"Evaluating function: {chapter_functions[str(index)]}")
                     eval(chapter_functions[str(index)])
             add_list_to_textbox_slow(Game.MainWindowInstance, list_to_print, Game.sleep_time)
             if new_line_bottom:

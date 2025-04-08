@@ -207,22 +207,18 @@ def update_inventory_table(InventoryWindowInstance, inventory: dict):
     for widget in InventoryWindowInstance.inventory_table_frame.winfo_children():
         widget.destroy()
     header_key = cTk.CTkLabel(InventoryWindowInstance.inventory_table_frame, text="Gegenstand", fg_color=StartWindow.COLOR_BUTTON, text_color=StartWindow.COLOR_TEXT, anchor="center", padx=5, pady=5, height=30)
-    header_key.grid(row=0, column=0, sticky="nsew", padx=2, pady=2)
+    header_key.place(relx=0.05, rely=0.05, relwidth=0.4, relheight=0.1)
     header_value = cTk.CTkLabel(InventoryWindowInstance.inventory_table_frame, text="Anzahl", fg_color=StartWindow.COLOR_BUTTON, text_color=StartWindow.COLOR_TEXT, anchor="center", padx=5, pady=5, height=30)
-    header_value.grid(row=0, column=1, sticky="nsew", padx=2, pady=2)
+    header_value.place(relx=0.5, rely=0.05, relwidth=0.4, relheight=0.1)
     if inventory:
-        for row, (key, value) in enumerate(inventory.items(), start=1):
+        for index, (key, value) in enumerate(inventory.items(), start=1):
             key_label = cTk.CTkLabel(InventoryWindowInstance.inventory_table_frame, text=key, fg_color=StartWindow.COLOR_FRAME, text_color=StartWindow.COLOR_TEXT, anchor="center", padx=5, pady=5)
-            key_label.grid(row=row, column=0, sticky="nsew", padx=2, pady=2)
+            key_label.place(relx=0.05, rely=0.2 + index * 0.1, relwidth=0.4, relheight=0.1)
             value_label = cTk.CTkLabel(InventoryWindowInstance.inventory_table_frame, text=str(value), fg_color=StartWindow.COLOR_FRAME, text_color=StartWindow.COLOR_TEXT, anchor="center", padx=5, pady=5)
-            value_label.grid(row=row, column=1, sticky="nsew", padx=2, pady=2)
-        for i in range(len(inventory) + 1):
-            InventoryWindowInstance.inventory_table_frame.grid_rowconfigure(i, weight=1)
-        InventoryWindowInstance.inventory_table_frame.grid_columnconfigure(0, weight=1)
-        InventoryWindowInstance.inventory_table_frame.grid_columnconfigure(1, weight=1)
+            value_label.place(relx=0.5, rely=0.2 + index * 0.1, relwidth=0.4, relheight=0.1)
     else:
         label_if_empty = cTk.CTkLabel(InventoryWindowInstance, text="Dein Inventar ist leer!", fg_color=StartWindow.COLOR_FRAME, text_color=StartWindow.COLOR_TEXT, anchor="center", padx=5, pady=5)
-        label_if_empty.place(relx=0.5, rely=0.5, relwidth=0.9, relheight=0.1, anchor="center")
+        label_if_empty.place(relx=0.1, rely=0.4, relwidth=0.8, relheight=0.2)
 
 def load_color_scheme(color_scheme_name):
     with open("./resources/json/color_schemes.json", "r") as color_scheme_file:

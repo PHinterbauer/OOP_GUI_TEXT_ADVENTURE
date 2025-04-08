@@ -39,8 +39,6 @@ if __name__ == "__main__":
 
 # NEEEEEEEEEEEEEEEEEEEEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
-# coins get multiplied by 2 when adding to attributes or when displaying in stats table maybe too many iterations
-
 # COMMENTS AND STUFF
 
 # and add grid between the items and headers in the inventory table
