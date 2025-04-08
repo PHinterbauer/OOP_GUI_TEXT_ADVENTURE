@@ -152,7 +152,7 @@ def delete_all_entries(MainWindowInstance):
     MainWindowInstance.text_box.configure(state="disabled")
 
 def add_choice_button(MainWindowInstance, text, callback):
-    choice_button = cTk.CTkButton(MainWindowInstance.choice_frame, text=text, command=lambda: callback())
+    choice_button = cTk.CTkButton(MainWindowInstance.choice_frame, text=text, command=lambda: callback(), fg_color=StartWindow.COLOR_BUTTON, hover_color=StartWindow.COLOR_BUTTON_HOVER, text_color=StartWindow.COLOR_TEXT)
     choice_button.pack(side="top", fill="x", padx=5, pady=5)
 
 def delete_choice_buttons(MainWindowInstance):
@@ -160,7 +160,6 @@ def delete_choice_buttons(MainWindowInstance):
         widget.destroy()
 
 def read_choice_buttons(MainWindowInstance, choice, callback=None):
-    MainWindowInstance.delete_choice_buttons()
     if callback:
         MainWindowInstance.after(100, lambda: callback(choice))
     return choice
@@ -168,7 +167,7 @@ def read_choice_buttons(MainWindowInstance, choice, callback=None):
 def gui_input(MainWindowInstance, gui_input_callback, label_text, y_position=0.58, callback=None):
     input_label = cTk.CTkLabel(MainWindowInstance, text=label_text)
     input_label.place(relx=0.475, rely=y_position, relwidth=0.85, anchor="center")
-    input_entry = cTk.CTkEntry(MainWindowInstance)
+    input_entry = cTk.CTkEntry(MainWindowInstance, fg_color=StartWindow.COLOR_FRAME, text_color=StartWindow.COLOR_TEXT)
     input_entry.place(relx=0.475, rely=y_position + 0.05, relwidth=0.85, anchor="center")
     input_entry.focus_set()
     def handle_input(event):
@@ -206,12 +205,16 @@ def update_stats_table(MainWindowInstance, attributes: dict):
 def update_inventory_table(InventoryWindowInstance, inventory: dict):
     for widget in InventoryWindowInstance.inventory_table_frame.winfo_children():
         widget.destroy()
+    header_border_frame = cTk.CTkFrame(InventoryWindowInstance.inventory_table_frame, fg_color=StartWindow.COLOR_BACKGROUND)
+    header_border_frame.place(relx=0.04, rely=0.04, relwidth=0.87, relheight=0.12)
     header_key = cTk.CTkLabel(InventoryWindowInstance.inventory_table_frame, text="Gegenstand", fg_color=StartWindow.COLOR_BUTTON, text_color=StartWindow.COLOR_TEXT, anchor="center", padx=5, pady=5, height=30)
     header_key.place(relx=0.05, rely=0.05, relwidth=0.4, relheight=0.1)
     header_value = cTk.CTkLabel(InventoryWindowInstance.inventory_table_frame, text="Anzahl", fg_color=StartWindow.COLOR_BUTTON, text_color=StartWindow.COLOR_TEXT, anchor="center", padx=5, pady=5, height=30)
     header_value.place(relx=0.5, rely=0.05, relwidth=0.4, relheight=0.1)
     if inventory:
         for index, (key, value) in enumerate(inventory.items(), start=1):
+            item_border_frame = cTk.CTkFrame(InventoryWindowInstance.inventory_table_frame, fg_color=StartWindow.COLOR_BACKGROUND)
+            item_border_frame.place(relx=0.045, rely=0.19 + index * 0.1, relwidth=0.86, relheight=0.12)
             key_label = cTk.CTkLabel(InventoryWindowInstance.inventory_table_frame, text=key, fg_color=StartWindow.COLOR_FRAME, text_color=StartWindow.COLOR_TEXT, anchor="center", padx=5, pady=5)
             key_label.place(relx=0.05, rely=0.2 + index * 0.1, relwidth=0.4, relheight=0.1)
             value_label = cTk.CTkLabel(InventoryWindowInstance.inventory_table_frame, text=str(value), fg_color=StartWindow.COLOR_FRAME, text_color=StartWindow.COLOR_TEXT, anchor="center", padx=5, pady=5)

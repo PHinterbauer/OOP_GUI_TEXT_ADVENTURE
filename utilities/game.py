@@ -741,7 +741,6 @@ class Story(Game):
                 add_text_to_textbox(Game.MainWindowInstance, "")
             for index, element in enumerate(list_to_print):
                 if str(index + sub_chapter_index) in chapter_functions:
-                    print(f"Evaluating function: {chapter_functions[str(index)]}")
                     eval(chapter_functions[str(index)])
             add_list_to_textbox_slow(Game.MainWindowInstance, list_to_print, Game.sleep_time)
             if new_line_bottom:
@@ -854,13 +853,12 @@ class Story(Game):
                 Story.start_game()
                 return
             def process_choice(choice):
+                delete_choice_buttons(Game.MainWindowInstance)
                 choice_index = int(choice) - 1
                 if 0 <= choice_index < len(eval(f'{current_room}.choices')):
-                    delete_choice_buttons(Game.MainWindowInstance)
                     player.current_location = eval(f'{current_room}.next_rooms[{choice_index}]')
                     Story.story_loop(player)
             def display_choices():
-                delete_choice_buttons(Game.MainWindowInstance)
                 room_choices = eval(f'{current_room}.choices')
                 for index, choice_text in enumerate(room_choices, start=1):
                     add_choice_button(Game.MainWindowInstance, text=f"{index}: {choice_text}", callback=lambda choice=index: process_choice(str(choice)))
