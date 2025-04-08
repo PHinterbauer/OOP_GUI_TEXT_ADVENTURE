@@ -30,6 +30,8 @@ class StartWindow(cTk.CTk):
             open_settings (function): Callback to open the settings window.
         """
         super().__init__()
+        # Have to import here to avoid circular import issues :(
+        from gui.interactions import resource_path
 
         # Set up window properties
         self.player_name = ""
@@ -38,7 +40,7 @@ class StartWindow(cTk.CTk):
         self.configure(fg_color=StartWindow.COLOR_BACKGROUND)
 
         # Load and display pirate ship GIF
-        pirate_ship_path = "./resources/gifs/PIRATE_SHIP_GIF.gif"
+        pirate_ship_path = resource_path("resources/gifs/PIRATE_SHIP_GIF.gif")
         self.pirate_ship_frames = [cTk.CTkImage(light_image=frame.copy(), dark_image=frame.copy(), size=(200, 200)) for frame in ImageSequence.Iterator(Image.open(pirate_ship_path))]
         self.current_frame = 0
         self.pirate_ship_label = cTk.CTkLabel(self, text="", image=self.pirate_ship_frames[self.current_frame], fg_color=StartWindow.COLOR_BACKGROUND)
@@ -47,7 +49,7 @@ class StartWindow(cTk.CTk):
         self.update_gif()  # Start GIF animation
 
         # Load and display HWI logo
-        hwi_logo_path = "./resources/images/HWI_LOGO_REMOVEDBG.png"
+        hwi_logo_path = resource_path("resources/images/HWI_LOGO_REMOVEDBG.png")
         self.hwi_logo_image = cTk.CTkImage(light_image=Image.open(hwi_logo_path), dark_image=Image.open(hwi_logo_path), size=(200, 200))
         self.hwi_logo_label = cTk.CTkLabel(self, text="", image=self.hwi_logo_image, fg_color=StartWindow.COLOR_BACKGROUND)
         self.hwi_logo_label.place(relx=0.2, rely=0.5, anchor="center")
@@ -212,7 +214,7 @@ class SettingsWindow(cTk.CTkToplevel):
     def get_color_schemes(self):
         """## Loads available color schemes from a JSON file."""
         from utilities.game import Game
-        from interactions import resource_path
+        from gui.interactions import resource_path
         global COLOR_SCHEMES
         with open(resource_path("resources/json/color_schemes.json"), "r") as color_scheme_file:
             schemes = json.load(color_scheme_file)
