@@ -1,0 +1,5 @@
+Leider ist das gezippte Verzeichnis zu groß für elearning - daher hier der Link zum GitHub-Repo:
+https://github.com/PHinterbauer/OOP_GUI_TEXT_ADVENTURE
+Hoffe die Abgabe passt für sie auch so. :)
+
+- Paul Hinterbauer
