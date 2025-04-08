@@ -8,12 +8,11 @@
 import customtkinter as cTk
 from PIL import Image, ImageSequence
 
-# Darker Oceanic Color Scheme
-COLOR_BACKGROUND = "#0D1B2A"  # Midnight Blue
-COLOR_TEXT = "#FFFFFF"        # White
-COLOR_BUTTON = "#1B263B"      # Deep Ocean Blue
-COLOR_BUTTON_HOVER = "#112B3C"  # Dark Teal
-COLOR_FRAME = "#2A4D69"       # Steel Blue
+COLOR_BACKGROUND = "#0D1B2A"
+COLOR_TEXT = "#FFFFFF"
+COLOR_BUTTON = "#1B263B"
+COLOR_BUTTON_HOVER = "#112B3C"
+COLOR_FRAME = "#2A4D69"
 
 class StartWindow(cTk.CTk):
     def __init__(self, open_main_window, confirm_player_name, open_settings):
