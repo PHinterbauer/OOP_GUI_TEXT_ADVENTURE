@@ -22,4 +22,6 @@ Shop kann nicht ausgekauft werden
 Seperatoren können nicht resized werden - slow print nutzt gesamten main thread und lässt somit die gleichzeitige änderung der seps nicht zu
 repair Funktion funktioniert nicht zu 100% und kann zu crashes führen
 
+GITHUB REPO: https://github.com/PHinterbauer/OOP_GUI_TEXT_ADVENTURE
+
 - Immernoch Paul Hinterabuer :)
