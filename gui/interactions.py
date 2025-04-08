@@ -9,7 +9,7 @@ import customtkinter as cTk
 import time
 import json
 
-from gui.design import SettingsWindow, MainWindow, InventoryWindow, StartWindow, COLOR_BUTTON, COLOR_FRAME, COLOR_TEXT, COLOR_BACKGROUND, COLOR_BUTTON_HOVER, COLOR_SCHEMES
+from gui.design import SettingsWindow, MainWindow, InventoryWindow, StartWindow
 
 SettingsWindowInstance = None
 root = None
@@ -45,8 +45,11 @@ def open_settings(parent):
     if SettingsWindowInstance is None or not SettingsWindowInstance.winfo_exists():
         SettingsWindowInstance = SettingsWindow(parent, save_and_close, set_color_scheme)
         SettingsWindowInstance.grab_set()
+        SettingsWindowInstance.focus()
+        SettingsWindowInstance.lift()
     else:
         SettingsWindowInstance.focus()
+        SettingsWindowInstance.lift()
 
 def close_inventory(InventoryWindowInstance):
     InventoryWindowInstance.master.deiconify()
@@ -186,14 +189,14 @@ def gui_save_input_value(MainWindowInstance, input_value, callback=None):
 def update_stats_table(MainWindowInstance, attributes: dict):
     for widget in MainWindowInstance.stats_table_frame.winfo_children():
         widget.destroy()
-    header_key = cTk.CTkLabel(MainWindowInstance.stats_table_frame, text="Attribut", fg_color=COLOR_BUTTON, text_color=COLOR_TEXT, anchor="center", padx=5, pady=5)
+    header_key = cTk.CTkLabel(MainWindowInstance.stats_table_frame, text="Attribut", fg_color=StartWindow.COLOR_BUTTON, text_color=StartWindow.COLOR_TEXT, anchor="center", padx=5, pady=5)
     header_key.grid(row=0, column=0, sticky="nsew", padx=2, pady=2)
-    header_value = cTk.CTkLabel(MainWindowInstance.stats_table_frame, text="Wert", fg_color=COLOR_BUTTON, text_color=COLOR_TEXT, anchor="center", padx=5, pady=5)
+    header_value = cTk.CTkLabel(MainWindowInstance.stats_table_frame, text="Wert", fg_color=StartWindow.COLOR_BUTTON, text_color=StartWindow.COLOR_TEXT, anchor="center", padx=5, pady=5)
     header_value.grid(row=0, column=1, sticky="nsew", padx=2, pady=2)
     for row, (key, value) in enumerate(attributes.items(), start=1):
-        key_label = cTk.CTkLabel(MainWindowInstance.stats_table_frame, text=key, fg_color=COLOR_FRAME, text_color=COLOR_TEXT, anchor="center", padx=5, pady=5)
+        key_label = cTk.CTkLabel(MainWindowInstance.stats_table_frame, text=key, fg_color=StartWindow.COLOR_FRAME, text_color=StartWindow.COLOR_TEXT, anchor="center", padx=5, pady=5)
         key_label.grid(row=row, column=0, sticky="nsew", padx=2, pady=2)
-        value_label = cTk.CTkLabel(MainWindowInstance.stats_table_frame, text=str(value), fg_color=COLOR_FRAME, text_color=COLOR_TEXT, anchor="center", padx=5, pady=5)
+        value_label = cTk.CTkLabel(MainWindowInstance.stats_table_frame, text=str(value), fg_color=StartWindow.COLOR_FRAME, text_color=StartWindow.COLOR_TEXT, anchor="center", padx=5, pady=5)
         value_label.grid(row=row, column=1, sticky="nsew", padx=2, pady=2)
     for i in range(len(attributes) + 1):
         MainWindowInstance.stats_table_frame.grid_rowconfigure(i, weight=1)
@@ -203,38 +206,72 @@ def update_stats_table(MainWindowInstance, attributes: dict):
 def update_inventory_table(InventoryWindowInstance, inventory: dict):
     for widget in InventoryWindowInstance.inventory_table_frame.winfo_children():
         widget.destroy()
-    header_key = cTk.CTkLabel(InventoryWindowInstance.inventory_table_frame, text="Gegenstand", fg_color=COLOR_BUTTON, text_color=COLOR_TEXT, anchor="center", padx=5, pady=5, height=30)
+    header_key = cTk.CTkLabel(InventoryWindowInstance.inventory_table_frame, text="Gegenstand", fg_color=StartWindow.COLOR_BUTTON, text_color=StartWindow.COLOR_TEXT, anchor="center", padx=5, pady=5, height=30)
     header_key.grid(row=0, column=0, sticky="nsew", padx=2, pady=2)
-    header_value = cTk.CTkLabel(InventoryWindowInstance.inventory_table_frame, text="Anzahl", fg_color=COLOR_BUTTON, text_color=COLOR_TEXT, anchor="center", padx=5, pady=5, height=30)
+    header_value = cTk.CTkLabel(InventoryWindowInstance.inventory_table_frame, text="Anzahl", fg_color=StartWindow.COLOR_BUTTON, text_color=StartWindow.COLOR_TEXT, anchor="center", padx=5, pady=5, height=30)
     header_value.grid(row=0, column=1, sticky="nsew", padx=2, pady=2)
     if inventory:
         for row, (key, value) in enumerate(inventory.items(), start=1):
-            key_label = cTk.CTkLabel(InventoryWindowInstance.inventory_table_frame, text=key, fg_color=COLOR_FRAME, text_color=COLOR_TEXT, anchor="center", padx=5, pady=5)
+            key_label = cTk.CTkLabel(InventoryWindowInstance.inventory_table_frame, text=key, fg_color=StartWindow.COLOR_FRAME, text_color=StartWindow.COLOR_TEXT, anchor="center", padx=5, pady=5)
             key_label.grid(row=row, column=0, sticky="nsew", padx=2, pady=2)
-            value_label = cTk.CTkLabel(InventoryWindowInstance.inventory_table_frame, text=str(value), fg_color=COLOR_FRAME, text_color=COLOR_TEXT, anchor="center", padx=5, pady=5)
+            value_label = cTk.CTkLabel(InventoryWindowInstance.inventory_table_frame, text=str(value), fg_color=StartWindow.COLOR_FRAME, text_color=StartWindow.COLOR_TEXT, anchor="center", padx=5, pady=5)
             value_label.grid(row=row, column=1, sticky="nsew", padx=2, pady=2)
         for i in range(len(inventory) + 1):
             InventoryWindowInstance.inventory_table_frame.grid_rowconfigure(i, weight=1)
         InventoryWindowInstance.inventory_table_frame.grid_columnconfigure(0, weight=1)
         InventoryWindowInstance.inventory_table_frame.grid_columnconfigure(1, weight=1)
     else:
-        label_if_empty = cTk.CTkLabel(InventoryWindowInstance, text="Dein Inventar ist leer!", fg_color=COLOR_FRAME, text_color=COLOR_TEXT, anchor="center", padx=5, pady=5)
+        label_if_empty = cTk.CTkLabel(InventoryWindowInstance, text="Dein Inventar ist leer!", fg_color=StartWindow.COLOR_FRAME, text_color=StartWindow.COLOR_TEXT, anchor="center", padx=5, pady=5)
         label_if_empty.place(relx=0.5, rely=0.5, relwidth=0.9, relheight=0.1, anchor="center")
 
 def load_color_scheme(color_scheme_name):
-    global COLOR_BUTTON, COLOR_BACKGROUND, COLOR_TEXT, COLOR_BUTTON_HOVER, COLOR_FRAME
     with open("./resources/json/color_schemes.json", "r") as color_scheme_file:
         schemes = json.load(color_scheme_file)
         if color_scheme_name in schemes:
-            COLOR_BUTTON = schemes[color_scheme_name]["COLOR_BUTTON"]
-            COLOR_BACKGROUND = schemes[color_scheme_name]["COLOR_BACKGROUND"]
-            COLOR_TEXT = schemes[color_scheme_name]["COLOR_TEXT"]
-            COLOR_BUTTON_HOVER = schemes[color_scheme_name]["COLOR_BUTTON_HOVER"]
-            COLOR_FRAME = schemes[color_scheme_name]["COLOR_FRAME"]
+            StartWindow.COLOR_BUTTON = schemes[color_scheme_name]["COLOR_BUTTON"]
+            StartWindow.COLOR_BACKGROUND = schemes[color_scheme_name]["COLOR_BACKGROUND"]
+            StartWindow.COLOR_TEXT = schemes[color_scheme_name]["COLOR_TEXT"]
+            StartWindow.COLOR_BUTTON_HOVER = schemes[color_scheme_name]["COLOR_BUTTON_HOVER"]
+            StartWindow.COLOR_FRAME = schemes[color_scheme_name]["COLOR_FRAME"]
 
 def set_color_scheme(color_scheme):
     from utilities.game import Game
     Game.color_scheme = color_scheme
+
+def update_color_scheme():
+    from utilities.game import Game
+    global root, InventoryWindowInstance
+    if root and root.winfo_exists():
+        root.configure(fg_color=StartWindow.COLOR_BACKGROUND)
+        for widget in root.winfo_children():
+            if isinstance(widget, cTk.CTkLabel):
+                widget.configure(fg_color=StartWindow.COLOR_BACKGROUND, text_color=StartWindow.COLOR_TEXT)
+            elif isinstance(widget, cTk.CTkButton):
+                widget.configure(fg_color=StartWindow.COLOR_BUTTON, hover_color=StartWindow.COLOR_BUTTON_HOVER, text_color=StartWindow.COLOR_TEXT)
+            elif isinstance(widget, cTk.CTkEntry):
+                widget.configure(fg_color=StartWindow.COLOR_FRAME, text_color=StartWindow.COLOR_TEXT)
+            elif isinstance(widget, cTk.CTkFrame):
+                widget.configure(fg_color=StartWindow.COLOR_FRAME)
+    if Game.MainWindowInstance and Game.MainWindowInstance.winfo_exists():
+        Game.MainWindowInstance.configure(fg_color=StartWindow.COLOR_BACKGROUND)
+        for widget in Game.MainWindowInstance.winfo_children():
+            if isinstance(widget, cTk.CTkLabel):
+                widget.configure(fg_color=StartWindow.COLOR_BACKGROUND, text_color=StartWindow.COLOR_TEXT)
+            elif isinstance(widget, cTk.CTkButton):
+                widget.configure(fg_color=StartWindow.COLOR_BUTTON, hover_color=StartWindow.COLOR_BUTTON_HOVER, text_color=StartWindow.COLOR_TEXT)
+            elif isinstance(widget, cTk.CTkTextbox):
+                widget.configure(fg_color=StartWindow.COLOR_FRAME, text_color=StartWindow.COLOR_TEXT)
+            elif isinstance(widget, cTk.CTkFrame):
+                widget.configure(fg_color=StartWindow.COLOR_FRAME)
+    if InventoryWindowInstance and InventoryWindowInstance.winfo_exists():
+        InventoryWindowInstance.configure(fg_color=StartWindow.COLOR_BACKGROUND)
+        for widget in InventoryWindowInstance.winfo_children():
+            if isinstance(widget, cTk.CTkLabel):
+                widget.configure(fg_color=StartWindow.COLOR_BACKGROUND, text_color=StartWindow.COLOR_TEXT)
+            elif isinstance(widget, cTk.CTkButton):
+                widget.configure(fg_color=StartWindow.COLOR_BUTTON, hover_color=StartWindow.COLOR_BUTTON_HOVER, text_color=StartWindow.COLOR_TEXT)
+            elif isinstance(widget, cTk.CTkFrame):
+                widget.configure(fg_color=StartWindow.COLOR_FRAME)
 
 def load_settings():
     from utilities.game import Game
@@ -275,9 +312,11 @@ def save_settings(gui_mode_switch, sleep_time_entry, separator_length_entry, sel
         json.dump(settings_data, settings_file, indent=4)
 
 def save_and_close(SettingsWindowInstance):
-    selected_color_scheme = SettingsWindowInstance.color_scheme_default_var.get()
+    from utilities.game import Game
+    selected_color_scheme = Game.color_scheme
     save_settings(SettingsWindowInstance.gui_mode_switch, SettingsWindowInstance.sleep_time_entry, SettingsWindowInstance.separator_length_entry, selected_color_scheme)
     load_color_scheme(selected_color_scheme)
+    update_color_scheme()
     close_settings()
 
 def gui_initialize():

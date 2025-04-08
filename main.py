@@ -41,6 +41,6 @@ if __name__ == "__main__":
 
 # coins get multiplied by 2 when adding to attributes or when displaying in stats table maybe too many iterations
 
-# add dropdown menu in settings window to chose between multiple color schemes for that add function that overrides the colorschemes (global vars) in design.py with values from colorschemes.json stored in resources/json also make sure to add necessary things to load and save settings
+# COMMENTS AND STUFF
 
-# check newest history of copilot for notes on two above points
+# and add grid between the items and headers in the inventory table
