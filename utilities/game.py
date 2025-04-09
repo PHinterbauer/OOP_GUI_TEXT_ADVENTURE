@@ -184,6 +184,11 @@ class Game():
                 Game.separator()
             if new_line_top:
                 add_text_to_textbox(Game.MainWindowInstance, "")
+            # Displays an input field in the GUI for the user to enter a value
+            # The lambda function is used as a callback to handle the input value
+            # `_` is a placeholder for the first argument (unused in this case) passed by the `gui_input` function
+            # `value` is the actual input entered by the user
+            # If a `callback` is provided, it is called with the input value; otherwise, nothing happens
             gui_input(Game.MainWindowInstance, lambda _, value: callback(value) if callback else None, in_str)
             if Game.MainWindowInstance.input_callback_value is not None:
                 Game.MainWindowInstance.input_callback_value = None
@@ -218,6 +223,11 @@ class Game():
                 Game.separator()
             if new_line_top:
                 add_text_to_textbox(Game.MainWindowInstance, "")
+            # Displays an input field in the GUI for the user to enter a value
+            # The lambda function is used as a callback to handle the input value
+            # `_` is a placeholder for the first argument (unused in this case) passed by the `gui_input` function
+            # `value` is the actual input entered by the user
+            # If a `callback` is provided, it is called with the input value; otherwise, nothing happens
             gui_input(Game.MainWindowInstance, lambda _, __: callback() if callback else None, "V Drücke die Eingabe-Taste V")
             if Game.MainWindowInstance.input_callback_value is not None:
                 Game.MainWindowInstance.input_callback_value = None
@@ -536,6 +546,11 @@ class Player(Entity):
                     key = attributes[index]
                     Game.slow_print(f'Verfügbare Punkte: {self.xp_points}', separator_top=True, new_line_top=True)
                     Game.slow_print(f'Bitte gib Punkte für {key} ein:', new_line_top=True)
+                    # Displays an input field in the GUI for the user to enter a value
+                    # The lambda function is used as a callback to handle the input value
+                    # `_` is a placeholder for the first argument (unused in this case) passed by the `gui_input` function
+                    # `value` is the actual input entered by the user
+                    # If a `callback` is provided, it is called with the input value; otherwise, nothing happens
                     gui_input(Game.MainWindowInstance, gui_input_callback=lambda _, value: process_input(key, value), label_text=f"V {key} V")
                 else:
                     Game.clear_terminal()
