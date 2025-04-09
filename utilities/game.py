@@ -623,6 +623,7 @@ class Shop(Entity):
             shop = eval(shop_name)
             def display_shop():
                 Game.clear_terminal()
+                update_stats_table(Game.MainWindowInstance, Game.main_character.attributes)
                 Game.slow_print("Willkommen im Shop!\nHier sind die verfügbaren Items:\n", separator_top=True, new_line_top=True)
                 for index, (item, quantity) in enumerate(shop.inventory.items(), start=1):
                     price = shop.prices[item]
@@ -875,8 +876,8 @@ class Story(Game):
             cost (dict): The cost of the repair.
         """
         if not Game.gui_mode:
-            choice = Game.slow_input("Willst du dein Schiff reparieren?\n[j]: Ja\n[n]: Nein\n")
-            if choice.lower().strip() in ["ja", "j"]:
+            choice = Game.slow_input("Willst du dein Schiff reparieren?\n[y]: Ja\n[n]: Nein\n")
+            if choice.lower().strip() in ["yes", "y"]:
                 for key, value in cost.items():
                     if cost[key] in Game.main_character.inventory:
                         if Game.main_character.inventory[key] >= cost[key]:
@@ -892,7 +893,7 @@ class Story(Game):
                 Story.story_loop(Game.main_character, Game.main_character.current_location, "text_not_repaired")
         else:
             def process_input(value):
-                if value and value.lower().strip() in ["ja", "j"]:
+                if value and value.lower().strip() in ["yes", "y"]:
                     for key, value in cost.items():
                         if key in Game.main_character.inventory:
                             if Game.main_character.inventory[key] >= value:
@@ -908,7 +909,7 @@ class Story(Game):
                 else:
                     Game.slow_print("Du hast dich entschieden, dein Schiff nicht zu reparieren.")
                 Story.story_loop(Game.main_character, Game.main_character.current_location, "text_not_repaired")
-            Game.slow_input("V Willst du dein Schiff reparieren? [j/n] V", callback=process_input)
+            Game.slow_input("V Willst du dein Schiff reparieren? [y/n] V", callback=process_input)
 
 # initialize rooms
 start = Room("start", ["Abenteuer starten!"], ["chapter_1"], inventory = {})

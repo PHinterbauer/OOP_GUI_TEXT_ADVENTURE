@@ -20,7 +20,7 @@ Known-Issues
 
 Shop kann nicht ausgekauft werden
 Seperatoren können nicht resized werden - slow print nutzt gesamten main thread und lässt somit die gleichzeitige änderung der seps nicht zu
-repair Funktion funktioniert nicht zu 100% und kann zu crashes führen
+Immer zuerst das entry Feld ausfüllen und erst danach einen der Buttons drücken - ohne multithreading in vielen Fällen extremst kompliziert die buttons erst nach eingabe in entry Feld zu erstellen
 
 GITHUB REPO: https://github.com/PHinterbauer/OOP_GUI_TEXT_ADVENTURE
 
